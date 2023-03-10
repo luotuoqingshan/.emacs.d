@@ -22,6 +22,9 @@
   :ensure t
   :defer t)
 
+(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
+(setq LaTeX-math-abbrev-prefix (kbd ";"))
+
 (require 'cl-lib)
 (require 'doc-view)
 (setq doc-view-resolution 600)
