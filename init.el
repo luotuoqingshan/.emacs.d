@@ -22,8 +22,14 @@
   :ensure t
   :defer t)
 
+(require 'cl-lib)
 (require 'doc-view)
 (setq doc-view-resolution 600)
+
+(use-package ivy
+  :ensure t
+  :config
+  (ivy-mode 1))
 
 (setq custom-file "~/.emacs.d/custom.el")
 
