@@ -1,0 +1,444 @@
+#+title: Emacs Configuration
+#+author: Yufan Huang 
+#+email: huan1754@purdue.edu 
+#+options: toc:nil num:nil
+
+* Configure =use-package=
+
+I use =use-package= to install and configure my packages. My =init.el= includes the
+initial setup for =package.el= and ensures that =use-package= is installed, since I
+wanna do that right away.
+
+This makes sure that =use-package= will install the package if it's not already
+available. It also means that I should be able to open Emacs for the first time
+on a fresh Debian box and have my whole environment automatically installed. I'm
+not /totally/ sure about that, but we're gettin' close.
+
+#+begin_src emacs-lisp
+  (require 'use-package-ensure)
+  (setq use-package-always-ensure t)
+#+end_src
+
+Defer loading packages unless explicitly demanded.
+
+#+begin_src emacs-lisp
+  (setq use-package-always-defer t)
+#+end_src
+
+Always compile packages, and use the newest version available.
+
+#+begin_src emacs-lisp
+	(use-package auto-compile
+		:demand t
+		:config (auto-compile-on-load-mode))
+
+	(setq load-prefer-newer t)
+#+end_src
+
+Disable deprecation warnings about =cl=. The =cl= library has been deprecated, but
+lots of packages still use it. I can't control that, but I can disable the
+warnings.
+
+#+begin_src emacs-lisp
+  (setq byte-compile-warnings '(cl-functions))
+#+end_src
+
+If an Emacs package relies on the installation of a system package, install that
+package (for example, =deadgrep= doesn't work if =ripgrep= isn't installed). This
+uses the system package manager (Debian's =apt=, in my case).
+
+#+begin_src emacs-lisp
+  (use-package use-package-ensure-system-package
+		:demand t
+    :custom
+    (system-packages-package-manager 'brew))
+#+end_src
+
+Trigger garbage collection when I've been idle for five seconds and memory usage
+is over 16 MB.
+
+#+begin_src emacs-lisp
+	(use-package gcmh
+		:demand t
+
+		:init
+		(setq gcmh-idle-delay 5
+					gcmh-high-cons-threshold (* 16 1024 1024))
+		:config
+		(gcmh-mode))
+#+end_src
+
+* =evil-mode=
+
+Load and configure =evil-mode=.
+
+- I'd prefer not to expand abbrevs when I hit escape. That's always jarring and
+  usually not what I want. In particular, it makes working with Coq really
+  frustrating.
+- Don't automatically load Evil bindings in different modes.
+- Bind =C-p= to fuzzy-finding files in the current project. We also need to
+  explicitly set that in a few other modes.
+
+#+begin_src emacs-lisp
+  (use-package evil
+	  :demand t
+
+	  :init
+	  (setq evil-want-abbrev-expand-on-insert-exit nil
+				  evil-want-keybinding nil)
+
+	  :config
+	  (evil-mode 1)
+          (evil-set-undo-system 'undo-tree)
+
+	  (evil-define-key '(normal insert) 'global (kbd "C-p") 'project-find-file)
+
+	  (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
+	  (evil-define-key 'insert org-mode-map (kbd "S-<right>") 'org-shiftright)
+	  (evil-define-key 'insert org-mode-map (kbd "S-<left>") 'org-shiftleft)
+
+	  (fset 'evil-visual-update-x-selection 'ignore))
+#+end_src
+
+Install =evil-collection=, which provides evil-friendly bindings for many modes.
+
+#+begin_src emacs-lisp
+  (use-package evil-collection
+    :after evil
+    :demand t
+
+    :config
+    (setq evil-collection-mode-list
+          '(deadgrep
+            dired
+            elfeed
+            eww
+            ibuffer
+            info
+            magit
+            mu4e
+            package-menu
+            pdf-view
+            proced
+            replace
+            vterm
+            which-key))
+
+    (evil-collection-init))
+#+end_src
+
+Enable =surround= everywhere.
+
+#+begin_src emacs-lisp
+	(use-package evil-surround
+	  :after evil
+		:config
+		(global-evil-surround-mode 1))
+#+end_src
+
+Use =evil= with Org agendas.
+
+#+begin_src emacs-lisp
+  (use-package evil-org
+    :after (evil org)
+    :demand t
+
+    :config
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys))
+#+end_src
+
+Use Undo-Tree to customize =evil='s redo functionality.
+
+#+begin_src emacs-lisp
+  (use-package undo-tree
+    :after (evil)
+    :demand t
+
+    :config
+    (global-undo-tree-mode t))
+#+end_src
+
+
+* Theme and faces
+Configuration of my theme and faces. See
+[[https://emacs.stackexchange.com/questions/52565/org-mode-results-verbatim-not-working-for-scheme-code][Manual of modus-themes]] for more details.
+#+begin_src emacs-lisp 
+  (use-package modus-themes
+    :ensure t
+    :demand t
+    :config
+    ;; Add all your customizations prior to loading the themes
+    (setq modus-themes-italic-constructs t
+	  modus-themes-bold-constructs nil 
+	  modus-themes-org-blocks 'tinted-background)
+
+    (setq modus-themes-headings
+      '((1 . (variable-pitch 1.5))
+	(2 . (1.3))
+	(agenda-date . (1.3))
+	(agenda-structure . (variable-pitch light 1.8))
+	(t . (1.1))))
+
+    ;; Maybe define some palette overrides, such as by using our presets
+    (setq modus-themes-common-palette-overrides
+	  modus-themes-preset-overrides-faint)
+
+    ;; Load the theme of your choice.
+    (load-theme 'modus-vivendi-tinted :no-confirm)
+
+    ;; use F5 to toggle modus-themes between dark and light
+    (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
+#+end_src
+
+* Basic Setup
+
+Some basic and general setups.
+
+#+begin_src emacs-lisp
+  ;; display time in the buffer
+  (setq display-time-day-and-date t)
+  (display-time-mode 1)
+  ;; adjust the default font size such that I don't need to zoom in/out every time
+  (set-face-attribute 'default nil :height 150)
+  ;; I want my initial frame always maximized 
+  (add-hook 'window-setup-hook 'toggle-frame-maximized t)
+  ;; use cua-mode to enable C-c/C-v for copy-paste  
+  (setq auto-fill-mode t)
+  ;; show column number 
+  (setq column-number-mode t)
+  ;; I'm using Mac, it doesn't have <insertchar> key
+  (global-set-key (kbd "C-c y") 'clipboard-yank)
+  ;(use-package olivetti
+  ;  :demand t
+  ;  :config
+  ;  (olivetti-mode 1)
+  ;  (setq olivetti-body-width 80)
+  ;  :hook (text-mode LaTeX-mode))
+
+  ;; use y/n always instead of yes or no 
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+end_src
+
+#+begin_src emacs-lisp 
+  ;; use moody to prettify mode line
+  (use-package moody
+    :demand t
+    :config
+    (setq x-underline-at-descent-line t)
+    (moody-replace-mode-line-buffer-identification)
+    (moody-replace-vc-mode)
+    (moody-replace-eldoc-minibuffer-message-function))
+#+end_src
+
+* Config =ivy=
+
+I use =ivy= and =counsel= as my completion framework.
+
+#+begin_src emacs-lisp
+  (use-package counsel
+    :demand t
+    :init
+    (ivy-mode 1))
+
+  (use-package ivy-rich
+    :demand t
+    :init
+    (ivy-rich-mode 1))
+#+end_src
+
+* Use =minions= to hide all minor modes
+
+Let's use =minions= to hide all the minor modes in the model line.
+
+#+begin_src emacs-lisp 
+ (use-package minions
+  :demand t
+
+  :custom
+  (minions-mode-line-delimiters (cons "" ""))
+
+  :config
+  (defun +set-minions-mode-line-lighter ()
+    (setq minions-mode-line-lighter
+          (if (display-graphic-p) "⚙" "#")))
+
+  (add-hook 'server-after-make-frame-hook #'+set-minions-mode-line-lighter)
+
+  (minions-mode 1))
+#+end_src
+
+* Company-mode
+I use company-mode for completion.
+
+#+begin_src emacs-lisp
+  (add-hook 'after-init-hook 'global-company-mode)
+#+end_src
+
+* Julia-mode
+I write julia a lot!
+
+#+begin_src emacs-lisp 
+  (use-package julia-mode)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((julia . t)))
+#+end_src
+
+* Org-mode
+
+#+begin_src emacs-lisp
+  ;; use org-bullets to replace stars before headings
+  (require 'org-bullets)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+  ;; set initial scratch buffer to be in Org
+  (setq initial-major-mode 'org-mode)
+
+
+  (use-package org
+    :demand t
+    :config 
+    ;; setup default directory 
+    :custom
+    (org-directory "~/Dropbox/orgs/")
+    (org-default-notes-file "~/Dropbox/orgs/inbox.org")
+    (org-archive-location (concat "~/Dropbox/orgarchive/Archive-"
+				   (format-time-string "%Y%m" (current-time))
+				   ".org_archive::")))
+  (defun my-org-latex-format-headline-function
+    (todo todo-type priority text tags _info)
+  "Default format function for a headline.
+   See `org-latex-format-headline-function' for details."
+    (concat
+     (and todo (format "{\\framebox{\\bfseries\\rfamily\\color{%s} %s}} "
+                     (pcase todo-type
+                       ('todo "olive")
+                       ('done "teal"))
+                     todo))
+     (and priority (format "\\framebox{\\#%c} " priority))
+     text
+     (and tags
+      (format "\\hfill{}\\textsc{%s}"
+          (mapconcat #'org-latex--protect-text tags ":")))))
+
+
+  (setq org-latex-format-headline-function 'my-org-latex-format-headline-function)
+#+end_src
+
+* Org-Roam
+
+#+begin_src emacs-lisp
+  (use-package org-roam
+    :after org
+    :demand t
+    ;; setup default directory
+    :custom
+    (org-roam-directory "~/Dropbox/orgroam/")
+    :bind (("C-c r c" . org-roam-capture)
+	   ("C-c r i" . org-roam-node-insert)
+	   ("C-c r f" . org-roam-node-find))
+    :config
+    (setq org-roam-capture-templates '(("d" "default" plain "%?"
+                                        :target
+                                        (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                                           "#+title: ${title}\n")
+                                        :unnarrowed t)
+                                       ("r" "bibliography reference" plain
+                                        "%?"
+                                        :target
+                                        (file+head
+                                         "references/${citekey}.org"
+                                         "#+title: ${title}\n")
+                                        :unnarrowed t)))
+    (org-roam-db-autosync-mode t))
+#+end_src
+
+* Org-ref
+
+#+begin_src emacs-lisp
+  (use-package org-ref
+    :demand t
+    :config
+    (setq
+     bibtex-completion-bibliography '("~/Dropbox/bibs/yufan.bib")
+     bibtex-completion-notes-path "~/Dropbox/orgroam/"
+     bibtex-completion-pdf-field "file"
+     bibtex-completion-pdf-open-function
+     (lambda (fpath)
+       (call-process "open" nil 0 nil fpath))))
+  (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link-hydra/body)
+#+end_src
+
+* Org-Roam-Bibtex 
+
+#+begin_src emacs-lisp
+  (use-package ivy-bibtex
+    :demand t
+    :after org-ref)
+  (use-package org-roam-bibtex
+    :demand t
+    :after (org-roam)
+    :hook (org-roam-mode . org-roam-bibtex-mode)
+    :bind
+    (("C-c r z" . orb-insert-link))
+    :config
+    (require 'org-ref))
+#+end_src
+
+* Auctex/Latex
+
+#+begin_src emacs-lisp
+    (use-package auctex 
+       :ensure t)
+    (add-hook 'laTeX-mode-hook #'LaTeX-math-mode)
+    (add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
+
+    (use-package xenops
+      :config
+      (setq xenops-math-image-scale-factor 2.0))
+    (add-hook 'latex-mode-hook #'xenops-mode)
+    (add-hook 'LaTeX-mode-hook #'xenops-mode)  
+
+    (use-package reftex)
+    (add-hook 'latex-mode-hook 'turn-on-reftex)
+    (add-hook 'LaTeX-mode-hook 'turn-on-reftex)  
+
+    (setq LaTeX-math-abbrev-prefix (kbd ";"))
+    (setq reftex-label-alist '(AMSTeX))
+    (setq doc-view-resolution 600)
+#+end_src
+
+#+RESULTS:
+: 600
+
+* Yasnippet
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :demand t
+    :init
+    (add-hook 'latex-mode-hook #'yas-minor-mode)
+    (add-hook 'LaTeX-mode-hook #'yas-minor-mode)  
+    :config
+    (yas-minor-mode-on)
+    (setq yas/triggers-in-field t))
+  (use-package yasnippet-snippets
+    :demand t)
+  ;; add # condition: 'auto for auto expand
+  (defun my-yas-try-expanding-auto-snippets ()
+  (when yas-minor-mode
+    (let ((yas-buffer-local-condition ''(require-snippet-condition . auto)))
+      (yas-expand))))
+  (add-hook 'post-command-hook #'my-yas-try-expanding-auto-snippets)
+#+end_src
+
+* Magit
+#+begin_src emacs-lisp
+  (use-package magit
+    :demand t)
+#+end_src
+
+
+#+RESULTS:
+: magit
+
