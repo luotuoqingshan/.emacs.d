@@ -136,14 +136,23 @@
 ;; use y/n always instead of yes or no 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
+
+;; always show line numbers and set the display style to relative 
+;; which makes vertical move in evil more comfortable
+(global-display-line-numbers-mode)
+(setq display-line-numbers 'relative)
+
 ;; use moody to prettify mode line
 (use-package moody
-  :demand t
-  :config
-  (setq x-underline-at-descent-line t)
-  (moody-replace-mode-line-buffer-identification)
-  (moody-replace-vc-mode)
-  (moody-replace-eldoc-minibuffer-message-function))
+    :demand t
+    :config
+    (setq x-underline-at-descent-line t)
+    (moody-replace-mode-line-buffer-identification)
+    (moody-replace-vc-mode)
+    (moody-replace-eldoc-minibuffer-message-function))
 
 (use-package counsel
   :demand t
@@ -184,11 +193,14 @@
 ;; set initial scratch buffer to be in Org
 (setq initial-major-mode 'org-mode)
 
+(setq org-src-preserve-indentation t)
 
 (use-package org
   :demand t
   :config 
   ;; setup default directory 
+  :bind (("C-c a" . org-agenda)
+	)
   :custom
   (org-directory "~/Dropbox/orgs/")
   (org-default-notes-file "~/Dropbox/orgs/inbox.org")
@@ -201,42 +213,51 @@
  See `org-latex-format-headline-function' for details."
   (concat
    (and todo (format "{\\framebox{\\bfseries\\rfamily\\color{%s} %s}} "
-                   (pcase todo-type
-                     ('todo "olive")
-                     ('done "teal"))
-                   todo))
+		   (pcase todo-type
+		     ('todo "olive")
+		     ('done "teal"))
+		   todo))
    (and priority (format "\\framebox{\\#%c} " priority))
    text
    (and tags
     (format "\\hfill{}\\textsc{%s}"
-        (mapconcat #'org-latex--protect-text tags ":")))))
+	(mapconcat #'org-latex--protect-text tags ":")))))
 
 
 (setq org-latex-format-headline-function 'my-org-latex-format-headline-function)
+(setq org-todo-keywords
+      '((sequence "TODO" "NEXT" "WAITING" "|" "DONE" "CANCELLED")))
 
 (use-package org-roam
-  :after org
-  :demand t
-  ;; setup default directory
-  :custom
-  (org-roam-directory "~/Dropbox/orgroam/")
-  :bind (("C-c r c" . org-roam-capture)
-	 ("C-c r i" . org-roam-node-insert)
-	 ("C-c r f" . org-roam-node-find))
-  :config
-  (setq org-roam-capture-templates '(("d" "default" plain "%?"
-                                      :target
-                                      (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                                                         "#+title: ${title}\n")
-                                      :unnarrowed t)
-                                     ("r" "bibliography reference" plain
-                                      "%?"
-                                      :target
-                                      (file+head
-                                       "references/${citekey}.org"
-                                       "#+title: ${title}\n")
-                                      :unnarrowed t)))
-  (org-roam-db-autosync-mode t))
+    :after org
+    ;;:demand t
+    ;; setup default directory
+    :custom
+    (org-roam-directory "~/Dropbox/orgroam/")
+    :bind (("C-c r c" . org-roam-capture)
+           ("C-c r i" . org-roam-node-insert)
+           ("C-c r f" . org-roam-node-find))
+
+    :config
+    (setq org-roam-capture-templates '(("d" "default" plain "%?"
+                    :target
+                    (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n")
+                    :unnarrowed t)
+                    ("r" "bibliography reference" plain
+                    "%?"
+                    :target
+                    (file+head
+                    "references/${citekey}.org"
+                    "#+title: ${title}\n")
+                    :unnarrowed t)))
+    (org-roam-db-autosync-mode t))
+
+;; https://emacs.stackexchange.com/questions/12517/how-do-i-make-the-timespan-shown-by-org-agenda-start-yesterday
+;; let agenda start from yesterday
+(setq org-agenda-start-day "-1d")
+(setq org-agenda-span 8)
+(setq org-agenda-start-on-weekday nil)
 
 (use-package org-ref
   :demand t
@@ -268,10 +289,11 @@
 (add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
 
 (use-package xenops
+  :disabled
   :config
   (setq xenops-math-image-scale-factor 2.0))
-(add-hook 'latex-mode-hook #'xenops-mode)
-(add-hook 'LaTeX-mode-hook #'xenops-mode)  
+;(add-hook 'latex-mode-hook #'xenops-mode)
+;(add-hook 'LaTeX-mode-hook #'xenops-mode)  
 
 (use-package reftex)
 (add-hook 'latex-mode-hook 'turn-on-reftex)

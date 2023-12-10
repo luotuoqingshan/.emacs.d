@@ -15,24 +15,24 @@ on a fresh Debian box and have my whole environment automatically installed. I'm
 not /totally/ sure about that, but we're gettin' close.
 
 #+begin_src emacs-lisp
-  (require 'use-package-ensure)
-  (setq use-package-always-ensure t)
+    (require 'use-package-ensure)
+    (setq use-package-always-ensure t)
 #+end_src
 
 Defer loading packages unless explicitly demanded.
 
 #+begin_src emacs-lisp
-  (setq use-package-always-defer t)
+    (setq use-package-always-defer t)
 #+end_src
 
 Always compile packages, and use the newest version available.
 
 #+begin_src emacs-lisp
-	(use-package auto-compile
-		:demand t
-		:config (auto-compile-on-load-mode))
+    (use-package auto-compile
+	    :demand t
+	    :config (auto-compile-on-load-mode))
 
-	(setq load-prefer-newer t)
+    (setq load-prefer-newer t)
 #+end_src
 
 Disable deprecation warnings about =cl=. The =cl= library has been deprecated, but
@@ -40,7 +40,7 @@ lots of packages still use it. I can't control that, but I can disable the
 warnings.
 
 #+begin_src emacs-lisp
-  (setq byte-compile-warnings '(cl-functions))
+    (setq byte-compile-warnings '(cl-functions))
 #+end_src
 
 If an Emacs package relies on the installation of a system package, install that
@@ -196,39 +196,57 @@ Configuration of my theme and faces. See
 Some basic and general setups.
 
 #+begin_src emacs-lisp
-  ;; display time in the buffer
-  (setq display-time-day-and-date t)
-  (display-time-mode 1)
-  ;; adjust the default font size such that I don't need to zoom in/out every time
-  (set-face-attribute 'default nil :height 150)
-  ;; I want my initial frame always maximized 
-  (add-hook 'window-setup-hook 'toggle-frame-maximized t)
-  ;; use cua-mode to enable C-c/C-v for copy-paste  
-  (setq auto-fill-mode t)
-  ;; show column number 
-  (setq column-number-mode t)
-  ;; I'm using Mac, it doesn't have <insertchar> key
-  (global-set-key (kbd "C-c y") 'clipboard-yank)
-  ;(use-package olivetti
-  ;  :demand t
-  ;  :config
-  ;  (olivetti-mode 1)
-  ;  (setq olivetti-body-width 80)
-  ;  :hook (text-mode LaTeX-mode))
+    ;; display time in the buffer
+    (setq display-time-day-and-date t)
+    (display-time-mode 1)
+    ;; adjust the default font size such that I don't need to zoom in/out every time
+    (set-face-attribute 'default nil :height 150)
+    ;; I want my initial frame always maximized 
+    (add-hook 'window-setup-hook 'toggle-frame-maximized t)
+    ;; use cua-mode to enable C-c/C-v for copy-paste  
+    (setq auto-fill-mode t)
+    ;; show column number 
+    (setq column-number-mode t)
+    ;; I'm using Mac, it doesn't have <insertchar> key
+    (global-set-key (kbd "C-c y") 'clipboard-yank)
+    ;(use-package olivetti
+    ;  :demand t
+    ;  :config
+    ;  (olivetti-mode 1)
+    ;  (setq olivetti-body-width 80)
+    ;  :hook (text-mode LaTeX-mode))
 
-  ;; use y/n always instead of yes or no 
-  (defalias 'yes-or-no-p 'y-or-n-p)
+    ;; use y/n always instead of yes or no 
+    (defalias 'yes-or-no-p 'y-or-n-p)
+
+    (setq-default indent-tabs-mode nil)
+    (setq-default tab-width 4)
+    (setq-default indent-line-function 'insert-tab)
 #+end_src
 
+#+RESULTS:
+: insert-tab
+
+#+begin_src emacs-lisp
+    ;; always show line numbers and set the display style to relative 
+    ;; which makes vertical move in evil more comfortable
+    (global-display-line-numbers-mode)
+    (setq display-line-numbers 'relative)
+#+end_src
+
+#+RESULTS:
+: relative
+
+
 #+begin_src emacs-lisp 
-  ;; use moody to prettify mode line
-  (use-package moody
-    :demand t
-    :config
-    (setq x-underline-at-descent-line t)
-    (moody-replace-mode-line-buffer-identification)
-    (moody-replace-vc-mode)
-    (moody-replace-eldoc-minibuffer-message-function))
+    ;; use moody to prettify mode line
+    (use-package moody
+        :demand t
+        :config
+        (setq x-underline-at-descent-line t)
+        (moody-replace-mode-line-buffer-identification)
+        (moody-replace-vc-mode)
+        (moody-replace-eldoc-minibuffer-message-function))
 #+end_src
 
 * Config =ivy=
@@ -295,11 +313,14 @@ I write julia a lot!
   ;; set initial scratch buffer to be in Org
   (setq initial-major-mode 'org-mode)
 
+  (setq org-src-preserve-indentation t)
 
   (use-package org
     :demand t
     :config 
     ;; setup default directory 
+    :bind (("C-c a" . org-agenda)
+	  )
     :custom
     (org-directory "~/Dropbox/orgs/")
     (org-default-notes-file "~/Dropbox/orgs/inbox.org")
@@ -312,47 +333,69 @@ I write julia a lot!
    See `org-latex-format-headline-function' for details."
     (concat
      (and todo (format "{\\framebox{\\bfseries\\rfamily\\color{%s} %s}} "
-                     (pcase todo-type
-                       ('todo "olive")
-                       ('done "teal"))
-                     todo))
+		     (pcase todo-type
+		       ('todo "olive")
+		       ('done "teal"))
+		     todo))
      (and priority (format "\\framebox{\\#%c} " priority))
      text
      (and tags
       (format "\\hfill{}\\textsc{%s}"
-          (mapconcat #'org-latex--protect-text tags ":")))))
+	  (mapconcat #'org-latex--protect-text tags ":")))))
 
 
   (setq org-latex-format-headline-function 'my-org-latex-format-headline-function)
+  (setq org-todo-keywords
+	'((sequence "TODO" "NEXT" "WAITING" "|" "DONE" "CANCELLED")))
 #+end_src
+
+#+RESULTS:
+| sequence | TODO | NEXT | WAITING |   |   | DONE | CANCELLED |
 
 * Org-Roam
 
 #+begin_src emacs-lisp
-  (use-package org-roam
-    :after org
-    :demand t
-    ;; setup default directory
-    :custom
-    (org-roam-directory "~/Dropbox/orgroam/")
-    :bind (("C-c r c" . org-roam-capture)
-	   ("C-c r i" . org-roam-node-insert)
-	   ("C-c r f" . org-roam-node-find))
-    :config
-    (setq org-roam-capture-templates '(("d" "default" plain "%?"
-                                        :target
-                                        (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                                                           "#+title: ${title}\n")
-                                        :unnarrowed t)
-                                       ("r" "bibliography reference" plain
-                                        "%?"
-                                        :target
-                                        (file+head
-                                         "references/${citekey}.org"
-                                         "#+title: ${title}\n")
-                                        :unnarrowed t)))
-    (org-roam-db-autosync-mode t))
+    (use-package org-roam
+        :after org
+        ;;:demand t
+        ;; setup default directory
+        :custom
+        (org-roam-directory "~/Dropbox/orgroam/")
+        :bind (("C-c r c" . org-roam-capture)
+               ("C-c r i" . org-roam-node-insert)
+               ("C-c r f" . org-roam-node-find)
+               ("C-c r b" . org-roam-buffer-toggle))
+
+        :config
+        (setq org-roam-capture-templates '(("d" "default" plain "%?"
+                          :target
+                        (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                "#+title: ${title}\n")
+                        :unnarrowed t)
+                        ("r" "bibliography reference" plain
+                        "%?"
+                        :target
+                        (file+head
+                        "references/${citekey}.org"
+                        "#+title: ${title}\n")
+                        :unnarrowed t)))
+        (org-roam-db-autosync-mode t))
 #+end_src
+
+#+RESULTS:
+: org-roam-buffer-toggle
+
+* Org-Agenda
+
+#+begin_src emacs-lisp
+  ;; https://emacs.stackexchange.com/questions/12517/how-do-i-make-the-timespan-shown-by-org-agenda-start-yesterday
+  ;; let agenda start from yesterday
+  (setq org-agenda-start-day "-1d")
+  (setq org-agenda-span 8)
+  (setq org-agenda-start-on-weekday nil)
+#+end_src
+
+#+RESULTS:
 
 * Org-ref
 
@@ -389,24 +432,25 @@ I write julia a lot!
 * Auctex/Latex
 
 #+begin_src emacs-lisp
-    (use-package auctex 
-       :ensure t)
-    (add-hook 'laTeX-mode-hook #'LaTeX-math-mode)
-    (add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
+  (use-package auctex 
+     :ensure t)
+  (add-hook 'laTeX-mode-hook #'LaTeX-math-mode)
+  (add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
 
-    (use-package xenops
-      :config
-      (setq xenops-math-image-scale-factor 2.0))
-    (add-hook 'latex-mode-hook #'xenops-mode)
-    (add-hook 'LaTeX-mode-hook #'xenops-mode)  
+  (use-package xenops
+    :disabled
+    :config
+    (setq xenops-math-image-scale-factor 2.0))
+  ;(add-hook 'latex-mode-hook #'xenops-mode)
+  ;(add-hook 'LaTeX-mode-hook #'xenops-mode)  
 
-    (use-package reftex)
-    (add-hook 'latex-mode-hook 'turn-on-reftex)
-    (add-hook 'LaTeX-mode-hook 'turn-on-reftex)  
+  (use-package reftex)
+  (add-hook 'latex-mode-hook 'turn-on-reftex)
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)  
 
-    (setq LaTeX-math-abbrev-prefix (kbd ";"))
-    (setq reftex-label-alist '(AMSTeX))
-    (setq doc-view-resolution 600)
+  (setq LaTeX-math-abbrev-prefix (kbd ";"))
+  (setq reftex-label-alist '(AMSTeX))
+  (setq doc-view-resolution 600)
 #+end_src
 
 #+RESULTS:
