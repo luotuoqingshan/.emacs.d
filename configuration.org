@@ -364,26 +364,31 @@ I write julia a lot!
         :bind (("C-c r c" . org-roam-capture)
                ("C-c r i" . org-roam-node-insert)
                ("C-c r f" . org-roam-node-find)
-               ("C-c r b" . org-roam-buffer-toggle))
+               ("C-c r b" . org-roam-buffer-toggle)
+               ("C-c l"   . org-latex-preview)
+              )
 
         :config
-        (setq org-roam-capture-templates '(("d" "default" plain "%?"
-                          :target
-                        (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                                "#+title: ${title}\n")
+        (setq org-roam-capture-templates '(
+                        ("d" "default" plain "%?"
+                        :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                           "#+title: ${title}\n")
                         :unnarrowed t)
-                        ("r" "bibliography reference" plain
-                        "%?"
-                        :target
-                        (file+head
-                        "references/${citekey}.org"
-                        "#+title: ${title}\n")
+                        ("r" "bibliography reference" plain "%?"
+                        :target (file+head "references/${citekey}.org"
+                                           "#+title: ${title}\n")
+                        :unnarrowed t)
+                        ("m" "math notes" plain "%?" 
+                        :target (file+head "${slug}.org"
+                                           "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/.emacs.d/preamble.tex}\n#+options: toc:nil\n#+STARTUP: latexpreview"
+                                           )
                         :unnarrowed t)))
+                          
         (org-roam-db-autosync-mode t))
 #+end_src
 
 #+RESULTS:
-: org-roam-buffer-toggle
+: org-latex-preview
 
 * Org-Agenda
 
@@ -395,7 +400,7 @@ I write julia a lot!
   (setq org-agenda-start-on-weekday nil)
 #+end_src
 
-#+RESULTS:
+
 
 * Org-ref
 
@@ -463,9 +468,13 @@ I write julia a lot!
     :init
     (add-hook 'latex-mode-hook #'yas-minor-mode)
     (add-hook 'LaTeX-mode-hook #'yas-minor-mode)  
+    (add-hook 'org-mode-hook   #'yas-minor-mode)
     :config
     (yas-minor-mode-on)
-    (setq yas/triggers-in-field t))
+    (setq yas/triggers-in-field t)
+    (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
+  )
+
   (use-package yasnippet-snippets
     :demand t)
   ;; add # condition: 'auto for auto expand
@@ -475,6 +484,9 @@ I write julia a lot!
       (yas-expand))))
   (add-hook 'post-command-hook #'my-yas-try-expanding-auto-snippets)
 #+end_src
+
+#+RESULTS:
+| global-font-lock-mode-check-buffers | global-eldoc-mode-check-buffers | evil-mode-check-buffers | global-evil-collection-unimpaired-mode-check-buffers | global-undo-tree-mode-check-buffers | global-display-line-numbers-mode-check-buffers | global-company-mode-check-buffers | magit-auto-revert-mode-check-buffers | my-yas-try-expanding-auto-snippets | evil-repeat-post-hook | gcmh-register-idle-gc |
 
 * Magit
 #+begin_src emacs-lisp

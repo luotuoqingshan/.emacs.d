@@ -138,7 +138,7 @@
 
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
-(setq indent-line-function 'insert-tab)
+(setq-default indent-line-function 'insert-tab)
 
 ;; always show line numbers and set the display style to relative 
 ;; which makes vertical move in evil more comfortable
@@ -236,21 +236,27 @@
     (org-roam-directory "~/Dropbox/orgroam/")
     :bind (("C-c r c" . org-roam-capture)
            ("C-c r i" . org-roam-node-insert)
-           ("C-c r f" . org-roam-node-find))
+           ("C-c r f" . org-roam-node-find)
+           ("C-c r b" . org-roam-buffer-toggle)
+           ("C-c l"   . org-latex-preview)
+          )
 
     :config
-    (setq org-roam-capture-templates '(("d" "default" plain "%?"
-                    :target
-                    (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                            "#+title: ${title}\n")
+    (setq org-roam-capture-templates '(
+                    ("d" "default" plain "%?"
+                    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                       "#+title: ${title}\n")
                     :unnarrowed t)
-                    ("r" "bibliography reference" plain
-                    "%?"
-                    :target
-                    (file+head
-                    "references/${citekey}.org"
-                    "#+title: ${title}\n")
+                    ("r" "bibliography reference" plain "%?"
+                    :target (file+head "references/${citekey}.org"
+                                       "#+title: ${title}\n")
+                    :unnarrowed t)
+                    ("m" "math notes" plain "%?" 
+                    :target (file+head "${slug}.org"
+                                       "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/.emacs.d/preamble.tex}\n#+options: toc:nil\n#+STARTUP: latexpreview"
+                                       )
                     :unnarrowed t)))
+
     (org-roam-db-autosync-mode t))
 
 ;; https://emacs.stackexchange.com/questions/12517/how-do-i-make-the-timespan-shown-by-org-agenda-start-yesterday
@@ -308,9 +314,13 @@
   :init
   (add-hook 'latex-mode-hook #'yas-minor-mode)
   (add-hook 'LaTeX-mode-hook #'yas-minor-mode)  
+  (add-hook 'org-mode-hook   #'yas-minor-mode)
   :config
   (yas-minor-mode-on)
-  (setq yas/triggers-in-field t))
+  (setq yas/triggers-in-field t)
+  (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
+)
+
 (use-package yasnippet-snippets
   :demand t)
 ;; add # condition: 'auto for auto expand
