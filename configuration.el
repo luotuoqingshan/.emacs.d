@@ -191,46 +191,52 @@
  '((julia . t)))
 
 ;; use org-bullets to replace stars before headings
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  (require 'org-bullets)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
-;; set initial scratch buffer to be in Org
-(setq initial-major-mode 'org-mode)
+  ;; set initial scratch buffer to be in Org
+  (setq initial-major-mode 'org-mode)
 
-(setq org-src-preserve-indentation t)
+  (setq org-src-preserve-indentation t)
 
-(use-package org
-  :demand t
-  :config 
-  ;; setup default directory 
-  :bind (("C-c a" . org-agenda)
-	)
-  :custom
-  (org-directory "~/Dropbox/orgs/")
-  (org-default-notes-file "~/Dropbox/orgs/inbox.org")
-  (org-archive-location (concat "~/Dropbox/orgarchive/Archive-"
-				 (format-time-string "%Y%m" (current-time))
-				 ".org_archive::")))
-(defun my-org-latex-format-headline-function
-  (todo todo-type priority text tags _info)
-"Default format function for a headline.
- See `org-latex-format-headline-function' for details."
-  (concat
-   (and todo (format "{\\framebox{\\bfseries\\rfamily\\color{%s} %s}} "
-		   (pcase todo-type
-		     ('todo "olive")
-		     ('done "teal"))
-		   todo))
-   (and priority (format "\\framebox{\\#%c} " priority))
-   text
-   (and tags
-    (format "\\hfill{}\\textsc{%s}"
-	(mapconcat #'org-latex--protect-text tags ":")))))
+  (use-package org
+      :demand t
+      :config 
+      ;; setup default directory 
+      :bind (("C-c a" . org-agenda)
+	  )
+      :custom
+      (org-directory "~/Dropbox/orgs/")
+      (org-default-notes-file "~/Dropbox/orgs/inbox.org")
+      (org-archive-location (concat "~/Dropbox/orgarchive/Archive-"
+				  (format-time-string "%Y%m" (current-time))
+				  ".org_archive::"))
+      (org-todo-keywords
+	  '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+      (org-todo-keyword-faces
+	  '(("TODO" :foreground "orange" :weight bold) 
+	    ("NEXT" :foreground "red" :weight bold)
+	    ("WAITING" :foreground "blue" :weight bold)
+	    ("DONE" :foreground "forest green" :weight bold)
+	    ("CANCELLED" :foreground "cyan" :weight bold))))
+  (defun my-org-latex-format-headline-function
+      (todo todo-type priority text tags _info)
+  "Default format function for a headline.
+  See `org-latex-format-headline-function' for details."
+      (concat
+      (and todo (format "{\\framebox{\\bfseries\\rfamily\\color{%s} %s}} "
+		      (pcase todo-type
+		      ('todo "olive")
+		      ('done "teal"))
+		      todo))
+      (and priority (format "\\framebox{\\#%c} " priority))
+      text
+      (and tags
+      (format "\\hfill{}\\textsc{%s}"
+	  (mapconcat #'org-latex--protect-text tags ":")))))
 
 
-(setq org-latex-format-headline-function 'my-org-latex-format-headline-function)
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+  (setq org-latex-format-headline-function 'my-org-latex-format-headline-function)
 
 (use-package org-roam
     :after org
@@ -249,7 +255,7 @@
     (setq org-roam-capture-templates '(
                     ("d" "default" plain "%?"
                     :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                                       "#+title: ${title}\n")
+                                       "#+title: ${title}\n#+options: toc:nil\n")
                     :unnarrowed t)
                     ("r" "bibliography reference" plain "%?"
                     :target (file+head "references/${citekey}.org"
