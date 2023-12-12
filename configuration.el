@@ -136,9 +136,13 @@
 ;; use y/n always instead of yes or no 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq-default indent-line-function 'insert-tab)
+;;(setq-default indent-tabs-mode nil)
+;;(setq-default tab-width 4)
+;;(setq-default indent-line-function 'insert-tab)
+
+;; let wq save and kill the current buffer, instead of quitting emacs
+(evil-ex-define-cmd "wq" 'save-and-kill-this-buffer)
+(defun save-and-kill-this-buffer()(interactive)(save-buffer)(kill-current-buffer))
 
 ;; always show line numbers and set the display style to relative 
 ;; which makes vertical move in evil more comfortable
