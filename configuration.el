@@ -230,7 +230,7 @@
 
 (setq org-latex-format-headline-function 'my-org-latex-format-headline-function)
 (setq org-todo-keywords
-      '((sequence "TODO" "NEXT" "WAITING" "|" "DONE" "CANCELLED")))
+      '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
 (use-package org-roam
     :after org

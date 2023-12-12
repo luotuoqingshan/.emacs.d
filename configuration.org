@@ -376,7 +376,7 @@ I write julia a lot!
         (setq org-roam-capture-templates '(
                         ("d" "default" plain "%?"
                         :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                                           "#+title: ${title}\n")
+                                           "#+title: ${title}\n#+options: toc:nil\n")
                         :unnarrowed t)
                         ("r" "bibliography reference" plain "%?"
                         :target (file+head "references/${citekey}.org"
