@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: mathring 
+# key:r
+# --
+\mathring{$1}$0

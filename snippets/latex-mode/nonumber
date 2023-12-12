@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: nonumber
+# key: nn
+# --
+\nonumber$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: mathblock    
+# key: . 
+# --
+\\[$1\\]$0
