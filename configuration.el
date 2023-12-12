@@ -219,6 +219,8 @@
 	    ("WAITING" :foreground "blue" :weight bold)
 	    ("DONE" :foreground "forest green" :weight bold)
 	    ("CANCELLED" :foreground "cyan" :weight bold))))
+
+
   (defun my-org-latex-format-headline-function
       (todo todo-type priority text tags _info)
   "Default format function for a headline.
