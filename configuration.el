@@ -297,9 +297,10 @@
 (use-package org-roam-bibtex
   :demand t
   :after (org-roam)
-  :hook (org-roam-mode . org-roam-bibtex-mode)
-  :bind
-  (("C-c r z" . orb-insert-link))
+  :hook ((org-roam-mode . org-roam-bibtex-mode)
+         (org-mode . org-roam-bibtex-mode))      
+  ;;:bind
+  ;;(("C-c r z" . orb-insert-link))
   :config
   (require 'org-ref))
 
