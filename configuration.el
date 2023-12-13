@@ -205,12 +205,14 @@
       ;; setup default directory 
       :bind (("C-c a" . org-agenda)
 	  )
+      ;;:hook ((org-mode . LaTeX-math-mode))
       :custom
       (org-directory "~/Dropbox/orgs/")
       (org-default-notes-file "~/Dropbox/orgs/inbox.org")
       (org-archive-location (concat "~/Dropbox/orgarchive/Archive-"
 				  (format-time-string "%Y%m" (current-time))
 				  ".org_archive::"))
+      (org-use-fast-todo-selection 'expert)
       (org-todo-keywords
 	  '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
       (org-todo-keyword-faces
@@ -301,10 +303,16 @@
   :config
   (require 'org-ref))
 
-(use-package auctex 
-   :ensure t)
-(add-hook 'laTeX-mode-hook #'LaTeX-math-mode)
-(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
+;;(use-package auctex 
+;;   :ensure t)
+  (use-package auctex
+      :ensure t
+      :hook ((laTeX-mode . LaTeX-math-mode)
+	     (LaTeX-mode . LaTeX-math-mode)))  
+;;(add-hook 'laTeX-mode-hook #'LaTeX-math-mode)
+;;(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
+;(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
+
 
 (use-package xenops
   :disabled
