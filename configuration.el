@@ -200,12 +200,10 @@
   (setq org-src-preserve-indentation t)
 
   (use-package org
-      :demand t
-      :config 
-      ;; setup default directory 
       :bind (("C-c a" . org-agenda)
 	  )
-      ;;:hook ((org-mode . LaTeX-math-mode))
+      :config
+      (setq LaTeX-math-mode t)
       :custom
       (org-directory "~/Dropbox/orgs/")
       (org-default-notes-file "~/Dropbox/orgs/inbox.org")
@@ -306,8 +304,8 @@
 
 ;;(use-package auctex 
 ;;   :ensure t)
-  (use-package auctex
-      :ensure t
+  (use-package latex
+      :ensure auctex 
       :hook ((laTeX-mode . LaTeX-math-mode)
 	     (LaTeX-mode . LaTeX-math-mode)))  
 ;;(add-hook 'laTeX-mode-hook #'LaTeX-math-mode)
