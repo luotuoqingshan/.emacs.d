@@ -183,7 +183,23 @@
 
  (minions-mode 1))
 
-(add-hook 'after-init-hook 'global-company-mode)
+(defun mars/company-backend-with-yas (backends)
+    "Add :with company-yasnippet to company BACKENDS.
+Taken from https://github.com/syl20bnr/spacemacs/pull/179."
+    (if (and (listp backends) (memq 'company-yasnippet backends))
+	backends
+	(append (if (consp backends)
+		    backends
+		(list backends))
+		'(:with company-yasnippet))))
+(use-package company
+    :hook
+    (after-init . global-company-mode)
+    ;; add yasnippet to all backends
+    :config
+    (setq company-backends
+	(mapcar #'mars/company-backend-with-yas company-backends)))
+;;(add-hook 'after-init-hook 'global-company-mode)
 
 (use-package julia-mode)
 (org-babel-do-load-languages

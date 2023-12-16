@@ -294,7 +294,23 @@ Let's use =minions= to hide all the minor modes in the model line.
 I use company-mode for completion.
 
 #+begin_src emacs-lisp
-  (add-hook 'after-init-hook 'global-company-mode)
+    (defun mars/company-backend-with-yas (backends)
+	"Add :with company-yasnippet to company BACKENDS.
+    Taken from https://github.com/syl20bnr/spacemacs/pull/179."
+	(if (and (listp backends) (memq 'company-yasnippet backends))
+	    backends
+	    (append (if (consp backends)
+			backends
+		    (list backends))
+		    '(:with company-yasnippet))))
+    (use-package company
+        :hook
+        (after-init . global-company-mode)
+	;; add yasnippet to all backends
+	:config
+	(setq company-backends
+	    (mapcar #'mars/company-backend-with-yas company-backends)))
+    ;;(add-hook 'after-init-hook 'global-company-mode)
 #+end_src
 
 * Julia-mode
@@ -505,7 +521,15 @@ I write julia a lot!
 #+end_src
 
 #+RESULTS:
-| global-font-lock-mode-check-buffers | global-eldoc-mode-check-buffers | evil-mode-check-buffers | global-evil-collection-unimpaired-mode-check-buffers | global-undo-tree-mode-check-buffers | global-display-line-numbers-mode-check-buffers | global-company-mode-check-buffers | magit-auto-revert-mode-check-buffers | my-yas-try-expanding-auto-snippets | evil-repeat-post-hook | gcmh-register-idle-gc |
+| company-bbdb         | :with         | company-yasnippet |                  |       |                   |
+| company-semantic     | :with         | company-yasnippet |                  |       |                   |
+| company-cmake        | :with         | company-yasnippet |                  |       |                   |
+| company-capf         | :with         | company-yasnippet |                  |       |                   |
+| company-clang        | :with         | company-yasnippet |                  |       |                   |
+| company-files        | :with         | company-yasnippet |                  |       |                   |
+| company-dabbrev-code | company-gtags | company-etags     | company-keywords | :with | company-yasnippet |
+| company-oddmuse      | :with         | company-yasnippet |                  |       |                   |
+| company-dabbrev      | :with         | company-yasnippet |                  |       |                   |
 
 * Magit
 #+begin_src emacs-lisp
