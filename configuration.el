@@ -226,6 +226,7 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
       (org-archive-location (concat "~/Dropbox/orgarchive/Archive-"
 				  (format-time-string "%Y%m" (current-time))
 				  ".org_archive::"))
+      (org-agenda-files (directory-files-recursively "~/Dropbox/orgroam" "\\.org$"))
       (org-use-fast-todo-selection 'expert)
       (org-todo-keywords
 	  '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
