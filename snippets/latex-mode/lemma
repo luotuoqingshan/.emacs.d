@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: lemma 
-# key: lem* 
+# key: lem 
 # --
 \begin{lemma}
   $1

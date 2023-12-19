@@ -2,4 +2,4 @@
 # name: min
 # key: m 
 # --
-\min$0
+\min_{$1}^{$2} $0

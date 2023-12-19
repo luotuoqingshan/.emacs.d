@@ -2,4 +2,4 @@
 # name: max
 # key: M 
 # --
-\max$0
+\max_{$1}^{$2} $0
