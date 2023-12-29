@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name:remark 
+# key:remark 
+# --
+\begin{remark}
+$1
+\end{remark}
+$0
