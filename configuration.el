@@ -219,7 +219,10 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
       :bind (("C-c a" . org-agenda)
 	  )
       :config
+      ;; turn on LaTeX-math-mode in org by default
       (setq LaTeX-math-mode t)
+      ;; use Chrome to view pdfs, which enables vim key bindings via extension Vimium C
+      ;; (add-to-list 'org-file-apps-macos '("\\.pdf\\", "open -a 'Google Chrome' %s"))
       :custom
       (org-directory "~/Dropbox/orgs/")
       (org-default-notes-file "~/Dropbox/orgs/inbox.org")
