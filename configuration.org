@@ -446,9 +446,15 @@ I write julia a lot!
      bibtex-completion-pdf-field "file"
      bibtex-completion-pdf-open-function
      (lambda (fpath)
-       (call-process "open" nil 0 nil fpath))))
+       (call-process shell-file-name nil 0 nil
+                     shell-command-switch
+                     (format "open -a 'Google Chrome' %s"
+                              (shell-quote-argument fpath))))))
   (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link-hydra/body)
 #+end_src
+
+#+RESULTS:
+: org-ref-insert-link-hydra/body
 
 * Org-Roam-Bibtex 
 
