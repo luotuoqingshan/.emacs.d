@@ -306,7 +306,10 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
    bibtex-completion-pdf-field "file"
    bibtex-completion-pdf-open-function
    (lambda (fpath)
-     (call-process "open" nil 0 nil fpath))))
+     (call-process shell-file-name nil 0 nil
+                   shell-command-switch
+                   (format "open -a 'Google Chrome' %s"
+                           (shell-quote-argument fpath))))))
 (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link-hydra/body)
 
 (use-package ivy-bibtex
@@ -324,21 +327,21 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
 
 ;;(use-package auctex 
 ;;   :ensure t)
-  (use-package latex
-      :ensure auctex 
-      :hook ((laTeX-mode . LaTeX-math-mode)
-	     (LaTeX-mode . LaTeX-math-mode)))  
+(use-package latex
+  :ensure auctex 
+  :hook ((laTeX-mode . LaTeX-math-mode)
+	 (LaTeX-mode . LaTeX-math-mode)))  
 ;;(add-hook 'laTeX-mode-hook #'LaTeX-math-mode)
 ;;(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
-;(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
+					;(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
 
 
 (use-package xenops
   :disabled
   :config
   (setq xenops-math-image-scale-factor 2.0))
-;(add-hook 'latex-mode-hook #'xenops-mode)
-;(add-hook 'LaTeX-mode-hook #'xenops-mode)  
+					;(add-hook 'latex-mode-hook #'xenops-mode)
+					;(add-hook 'LaTeX-mode-hook #'xenops-mode)  
 
 (use-package reftex)
 (add-hook 'latex-mode-hook 'turn-on-reftex)
@@ -358,15 +361,15 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
   (yas-minor-mode-on)
   (setq yas/triggers-in-field t)
   (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
-)
+  )
 
 (use-package yasnippet-snippets
   :demand t)
 ;; add # condition: 'auto for auto expand
 (defun my-yas-try-expanding-auto-snippets ()
-(when yas-minor-mode
-  (let ((yas-buffer-local-condition ''(require-snippet-condition . auto)))
-    (yas-expand))))
+  (when yas-minor-mode
+    (let ((yas-buffer-local-condition ''(require-snippet-condition . auto)))
+      (yas-expand))))
 (add-hook 'post-command-hook #'my-yas-try-expanding-auto-snippets)
 
 (use-package magit

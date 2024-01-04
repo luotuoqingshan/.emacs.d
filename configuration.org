@@ -425,11 +425,11 @@ I write julia a lot!
 * Org-Agenda
 
 #+begin_src emacs-lisp
-  ;; https://emacs.stackexchange.com/questions/12517/how-do-i-make-the-timespan-shown-by-org-agenda-start-yesterday
-  ;; let agenda start from yesterday
-  (setq org-agenda-start-day "-1d")
-  (setq org-agenda-span 8)
-  (setq org-agenda-start-on-weekday nil)
+;; https://emacs.stackexchange.com/questions/12517/how-do-i-make-the-timespan-shown-by-org-agenda-start-yesterday
+;; let agenda start from yesterday
+(setq org-agenda-start-day "-1d")
+(setq org-agenda-span 8)
+(setq org-agenda-start-on-weekday nil)
 #+end_src
 
 
@@ -437,21 +437,23 @@ I write julia a lot!
 * Org-ref
 
 #+begin_src emacs-lisp
-  (use-package org-ref
-    :demand t
-    :config
-    (setq
-     bibtex-completion-bibliography '("~/Dropbox/bibs/yufan.bib")
-     bibtex-completion-notes-path "~/Dropbox/orgroam/"
-     bibtex-completion-pdf-field "file"
-     bibtex-completion-pdf-open-function
-     (lambda (fpath)
-       (call-process shell-file-name nil 0 nil
-                     shell-command-switch
-                     (format "open -a 'Google Chrome' %s"
-                              (shell-quote-argument fpath))))))
-  (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link-hydra/body)
-#+end_src
+(use-package org-ref
+  :demand t
+  :config
+  (setq
+   bibtex-completion-bibliography '("~/Dropbox/bibs/yufan.bib")
+   bibtex-completion-notes-path "~/Dropbox/orgroam/"
+   bibtex-completion-pdf-field "file"
+   bibtex-completion-pdf-open-function
+   (lambda (fpath)
+     (call-process shell-file-name nil 0 nil
+                   shell-command-switch
+                   (format "open -a 'Google Chrome' %s"
+                           (shell-quote-argument fpath))))))
+(define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link-hydra/body)
+;; Set org-latex-pdf-process to process the bibliography 
+(setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+     #+end_src
 
 #+RESULTS:
 : org-ref-insert-link-hydra/body
@@ -459,48 +461,48 @@ I write julia a lot!
 * Org-Roam-Bibtex 
 
 #+begin_src emacs-lisp
-  (use-package ivy-bibtex
-    :demand t
-    :after org-ref)
-  (use-package org-roam-bibtex
-    :demand t
-    :after (org-roam)
-    :hook ((org-roam-mode . org-roam-bibtex-mode)
-           (org-mode . org-roam-bibtex-mode))      
-    ;;:bind
-    ;;(("C-c r z" . orb-insert-link))
-    :config
-    (require 'org-ref))
+(use-package ivy-bibtex
+  :demand t
+  :after org-ref)
+(use-package org-roam-bibtex
+  :demand t
+  :after (org-roam)
+  :hook ((org-roam-mode . org-roam-bibtex-mode)
+         (org-mode . org-roam-bibtex-mode))      
+  ;;:bind
+  ;;(("C-c r z" . orb-insert-link))
+  :config
+  (require 'org-ref))
 #+end_src
 
 * Auctex/Latex
 
 #+begin_src emacs-lisp
-  ;;(use-package auctex 
-  ;;   :ensure t)
-    (use-package latex
-        :ensure auctex 
-        :hook ((laTeX-mode . LaTeX-math-mode)
-	       (LaTeX-mode . LaTeX-math-mode)))  
-  ;;(add-hook 'laTeX-mode-hook #'LaTeX-math-mode)
-  ;;(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
-  ;(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
+;;(use-package auctex 
+;;   :ensure t)
+(use-package latex
+  :ensure auctex 
+  :hook ((laTeX-mode . LaTeX-math-mode)
+	 (LaTeX-mode . LaTeX-math-mode)))  
+;;(add-hook 'laTeX-mode-hook #'LaTeX-math-mode)
+;;(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
+					;(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
 
 
-  (use-package xenops
-    :disabled
-    :config
-    (setq xenops-math-image-scale-factor 2.0))
-  ;(add-hook 'latex-mode-hook #'xenops-mode)
-  ;(add-hook 'LaTeX-mode-hook #'xenops-mode)  
+(use-package xenops
+  :disabled
+  :config
+  (setq xenops-math-image-scale-factor 2.0))
+					;(add-hook 'latex-mode-hook #'xenops-mode)
+					;(add-hook 'LaTeX-mode-hook #'xenops-mode)  
 
-  (use-package reftex)
-  (add-hook 'latex-mode-hook 'turn-on-reftex)
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)  
+(use-package reftex)
+(add-hook 'latex-mode-hook 'turn-on-reftex)
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)  
 
-  (setq LaTeX-math-abbrev-prefix (kbd ";"))
-  (setq reftex-label-alist '(AMSTeX))
-  (setq doc-view-resolution 600)
+(setq LaTeX-math-abbrev-prefix (kbd ";"))
+(setq reftex-label-alist '(AMSTeX))
+(setq doc-view-resolution 600)
 #+end_src
 
 #+RESULTS:
@@ -508,26 +510,26 @@ I write julia a lot!
 
 * Yasnippet
 #+begin_src emacs-lisp
-  (use-package yasnippet
-    :demand t
-    :init
-    (add-hook 'latex-mode-hook #'yas-minor-mode)
-    (add-hook 'LaTeX-mode-hook #'yas-minor-mode)  
-    (add-hook 'org-mode-hook   #'yas-minor-mode)
-    :config
-    (yas-minor-mode-on)
-    (setq yas/triggers-in-field t)
-    (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
+(use-package yasnippet
+  :demand t
+  :init
+  (add-hook 'latex-mode-hook #'yas-minor-mode)
+  (add-hook 'LaTeX-mode-hook #'yas-minor-mode)  
+  (add-hook 'org-mode-hook   #'yas-minor-mode)
+  :config
+  (yas-minor-mode-on)
+  (setq yas/triggers-in-field t)
+  (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
   )
 
-  (use-package yasnippet-snippets
-    :demand t)
-  ;; add # condition: 'auto for auto expand
-  (defun my-yas-try-expanding-auto-snippets ()
+(use-package yasnippet-snippets
+  :demand t)
+;; add # condition: 'auto for auto expand
+(defun my-yas-try-expanding-auto-snippets ()
   (when yas-minor-mode
     (let ((yas-buffer-local-condition ''(require-snippet-condition . auto)))
       (yas-expand))))
-  (add-hook 'post-command-hook #'my-yas-try-expanding-auto-snippets)
+(add-hook 'post-command-hook #'my-yas-try-expanding-auto-snippets)
 #+end_src
 
 #+RESULTS:
