@@ -207,58 +207,60 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
  '((julia . t)))
 
 ;; use org-bullets to replace stars before headings
-  (require 'org-bullets)
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
-  ;; set initial scratch buffer to be in Org
-  (setq initial-major-mode 'org-mode)
+;; set initial scratch buffer to be in Org
+(setq initial-major-mode 'org-mode)
 
-  (setq org-src-preserve-indentation t)
+(setq org-src-preserve-indentation t)
 
-  (use-package org
-      :bind (("C-c a" . org-agenda)
-	  )
-      :config
-      ;; turn on LaTeX-math-mode in org by default
-      (setq LaTeX-math-mode t)
-      ;; use Chrome to view pdfs, which enables vim key bindings via extension Vimium C
-      ;; (add-to-list 'org-file-apps-macos '("\\.pdf\\", "open -a 'Google Chrome' %s"))
-      :custom
-      (org-directory "~/Dropbox/orgs/")
-      (org-default-notes-file "~/Dropbox/orgs/inbox.org")
-      (org-archive-location (concat "~/Dropbox/orgarchive/Archive-"
-				  (format-time-string "%Y%m" (current-time))
-				  ".org_archive::"))
-      (org-agenda-files (directory-files-recursively "~/Dropbox/orgroam" "\\.org$"))
-      (org-use-fast-todo-selection 'expert)
-      (org-todo-keywords
-	  '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
-      (org-todo-keyword-faces
-	  '(("TODO" :foreground "orange" :weight bold) 
-	    ("NEXT" :foreground "red" :weight bold)
-	    ("WAITING" :foreground "blue" :weight bold)
-	    ("DONE" :foreground "forest green" :weight bold)
-	    ("CANCELLED" :foreground "cyan" :weight bold))))
+(use-package org
+  :bind (("C-c a" . org-agenda)
+	 )
+  :config
+  ;; turn on LaTeX-math-mode in org by default
+  (setq LaTeX-math-mode t)
+  ;; use Chrome to view pdfs, which enables vim key bindings via extension Vimium C
+  ;; (add-to-list 'org-file-apps-macos '("\\.pdf\\", "open -a 'Google Chrome' %s"))
+  :custom
+  (org-directory "~/Dropbox/orgs/")
+  (org-default-notes-file "~/Dropbox/orgs/inbox.org")
+  (org-archive-location (concat "~/Dropbox/orgarchive/Archive-"
+				(format-time-string "%Y%m" (current-time))
+				".org_archive::"))
+  (org-agenda-files (directory-files-recursively "~/Dropbox/orgroam" "\\.org$"))
+  (org-use-fast-todo-selection 'expert)
+  (org-todo-keywords
+   '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+  (org-todo-keyword-faces
+   '(("TODO" :foreground "orange" :weight bold) 
+     ("NEXT" :foreground "red" :weight bold)
+     ("WAITING" :foreground "blue" :weight bold)
+     ("DONE" :foreground "forest green" :weight bold)
+     ("CANCELLED" :foreground "cyan" :weight bold)))
+  ;; Set org-latex-pdf-process to process the bibliography 
+  (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f")))
 
 
-  (defun my-org-latex-format-headline-function
-      (todo todo-type priority text tags _info)
+(defun my-org-latex-format-headline-function
+    (todo todo-type priority text tags _info)
   "Default format function for a headline.
-  See `org-latex-format-headline-function' for details."
-      (concat
-      (and todo (format "{\\framebox{\\bfseries\\rfamily\\color{%s} %s}} "
-		      (pcase todo-type
-		      ('todo "olive")
-		      ('done "teal"))
-		      todo))
-      (and priority (format "\\framebox{\\#%c} " priority))
-      text
-      (and tags
-      (format "\\hfill{}\\textsc{%s}"
-	  (mapconcat #'org-latex--protect-text tags ":")))))
+    See `org-latex-format-headline-function' for details."
+  (concat
+   (and todo (format "{\\framebox{\\bfseries\\rfamily\\color{%s} %s}} "
+		     (pcase todo-type
+		       ('todo "olive")
+		       ('done "teal"))
+		     todo))
+   (and priority (format "\\framebox{\\#%c} " priority))
+   text
+   (and tags
+	(format "\\hfill{}\\textsc{%s}"
+		(mapconcat #'org-latex--protect-text tags ":")))))
 
 
-  (setq org-latex-format-headline-function 'my-org-latex-format-headline-function)
+(setq org-latex-format-headline-function 'my-org-latex-format-headline-function)
 
 (use-package org-roam
     :after org
