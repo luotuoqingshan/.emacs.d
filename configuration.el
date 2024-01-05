@@ -240,7 +240,7 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
      ("DONE" :foreground "forest green" :weight bold)
      ("CANCELLED" :foreground "cyan" :weight bold)))
   ;; Set org-latex-pdf-process to process the bibliography 
-  (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f")))
+  (org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f")))
 
 
 (defun my-org-latex-format-headline-function
@@ -263,35 +263,34 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
 (setq org-latex-format-headline-function 'my-org-latex-format-headline-function)
 
 (use-package org-roam
-    :after org
-    ;;:demand t
-    ;; setup default directory
-    :custom
-    (org-roam-directory "~/Dropbox/orgroam/")
-    :bind (("C-c r c" . org-roam-capture)
-           ("C-c r i" . org-roam-node-insert)
-           ("C-c r f" . org-roam-node-find)
-           ("C-c r b" . org-roam-buffer-toggle)
-           ("C-c l"   . org-latex-preview)
-          )
-
-    :config
-    (setq org-roam-capture-templates '(
-                    ("d" "default" plain "%?"
-                    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                                       "#+title: ${title}\n#+options: toc:nil\n")
-                    :unnarrowed t)
-                    ("r" "bibliography reference" plain "%?"
-                    :target (file+head "references/${citekey}.org"
-                                       "#+title: ${title}\n")
-                    :unnarrowed t)
-                    ("m" "math notes" plain "%?" 
-                    :target (file+head "${slug}.org"
-                                       "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/.emacs.d/preamble.tex}\n#+options: toc:nil\n#+STARTUP: latexpreview"
-                                       )
-                    :unnarrowed t)))
-
-    (org-roam-db-autosync-mode t))
+  :after org
+  ;;:demand t
+  ;; setup default directory
+  :custom
+  (org-roam-directory "~/Dropbox/orgroam/")
+  :bind (("C-c r c" . org-roam-capture)
+         ("C-c r i" . org-roam-node-insert)
+         ("C-c r f" . org-roam-node-find)
+         ("C-c r b" . org-roam-buffer-toggle)
+         ("C-c l"   . org-latex-preview)
+         )
+  :config
+  (setq org-roam-capture-templates '(
+				     ("d" "default" plain "%?"
+				      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+							 "#+title: ${title}\n#+options: toc:nil\n")
+				      :unnarrowed t)
+				     ("r" "bibliography reference" plain "%?"
+				      :target (file+head "references/${citekey}.org"
+							 "#+title: ${title}\n")
+				      :unnarrowed t)
+				     ("m" "math notes" plain "%?" 
+				      :target (file+head "${slug}.org"
+							 "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/.emacs.d/preamble.tex}\n#+options: toc:nil\n#+STARTUP: latexpreview"
+							 )
+				      :unnarrowed t)))
+  
+  (org-roam-db-autosync-mode t))
 
 ;; https://emacs.stackexchange.com/questions/12517/how-do-i-make-the-timespan-shown-by-org-agenda-start-yesterday
 ;; let agenda start from yesterday

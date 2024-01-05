@@ -360,7 +360,7 @@ I write julia a lot!
      ("DONE" :foreground "forest green" :weight bold)
      ("CANCELLED" :foreground "cyan" :weight bold)))
   ;; Set org-latex-pdf-process to process the bibliography 
-  (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f")))
+  (org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f")))
 
 
 (defun my-org-latex-format-headline-function
