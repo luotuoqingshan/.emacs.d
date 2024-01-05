@@ -216,6 +216,7 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
 (setq org-src-preserve-indentation t)
 
 (use-package org
+  :after evil
   :bind (("C-c a" . org-agenda)
 	 )
   :config
@@ -292,6 +293,19 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
   
   (org-roam-db-autosync-mode t))
 
+;; I encountered the following message when attempting
+;; to export data:
+;; src: https://dev.to/devteam/resolving-an-unable-to-resolve-link-error-for-org-mode-in-emacs-2n1f
+;; "org-export-data: Unable to resolve link: FILE-ID"
+(defun jnf/force-org-rebuild-cache ()
+  "Rebuild the `org-mode' and `org-roam' cache."
+  (interactive)
+  (org-id-update-id-locations)
+  ;; Note: you may need `org-roam-db-clear-all'
+  ;; followed by `org-roam-db-sync'
+  (org-roam-db-sync)
+  (org-roam-update-org-id-locations))
+
 ;; https://emacs.stackexchange.com/questions/12517/how-do-i-make-the-timespan-shown-by-org-agenda-start-yesterday
 ;; let agenda start from yesterday
 (setq org-agenda-start-day "-1d")
@@ -329,12 +343,10 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
 ;;(use-package auctex 
 ;;   :ensure t)
 (use-package latex
+  :after evil
   :ensure auctex 
   :hook ((laTeX-mode . LaTeX-math-mode)
-	 (LaTeX-mode . LaTeX-math-mode)))  
-;;(add-hook 'laTeX-mode-hook #'LaTeX-math-mode)
-;;(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
-					;(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
+	 (LaTeX-mode . LaTeX-math-mode)))
 
 
 (use-package xenops
@@ -344,11 +356,12 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
 					;(add-hook 'latex-mode-hook #'xenops-mode)
 					;(add-hook 'LaTeX-mode-hook #'xenops-mode)  
 
+(setq LaTeX-math-abbrev-prefix (kbd ";"))
+
 (use-package reftex)
 (add-hook 'latex-mode-hook 'turn-on-reftex)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)  
 
-(setq LaTeX-math-abbrev-prefix (kbd ";"))
 (setq reftex-label-alist '(AMSTeX))
 (setq doc-view-resolution 600)
 
