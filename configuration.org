@@ -130,10 +130,10 @@ Install =evil-collection=, which provides evil-friendly bindings for many modes.
 Enable =surround= everywhere.
 
 #+begin_src emacs-lisp
-	(use-package evil-surround
-	  :after evil
-		:config
-		(global-evil-surround-mode 1))
+(use-package evil-surround
+  :after evil
+  :config
+  (global-evil-surround-mode 1))
 #+end_src
 
 Use =evil= with Org agendas.
@@ -196,36 +196,37 @@ Configuration of my theme and faces. See
 Some basic and general setups.
 
 #+begin_src emacs-lisp
-    ;; display time in the buffer
-    (setq display-time-day-and-date t)
-    (display-time-mode 1)
-    ;; adjust the default font size such that I don't need to zoom in/out every time
-    (set-face-attribute 'default nil :height 150)
-    ;; I want my initial frame always maximized 
-    (add-hook 'window-setup-hook 'toggle-frame-maximized t)
-    ;; use cua-mode to enable C-c/C-v for copy-paste  
-    (setq auto-fill-mode t)
-    ;; show column number 
-    (setq column-number-mode t)
-    ;; I'm using Mac, it doesn't have <insertchar> key
-    (global-set-key (kbd "C-c y") 'clipboard-yank)
-    ;(use-package olivetti
-    ;  :demand t
-    ;  :config
-    ;  (olivetti-mode 1)
-    ;  (setq olivetti-body-width 80)
-    ;  :hook (text-mode LaTeX-mode))
+;; display time in the buffer
+(setq display-time-day-and-date t)
+(display-time-mode 1)
+;; adjust the default font size such that I don't need to zoom in/out every time
+(set-face-attribute 'default nil :height 150)
+;; I want my initial frame always maximized 
+(add-hook 'window-setup-hook 'toggle-frame-maximized t)
+;; use cua-mode to enable C-c/C-v for copy-paste  
+(setq auto-fill-mode t)
+;; show column number 
+(setq column-number-mode t)
+;; I'm using Mac, it doesn't have <insertchar> key
+(global-set-key (kbd "C-c y") 'clipboard-yank)
+					;(use-package olivetti
+					;  :demand t
+					;  :config
+					;  (olivetti-mode 1)
+					;  (setq olivetti-body-width 80)
+					;  :hook (text-mode LaTeX-mode))
 
-    ;; use y/n always instead of yes or no 
-    (defalias 'yes-or-no-p 'y-or-n-p)
+;; use y/n always instead of yes or no 
+(defalias 'yes-or-no-p 'y-or-n-p)
 
-    ;;(setq-default indent-tabs-mode nil)
-    ;;(setq-default tab-width 4)
-    ;;(setq-default indent-line-function 'insert-tab)
+;;(setq-default indent-tabs-mode nil)
+;;(setq-default tab-width 4)
+;;(setq-default indent-line-function 'insert-tab)
 
-    ;; let wq save and kill the current buffer, instead of quitting emacs
-    (evil-ex-define-cmd "wq" 'save-and-kill-this-buffer)
-    (defun save-and-kill-this-buffer()(interactive)(save-buffer)(kill-current-buffer))
+;; let wq save and kill the current buffer, instead of quitting emacs
+(evil-ex-define-cmd "wq" 'save-and-kill-this-buffer)
+(defun save-and-kill-this-buffer()(interactive)(save-buffer)(kill-current-buffer))
+(setq default-frame-alist '((vertical-scroll-bars . nil)))
 #+end_src
 
 #+RESULTS:

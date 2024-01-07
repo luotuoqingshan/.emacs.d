@@ -69,8 +69,8 @@
 
 (use-package evil-surround
   :after evil
-	:config
-	(global-evil-surround-mode 1))
+  :config
+  (global-evil-surround-mode 1))
 
 (use-package evil-org
   :after (evil org)
@@ -126,12 +126,12 @@
 (setq column-number-mode t)
 ;; I'm using Mac, it doesn't have <insertchar> key
 (global-set-key (kbd "C-c y") 'clipboard-yank)
-;(use-package olivetti
-;  :demand t
-;  :config
-;  (olivetti-mode 1)
-;  (setq olivetti-body-width 80)
-;  :hook (text-mode LaTeX-mode))
+					;(use-package olivetti
+					;  :demand t
+					;  :config
+					;  (olivetti-mode 1)
+					;  (setq olivetti-body-width 80)
+					;  :hook (text-mode LaTeX-mode))
 
 ;; use y/n always instead of yes or no 
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -143,6 +143,7 @@
 ;; let wq save and kill the current buffer, instead of quitting emacs
 (evil-ex-define-cmd "wq" 'save-and-kill-this-buffer)
 (defun save-and-kill-this-buffer()(interactive)(save-buffer)(kill-current-buffer))
+(setq default-frame-alist '((vertical-scroll-bars . nil)))
 
 ;; always show line numbers and set the display style to relative 
 ;; which makes vertical move in evil more comfortable
