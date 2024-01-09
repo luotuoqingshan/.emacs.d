@@ -417,7 +417,7 @@ I write julia a lot!
 				      :unnarrowed t)
 				     ("m" "math notes" plain "%?" 
 				      :target (file+head "${slug}.org"
-							 "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/.emacs.d/preamble.tex}\n#+options: toc:nil\n#+STARTUP: latexpreview"
+							 "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/.emacs.d/preamble.tex}\n#+options: toc:nil"
 							 )
 				      :unnarrowed t)))
   
