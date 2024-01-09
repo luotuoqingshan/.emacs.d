@@ -108,7 +108,7 @@
 	modus-themes-preset-overrides-faint)
 
   ;; Load the theme of your choice.
-  (load-theme 'modus-vivendi-tinted :no-confirm)
+  (load-theme 'modus-operandi-tinted :no-confirm)
 
   ;; use F5 to toggle modus-themes between dark and light
   (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
@@ -143,6 +143,7 @@
 ;; let wq save and kill the current buffer, instead of quitting emacs
 (evil-ex-define-cmd "wq" 'save-and-kill-this-buffer)
 (defun save-and-kill-this-buffer()(interactive)(save-buffer)(kill-current-buffer))
+;; remove the vertical scroll bars
 (setq default-frame-alist '((vertical-scroll-bars . nil)))
 
 ;; always show line numbers and set the display style to relative 
@@ -242,7 +243,8 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
      ("DONE" :foreground "forest green" :weight bold)
      ("CANCELLED" :foreground "cyan" :weight bold)))
   ;; Set org-latex-pdf-process to process the bibliography 
-  (org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f")))
+  (org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+  (org-latex-create-formula-image-program 'dvisvgm))
 
 
 (defun my-org-latex-format-headline-function
