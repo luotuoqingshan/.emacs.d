@@ -146,6 +146,11 @@
 ;; remove the vertical scroll bars
 (setq default-frame-alist '((vertical-scroll-bars . nil)))
 
+;; set up builtin dictionary
+(setq dictionary-server "dict.org")
+(define-key Info-mode-map (kbd "C-c d s") 'dictionary-search)
+(define-key Info-mode-map (kbd "C-c d d") 'dictionary-search-word-at-mouse)
+
 ;; always show line numbers and set the display style to relative 
 ;; which makes vertical move in evil more comfortable
 (global-display-line-numbers-mode)
@@ -290,7 +295,7 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
 				      :unnarrowed t)
 				     ("m" "math notes" plain "%?" 
 				      :target (file+head "${slug}.org"
-							 "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/.emacs.d/preamble.tex}\n#+options: toc:nil\n#+STARTUP: latexpreview"
+							 "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/.emacs.d/preamble.tex}\n#+options: toc:nil"
 							 )
 				      :unnarrowed t)))
   
