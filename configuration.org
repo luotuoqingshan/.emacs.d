@@ -15,24 +15,24 @@ on a fresh Debian box and have my whole environment automatically installed. I'm
 not /totally/ sure about that, but we're gettin' close.
 
 #+begin_src emacs-lisp
-    (require 'use-package-ensure)
-    (setq use-package-always-ensure t)
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
 #+end_src
 
 Defer loading packages unless explicitly demanded.
 
 #+begin_src emacs-lisp
-    (setq use-package-always-defer t)
+(setq use-package-always-defer t)
 #+end_src
 
 Always compile packages, and use the newest version available.
 
 #+begin_src emacs-lisp
-    (use-package auto-compile
-	    :demand t
-	    :config (auto-compile-on-load-mode))
+(use-package auto-compile
+  :demand t
+  :config (auto-compile-on-load-mode))
 
-    (setq load-prefer-newer t)
+(setq load-prefer-newer t)
 #+end_src
 
 Disable deprecation warnings about =cl=. The =cl= library has been deprecated, but
@@ -40,7 +40,7 @@ lots of packages still use it. I can't control that, but I can disable the
 warnings.
 
 #+begin_src emacs-lisp
-    (setq byte-compile-warnings '(cl-functions))
+(setq byte-compile-warnings '(cl-functions))
 #+end_src
 
 If an Emacs package relies on the installation of a system package, install that
@@ -48,24 +48,23 @@ package (for example, =deadgrep= doesn't work if =ripgrep= isn't installed). Thi
 uses the system package manager (Debian's =apt=, in my case).
 
 #+begin_src emacs-lisp
-  (use-package use-package-ensure-system-package
-		:demand t
-    :custom
-    (system-packages-package-manager 'brew))
+(use-package use-package-ensure-system-package
+  :demand t
+  :custom
+  (system-packages-package-manager 'brew))
 #+end_src
 
 Trigger garbage collection when I've been idle for five seconds and memory usage
 is over 16 MB.
 
 #+begin_src emacs-lisp
-	(use-package gcmh
-		:demand t
-
-		:init
-		(setq gcmh-idle-delay 5
-					gcmh-high-cons-threshold (* 16 1024 1024))
-		:config
-		(gcmh-mode))
+(use-package gcmh
+  :demand t
+  :init
+  (setq gcmh-idle-delay 5
+	gcmh-high-cons-threshold (* 16 1024 1024))
+  :config
+  (gcmh-mode))
 #+end_src
 
 * Lispy
@@ -110,28 +109,27 @@ Load and configure =evil-mode=.
 Install =evil-collection=, which provides evil-friendly bindings for many modes.
 
 #+begin_src emacs-lisp
-  (use-package evil-collection
-    :after evil
-    :demand t
+(use-package evil-collection
+  :after evil
+  :demand t
+  :config
+  (setq evil-collection-mode-list
+	'(deadgrep
+	  dired
+	  elfeed
+	  eww
+	  ibuffer
+	  info
+	  magit
+	  mu4e
+	  package-menu
+	  pdf-view
+	  proced
+	  replace
+	  vterm
+	  which-key))
 
-    :config
-    (setq evil-collection-mode-list
-          '(deadgrep
-            dired
-            elfeed
-            eww
-            ibuffer
-            info
-            magit
-            mu4e
-            package-menu
-            pdf-view
-            proced
-            replace
-            vterm
-            which-key))
-
-    (evil-collection-init))
+  (evil-collection-init))
 #+end_src
 
 Enable =surround= everywhere.
@@ -146,24 +144,24 @@ Enable =surround= everywhere.
 Use =evil= with Org agendas.
 
 #+begin_src emacs-lisp
-  (use-package evil-org
-    :after (evil org)
-    :demand t
+(use-package evil-org
+  :after (evil org)
+  :demand t
 
-    :config
-    (require 'evil-org-agenda)
-    (evil-org-agenda-set-keys))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
 #+end_src
 
 Use Undo-Tree to customize =evil='s redo functionality.
 
 #+begin_src emacs-lisp
-  (use-package undo-tree
-    :after (evil)
-    :demand t
+(use-package undo-tree
+  :after (evil)
+  :demand t
 
-    :config
-    (global-undo-tree-mode t))
+  :config
+  (global-undo-tree-mode t))
 #+end_src
 
 
@@ -171,31 +169,31 @@ Use Undo-Tree to customize =evil='s redo functionality.
 Configuration of my theme and faces. See
 [[https://emacs.stackexchange.com/questions/52565/org-mode-results-verbatim-not-working-for-scheme-code][Manual of modus-themes]] for more details.
 #+begin_src emacs-lisp 
-  (use-package modus-themes
-    :ensure t
-    :demand t
-    :config
-    ;; Add all your customizations prior to loading the themes
-    (setq modus-themes-italic-constructs t
-	  modus-themes-bold-constructs nil 
-	  modus-themes-org-blocks 'tinted-background)
+(use-package modus-themes
+  :ensure t
+  :demand t
+  :config
+  ;; Add all your customizations prior to loading the themes
+  (setq modus-themes-italic-constructs t
+	modus-themes-bold-constructs nil 
+	modus-themes-org-blocks 'tinted-background)
 
-    (setq modus-themes-headings
-      '((1 . (variable-pitch 1.5))
-	(2 . (1.3))
-	(agenda-date . (1.3))
-	(agenda-structure . (variable-pitch light 1.8))
-	(t . (1.1))))
+  (setq modus-themes-headings
+	'((1 . (variable-pitch 1.5))
+	  (2 . (1.3))
+	  (agenda-date . (1.3))
+	  (agenda-structure . (variable-pitch light 1.8))
+	  (t . (1.1))))
 
-    ;; Maybe define some palette overrides, such as by using our presets
-    (setq modus-themes-common-palette-overrides
-	  modus-themes-preset-overrides-faint)
+  ;; Maybe define some palette overrides, such as by using our presets
+  (setq modus-themes-common-palette-overrides
+	modus-themes-preset-overrides-faint)
 
-    ;; Load the theme of your choice.
-    (load-theme 'modus-operandi-tinted :no-confirm)
+  ;; Load the theme of your choice.
+  (load-theme 'modus-operandi-tinted :no-confirm)
 
-    ;; use F5 to toggle modus-themes between dark and light
-    (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
+  ;; use F5 to toggle modus-themes between dark and light
+  (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
 #+end_src
 
 * Basic Setup
@@ -216,12 +214,6 @@ Some basic and general setups.
 (setq column-number-mode t)
 ;; I'm using Mac, it doesn't have <insertchar> key
 (global-set-key (kbd "C-c y") 'clipboard-yank)
-					;(use-package olivetti
-					;  :demand t
-					;  :config
-					;  (olivetti-mode 1)
-					;  (setq olivetti-body-width 80)
-					;  :hook (text-mode LaTeX-mode))
 
 ;; use y/n always instead of yes or no 
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -242,10 +234,10 @@ Some basic and general setups.
 : save-and-kill-this-buffer
 
 #+begin_src emacs-lisp
-    ;; always show line numbers and set the display style to relative 
-    ;; which makes vertical move in evil more comfortable
-    (global-display-line-numbers-mode)
-    (setq display-line-numbers 'relative)
+;; always show line numbers and set the display style to relative 
+;; which makes vertical move in evil more comfortable
+(global-display-line-numbers-mode)
+(setq display-line-numbers 'relative)
 #+end_src
 
 #+RESULTS:
@@ -253,14 +245,14 @@ Some basic and general setups.
 
 
 #+begin_src emacs-lisp 
-    ;; use moody to prettify mode line
-    (use-package moody
-        :demand t
-        :config
-        (setq x-underline-at-descent-line t)
-        (moody-replace-mode-line-buffer-identification)
-        (moody-replace-vc-mode)
-        (moody-replace-eldoc-minibuffer-message-function))
+;; use moody to prettify mode line
+(use-package moody
+  :demand t
+  :config
+  (setq x-underline-at-descent-line t)
+  (moody-replace-mode-line-buffer-identification)
+  (moody-replace-vc-mode)
+  (moody-replace-eldoc-minibuffer-message-function))
 #+end_src
 
 * Dictionary
@@ -291,15 +283,15 @@ Here is an tutorial [[https://www.reddit.com/r/emacs/comments/dgj0ae/tutorial_sp
 I use =ivy= and =counsel= as my completion framework.
 
 #+begin_src emacs-lisp
-  (use-package counsel
-    :demand t
-    :init
-    (ivy-mode 1))
+(use-package counsel
+  :demand t
+  :init
+  (ivy-mode 1))
 
-  (use-package ivy-rich
-    :demand t
-    :init
-    (ivy-rich-mode 1))
+(use-package ivy-rich
+  :demand t
+  :init
+  (ivy-rich-mode 1))
 #+end_src
 
 * Use =minions= to hide all minor modes
@@ -307,7 +299,7 @@ I use =ivy= and =counsel= as my completion framework.
 Let's use =minions= to hide all the minor modes in the model line.
 
 #+begin_src emacs-lisp 
- (use-package minions
+(use-package minions
   :demand t
 
   :custom
@@ -316,7 +308,7 @@ Let's use =minions= to hide all the minor modes in the model line.
   :config
   (defun +set-minions-mode-line-lighter ()
     (setq minions-mode-line-lighter
-          (if (display-graphic-p) "⚙" "#")))
+	  (if (display-graphic-p) "⚙" "#")))
 
   (add-hook 'server-after-make-frame-hook #'+set-minions-mode-line-lighter)
 
@@ -327,33 +319,33 @@ Let's use =minions= to hide all the minor modes in the model line.
 I use company-mode for completion.
 
 #+begin_src emacs-lisp
-    (defun mars/company-backend-with-yas (backends)
-	"Add :with company-yasnippet to company BACKENDS.
+(defun mars/company-backend-with-yas (backends)
+  "Add :with company-yasnippet to company BACKENDS.
     Taken from https://github.com/syl20bnr/spacemacs/pull/179."
-	(if (and (listp backends) (memq 'company-yasnippet backends))
-	    backends
-	    (append (if (consp backends)
-			backends
-		    (list backends))
-		    '(:with company-yasnippet))))
-    (use-package company
-        :hook
-        (after-init . global-company-mode)
-	;; add yasnippet to all backends
-	:config
-	(setq company-backends
-	    (mapcar #'mars/company-backend-with-yas company-backends)))
-    ;;(add-hook 'after-init-hook 'global-company-mode)
+  (if (and (listp backends) (memq 'company-yasnippet backends))
+      backends
+    (append (if (consp backends)
+		backends
+	      (list backends))
+	    '(:with company-yasnippet))))
+(use-package company
+  :hook
+  (after-init . global-company-mode)
+  ;; add yasnippet to all backends
+  :config
+  (setq company-backends
+	(mapcar #'mars/company-backend-with-yas company-backends)))
+;;(add-hook 'after-init-hook 'global-company-mode)
 #+end_src
 
 * Julia-mode
 I write julia a lot!
 
 #+begin_src emacs-lisp 
-  (use-package julia-mode)
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((julia . t)))
+(use-package julia-mode)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((julia . t)))
 #+end_src
 
 * Org-mode
@@ -591,8 +583,8 @@ I write julia a lot!
 
 * Magit
 #+begin_src emacs-lisp
-  (use-package magit
-    :demand t)
+(use-package magit
+  :demand t)
 #+end_src
 
 
