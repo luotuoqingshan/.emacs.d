@@ -68,6 +68,13 @@ is over 16 MB.
 		(gcmh-mode))
 #+end_src
 
+* Lispy
+I use [[https://github.com/abo-abo/lispy?tab=readme-ov-file#ide-like-features][Lispy]] to make dealing with parentheses less painful.
+#+begin_src emacs-lisp
+(use-package lispy
+  :bind ("<f6>" . lispy-mode))
+#+end_src
+
 * =evil-mode=
 
 Load and configure =evil-mode=.
@@ -80,24 +87,24 @@ Load and configure =evil-mode=.
   explicitly set that in a few other modes.
 
 #+begin_src emacs-lisp
-  (use-package evil
-	  :demand t
+(use-package evil
+  :demand t
 
-	  :init
-	  (setq evil-want-abbrev-expand-on-insert-exit nil
-				  evil-want-keybinding nil)
+  :init
+  (setq evil-want-abbrev-expand-on-insert-exit nil
+	evil-want-keybinding nil)
 
-	  :config
-	  (evil-mode 1)
-          (evil-set-undo-system 'undo-tree)
+  :config
+  (evil-mode 1)
+  (evil-set-undo-system 'undo-tree)
 
-	  (evil-define-key '(normal insert) 'global (kbd "C-p") 'project-find-file)
+  (evil-define-key '(normal insert) 'global (kbd "C-p") 'project-find-file)
 
-	  (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
-	  (evil-define-key 'insert org-mode-map (kbd "S-<right>") 'org-shiftright)
-	  (evil-define-key 'insert org-mode-map (kbd "S-<left>") 'org-shiftleft)
+  (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
+  (evil-define-key 'insert org-mode-map (kbd "S-<right>") 'org-shiftright)
+  (evil-define-key 'insert org-mode-map (kbd "S-<left>") 'org-shiftleft)
 
-	  (fset 'evil-visual-update-x-selection 'ignore))
+  (fset 'evil-visual-update-x-selection 'ignore))
 #+end_src
 
 Install =evil-collection=, which provides evil-friendly bindings for many modes.
@@ -263,6 +270,20 @@ I want to use builtin dictionary to search some unknown words.
 (setq dictionary-server "dict.org")
 (global-set-key (kbd "C-c d s") 'dictionary-search)
 (global-set-key (kbd "C-c d d") 'dictionary-lookup-definition)
+#+end_src
+
+* Spellcheck
+I use Hunspell for spellcheck.
+Here is an tutorial [[https://www.reddit.com/r/emacs/comments/dgj0ae/tutorial_spellchecking_with_hunspell_170_for/][Tutorial from Reddit]].
+
+#+begin_src emacs-lisp
+(setq ispell-program-name (executable-find "hunspell"))
+(setq ispell-local-dictionary "en_US")
+(setq ispell-local-dictionary-alist
+      '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)))
+(setq ispell-hunspell-dictionary-alist ispell-local-dictionary-alist)
+
+(global-set-key (kbd "M-\\") 'ispell-word)
 #+end_src
 
 * Config =ivy=

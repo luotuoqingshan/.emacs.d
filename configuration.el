@@ -25,24 +25,26 @@
 	:config
 	(gcmh-mode))
 
+(use-package lispy)
+
 (use-package evil
-	:demand t
+  :demand t
 
-	:init
-	(setq evil-want-abbrev-expand-on-insert-exit nil
-				evil-want-keybinding nil)
+  :init
+  (setq evil-want-abbrev-expand-on-insert-exit nil
+	evil-want-keybinding nil)
 
-	:config
-	(evil-mode 1)
-        (evil-set-undo-system 'undo-tree)
+  :config
+  (evil-mode 1)
+  (evil-set-undo-system 'undo-tree)
 
-	(evil-define-key '(normal insert) 'global (kbd "C-p") 'project-find-file)
+  (evil-define-key '(normal insert) 'global (kbd "C-p") 'project-find-file)
 
-	(evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
-	(evil-define-key 'insert org-mode-map (kbd "S-<right>") 'org-shiftright)
-	(evil-define-key 'insert org-mode-map (kbd "S-<left>") 'org-shiftleft)
+  (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
+  (evil-define-key 'insert org-mode-map (kbd "S-<right>") 'org-shiftright)
+  (evil-define-key 'insert org-mode-map (kbd "S-<left>") 'org-shiftleft)
 
-	(fset 'evil-visual-update-x-selection 'ignore))
+  (fset 'evil-visual-update-x-selection 'ignore))
 
 (use-package evil-collection
   :after evil
@@ -146,11 +148,6 @@
 ;; remove the vertical scroll bars
 (setq default-frame-alist '((vertical-scroll-bars . nil)))
 
-;; set up builtin dictionary
-(setq dictionary-server "dict.org")
-(define-key Info-mode-map (kbd "C-c d s") 'dictionary-search)
-(define-key Info-mode-map (kbd "C-c d d") 'dictionary-search-word-at-mouse)
-
 ;; always show line numbers and set the display style to relative 
 ;; which makes vertical move in evil more comfortable
 (global-display-line-numbers-mode)
@@ -164,6 +161,19 @@
     (moody-replace-mode-line-buffer-identification)
     (moody-replace-vc-mode)
     (moody-replace-eldoc-minibuffer-message-function))
+
+;; set up builtin dictionary
+(setq dictionary-server "dict.org")
+(global-set-key (kbd "C-c d s") 'dictionary-search)
+(global-set-key (kbd "C-c d d") 'dictionary-lookup-definition)
+
+(setq ispell-program-name (executable-find "hunspell"))
+(setq ispell-local-dictionary "en_US")
+(setq ispell-local-dictionary-alist
+      '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)))
+(setq ispell-hunspell-dictionary-alist ispell-local-dictionary-alist)
+
+(global-set-key (kbd "M-\\") 'ispell-word)
 
 (use-package counsel
   :demand t
