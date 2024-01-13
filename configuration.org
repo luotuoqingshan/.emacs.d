@@ -265,17 +265,15 @@ I want to use builtin dictionary to search some unknown words.
 #+end_src
 
 * Spellcheck
-I use Hunspell for spellcheck.
-Here is an tutorial [[https://www.reddit.com/r/emacs/comments/dgj0ae/tutorial_spellchecking_with_hunspell_170_for/][Tutorial from Reddit]].
+I use [[https://github.com/minad/jinx][jinx]] for spell check.
 
 #+begin_src emacs-lisp
-(setq ispell-program-name (executable-find "hunspell"))
-(setq ispell-local-dictionary "en_US")
-(setq ispell-local-dictionary-alist
-      '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)))
-(setq ispell-hunspell-dictionary-alist ispell-local-dictionary-alist)
-
-(global-set-key (kbd "M-\\") 'ispell-word)
+(use-package jinx
+  :hook (emacs-startup . global-jinx-mode)
+  :bind (("M-$" . jinx-correct)
+         ("C-M-$" . jinx-languages))
+  :custom
+  (jinx-delay 0.1))
 #+end_src
 
 * Config =ivy=
@@ -570,16 +568,6 @@ I write julia a lot!
 (add-hook 'post-command-hook #'my-yas-try-expanding-auto-snippets)
 #+end_src
 
-#+RESULTS:
-| company-bbdb         | :with         | company-yasnippet |                  |       |                   |
-| company-semantic     | :with         | company-yasnippet |                  |       |                   |
-| company-cmake        | :with         | company-yasnippet |                  |       |                   |
-| company-capf         | :with         | company-yasnippet |                  |       |                   |
-| company-clang        | :with         | company-yasnippet |                  |       |                   |
-| company-files        | :with         | company-yasnippet |                  |       |                   |
-| company-dabbrev-code | company-gtags | company-etags     | company-keywords | :with | company-yasnippet |
-| company-oddmuse      | :with         | company-yasnippet |                  |       |                   |
-| company-dabbrev      | :with         | company-yasnippet |                  |       |                   |
 
 * Magit
 #+begin_src emacs-lisp
@@ -588,6 +576,4 @@ I write julia a lot!
 #+end_src
 
 
-#+RESULTS:
-: magit
 

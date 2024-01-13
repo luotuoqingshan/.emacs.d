@@ -4,28 +4,28 @@
 (setq use-package-always-defer t)
 
 (use-package auto-compile
-	:demand t
-	:config (auto-compile-on-load-mode))
+  :demand t
+  :config (auto-compile-on-load-mode))
 
 (setq load-prefer-newer t)
 
 (setq byte-compile-warnings '(cl-functions))
 
 (use-package use-package-ensure-system-package
-	      :demand t
+  :demand t
   :custom
   (system-packages-package-manager 'brew))
 
 (use-package gcmh
-	:demand t
+  :demand t
+  :init
+  (setq gcmh-idle-delay 5
+	gcmh-high-cons-threshold (* 16 1024 1024))
+  :config
+  (gcmh-mode))
 
-	:init
-	(setq gcmh-idle-delay 5
-				gcmh-high-cons-threshold (* 16 1024 1024))
-	:config
-	(gcmh-mode))
-
-(use-package lispy)
+(use-package lispy
+  :bind ("<f6>" . lispy-mode))
 
 (use-package evil
   :demand t
@@ -49,23 +49,22 @@
 (use-package evil-collection
   :after evil
   :demand t
-
   :config
   (setq evil-collection-mode-list
-        '(deadgrep
-          dired
-          elfeed
-          eww
-          ibuffer
-          info
-          magit
-          mu4e
-          package-menu
-          pdf-view
-          proced
-          replace
-          vterm
-          which-key))
+	'(deadgrep
+	  dired
+	  elfeed
+	  eww
+	  ibuffer
+	  info
+	  magit
+	  mu4e
+	  package-menu
+	  pdf-view
+	  proced
+	  replace
+	  vterm
+	  which-key))
 
   (evil-collection-init))
 
@@ -99,11 +98,11 @@
 	modus-themes-org-blocks 'tinted-background)
 
   (setq modus-themes-headings
-    '((1 . (variable-pitch 1.5))
-      (2 . (1.3))
-      (agenda-date . (1.3))
-      (agenda-structure . (variable-pitch light 1.8))
-      (t . (1.1))))
+	'((1 . (variable-pitch 1.5))
+	  (2 . (1.3))
+	  (agenda-date . (1.3))
+	  (agenda-structure . (variable-pitch light 1.8))
+	  (t . (1.1))))
 
   ;; Maybe define some palette overrides, such as by using our presets
   (setq modus-themes-common-palette-overrides
@@ -128,12 +127,6 @@
 (setq column-number-mode t)
 ;; I'm using Mac, it doesn't have <insertchar> key
 (global-set-key (kbd "C-c y") 'clipboard-yank)
-					;(use-package olivetti
-					;  :demand t
-					;  :config
-					;  (olivetti-mode 1)
-					;  (setq olivetti-body-width 80)
-					;  :hook (text-mode LaTeX-mode))
 
 ;; use y/n always instead of yes or no 
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -155,25 +148,24 @@
 
 ;; use moody to prettify mode line
 (use-package moody
-    :demand t
-    :config
-    (setq x-underline-at-descent-line t)
-    (moody-replace-mode-line-buffer-identification)
-    (moody-replace-vc-mode)
-    (moody-replace-eldoc-minibuffer-message-function))
+  :demand t
+  :config
+  (setq x-underline-at-descent-line t)
+  (moody-replace-mode-line-buffer-identification)
+  (moody-replace-vc-mode)
+  (moody-replace-eldoc-minibuffer-message-function))
 
 ;; set up builtin dictionary
 (setq dictionary-server "dict.org")
 (global-set-key (kbd "C-c d s") 'dictionary-search)
 (global-set-key (kbd "C-c d d") 'dictionary-lookup-definition)
 
-(setq ispell-program-name (executable-find "hunspell"))
-(setq ispell-local-dictionary "en_US")
-(setq ispell-local-dictionary-alist
-      '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)))
-(setq ispell-hunspell-dictionary-alist ispell-local-dictionary-alist)
-
-(global-set-key (kbd "M-\\") 'ispell-word)
+(use-package jinx
+  :hook (emacs-startup . global-jinx-mode)
+  :bind (("M-$" . jinx-correct)
+         ("C-M-$" . jinx-languages))
+  :custom
+  (jinx-delay 0.1))
 
 (use-package counsel
   :demand t
@@ -186,35 +178,35 @@
   (ivy-rich-mode 1))
 
 (use-package minions
- :demand t
+  :demand t
 
- :custom
- (minions-mode-line-delimiters (cons "" ""))
+  :custom
+  (minions-mode-line-delimiters (cons "" ""))
 
- :config
- (defun +set-minions-mode-line-lighter ()
-   (setq minions-mode-line-lighter
-         (if (display-graphic-p) "⚙" "#")))
+  :config
+  (defun +set-minions-mode-line-lighter ()
+    (setq minions-mode-line-lighter
+	  (if (display-graphic-p) "⚙" "#")))
 
- (add-hook 'server-after-make-frame-hook #'+set-minions-mode-line-lighter)
+  (add-hook 'server-after-make-frame-hook #'+set-minions-mode-line-lighter)
 
- (minions-mode 1))
+  (minions-mode 1))
 
 (defun mars/company-backend-with-yas (backends)
-    "Add :with company-yasnippet to company BACKENDS.
-Taken from https://github.com/syl20bnr/spacemacs/pull/179."
-    (if (and (listp backends) (memq 'company-yasnippet backends))
-	backends
-	(append (if (consp backends)
-		    backends
-		(list backends))
-		'(:with company-yasnippet))))
+  "Add :with company-yasnippet to company BACKENDS.
+    Taken from https://github.com/syl20bnr/spacemacs/pull/179."
+  (if (and (listp backends) (memq 'company-yasnippet backends))
+      backends
+    (append (if (consp backends)
+		backends
+	      (list backends))
+	    '(:with company-yasnippet))))
 (use-package company
-    :hook
-    (after-init . global-company-mode)
-    ;; add yasnippet to all backends
-    :config
-    (setq company-backends
+  :hook
+  (after-init . global-company-mode)
+  ;; add yasnippet to all backends
+  :config
+  (setq company-backends
 	(mapcar #'mars/company-backend-with-yas company-backends)))
 ;;(add-hook 'after-init-hook 'global-company-mode)
 
