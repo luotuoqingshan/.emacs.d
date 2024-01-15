@@ -24,6 +24,9 @@
   :config
   (gcmh-mode))
 
+(setq mac-option-modifier 'meta)
+(setq mac-command-modifier 'super)
+
 (use-package lispy
   :bind ("<f6>" . lispy-mode))
 
@@ -366,7 +369,9 @@
 					;(add-hook 'latex-mode-hook #'xenops-mode)
 					;(add-hook 'LaTeX-mode-hook #'xenops-mode)  
 
+(global-set-key (kbd "<f7>") 'LaTeX-math-mode)
 (setq LaTeX-math-abbrev-prefix (kbd ";"))
+(setq LaTeX-math-list '(?^ "widehat" "Construct" 770))
 
 (use-package reftex)
 (add-hook 'latex-mode-hook 'turn-on-reftex)
