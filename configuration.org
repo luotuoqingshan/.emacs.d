@@ -67,6 +67,13 @@ is over 16 MB.
   (gcmh-mode))
 #+end_src
 
+* Basic Keyboard setup
+
+#+begin_src emacs-lisp
+(setq mac-option-modifier 'super)
+(setq mac-command-modifier 'meta)
+#+end_src
+
 * Lispy
 I use [[https://github.com/abo-abo/lispy?tab=readme-ov-file#ide-like-features][Lispy]] to make dealing with parentheses less painful.
 #+begin_src emacs-lisp
