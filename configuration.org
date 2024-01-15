@@ -538,6 +538,7 @@ I write julia a lot!
 					;(add-hook 'latex-mode-hook #'xenops-mode)
 					;(add-hook 'LaTeX-mode-hook #'xenops-mode)  
 
+(global-set-key (kbd "<f7>") 'LaTeX-math-mode)
 (setq LaTeX-math-abbrev-prefix (kbd ";"))
 
 (use-package reftex)
