@@ -427,13 +427,22 @@ I write julia a lot!
   ;; setup default directory
   :custom
   (org-roam-directory "~/Dropbox/orgroam/")
+  (org-roam-dailies-capture-templates
+   '(("d" "default" entry "* %<%I:%M %p>: %?"
+      :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
   :bind (("C-c r c" . org-roam-capture)
          ("C-c r i" . org-roam-node-insert)
          ("C-c r f" . org-roam-node-find)
          ("C-c r b" . org-roam-buffer-toggle)
          ("C-c l"   . org-latex-preview)
+         :map org-roam-dailies-map
+	 ("Y" . org-roam-dailies-capture-yesterday)
+         ("T" . org-roam-dailies-capture-tomorrow)
          )
+  :bind-keymap
+  ("C-c r d" . org-roam-dailies-map)
   :config
+  (require 'org-roam-dailies)
   (setq org-roam-capture-templates '(
 				     ("d" "default" plain "%?"
 				      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
@@ -497,10 +506,8 @@ I write julia a lot!
                    (format "open -a 'Google Chrome' %s"
                            (shell-quote-argument fpath))))))
 (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link-hydra/body)
-     #+end_src
+#+end_src
 
-#+RESULTS:
-: org-ref-insert-link-hydra/body
 
 * Org-Roam-Bibtex 
 
