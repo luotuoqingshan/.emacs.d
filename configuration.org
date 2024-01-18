@@ -104,7 +104,7 @@ Load and configure =evil-mode=.
   (evil-mode 1)
   (evil-set-undo-system 'undo-tree)
 
-  (evil-define-key '(normal insert) 'global (kbd "C-p") 'project-find-file)
+  (evil-define-key '(normal) 'global (kbd "C-p") 'project-find-file)
 
   (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
   (evil-define-key 'insert org-mode-map (kbd "S-<right>") 'org-shiftright)
