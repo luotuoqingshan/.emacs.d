@@ -41,7 +41,7 @@
   (evil-mode 1)
   (evil-set-undo-system 'undo-tree)
 
-  (evil-define-key '(normal insert) 'global (kbd "C-p") 'project-find-file)
+  (evil-define-key '(normal) 'global (kbd "C-p") 'project-find-file)
 
   (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
   (evil-define-key 'insert org-mode-map (kbd "S-<right>") 'org-shiftright)
@@ -282,13 +282,22 @@
   ;; setup default directory
   :custom
   (org-roam-directory "~/Dropbox/orgroam/")
+  (org-roam-dailies-capture-templates
+   '(("d" "default" entry "* %<%I:%M %p>: %?"
+      :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
   :bind (("C-c r c" . org-roam-capture)
          ("C-c r i" . org-roam-node-insert)
          ("C-c r f" . org-roam-node-find)
          ("C-c r b" . org-roam-buffer-toggle)
          ("C-c l"   . org-latex-preview)
+         :map org-roam-dailies-map
+	 ("Y" . org-roam-dailies-capture-yesterday)
+         ("T" . org-roam-dailies-capture-tomorrow)
          )
+  :bind-keymap
+  ("C-c r d" . org-roam-dailies-map)
   :config
+  (require 'org-roam-dailies)
   (setq org-roam-capture-templates '(
 				     ("d" "default" plain "%?"
 				      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
@@ -371,7 +380,7 @@
 
 (global-set-key (kbd "<f7>") 'LaTeX-math-mode)
 (setq LaTeX-math-abbrev-prefix (kbd ";"))
-(setq LaTeX-math-list '(?^ "widehat" "Construct" 770))
+(setq LaTeX-math-list '((?^ "widehat" "Construct" 770)))
 
 (use-package reftex)
 (add-hook 'latex-mode-hook 'turn-on-reftex)
