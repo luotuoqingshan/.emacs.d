@@ -102,7 +102,7 @@ Load and configure =evil-mode=.
 
   :config
   (evil-mode 1)
-  (evil-set-undo-system 'undo-tree)
+  ;; (evil-set-undo-system 'undo-tree)
 
   (evil-define-key '(normal) 'global (kbd "C-p") 'project-find-file)
 
@@ -163,12 +163,12 @@ Use =evil= with Org agendas.
 Use Undo-Tree to customize =evil='s redo functionality.
 
 #+begin_src emacs-lisp
-(use-package undo-tree
-  :after (evil)
-  :demand t
-
-  :config
-  (global-undo-tree-mode t))
+;; (use-package undo-tree
+;;   :after (evil)
+;;   :demand t
+;; 
+;;   :config
+;;   (global-undo-tree-mode t))
 #+end_src
 
 

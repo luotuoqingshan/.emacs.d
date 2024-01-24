@@ -380,7 +380,8 @@
 
 (global-set-key (kbd "<f7>") 'LaTeX-math-mode)
 (setq LaTeX-math-abbrev-prefix (kbd ";"))
-(setq LaTeX-math-list '((?^ "widehat" "Construct" 770)))
+(setq LaTeX-math-list '((?^ "widehat" "Construct" 770)
+			("v l" "vlambda" "Greek Bold" nil)))
 
 (use-package reftex)
 (add-hook 'latex-mode-hook 'turn-on-reftex)
