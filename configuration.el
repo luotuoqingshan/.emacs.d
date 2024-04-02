@@ -39,7 +39,7 @@
 
   :config
   (evil-mode 1)
-  (evil-set-undo-system 'undo-tree)
+  ;; (evil-set-undo-system 'undo-tree)
 
   (evil-define-key '(normal) 'global (kbd "C-p") 'project-find-file)
 
@@ -84,12 +84,12 @@
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
-(use-package undo-tree
-  :after (evil)
-  :demand t
-
-  :config
-  (global-undo-tree-mode t))
+;; (use-package undo-tree
+;;   :after (evil)
+;;   :demand t
+;; 
+;;   :config
+;;   (global-undo-tree-mode t))
 
 (use-package modus-themes
   :ensure t
@@ -309,7 +309,7 @@
 				      :unnarrowed t)
 				     ("m" "math notes" plain "%?" 
 				      :target (file+head "${slug}.org"
-							 "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/.emacs.d/preamble.tex}\n#+options: toc:nil"
+							 "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/Documents/latex-template/header.tex}\n#+options: toc:nil"
 							 )
 				      :unnarrowed t)))
   
