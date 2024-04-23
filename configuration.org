@@ -475,7 +475,7 @@ I write julia a lot!
 #+end_src
 
 #+RESULTS:
-: org-latex-preview
+: jnf/force-org-rebuild-cache
 
 * Org-Agenda
 
@@ -535,7 +535,10 @@ I write julia a lot!
   :after evil
   :ensure auctex 
   :hook ((laTeX-mode . LaTeX-math-mode)
-	 (LaTeX-mode . LaTeX-math-mode)))
+	 (LaTeX-mode . LaTeX-math-mode))
+  :config
+  (setq TeX-view-program-list '(("Google Chrome" "open -a 'Google Chrome' %o" "open")))
+  (setq TeX-view-program-selection '((output-pdf "Google Chrome"))))
 
 
 (use-package xenops
