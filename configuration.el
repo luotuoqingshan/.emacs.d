@@ -362,13 +362,15 @@
   :config
   (require 'org-ref))
 
+(use-package cdlatex)
+
 ;;(use-package auctex 
 ;;   :ensure t)
 (use-package latex
   :after evil
   :ensure auctex 
-  :hook ((laTeX-mode . LaTeX-math-mode)
-	 (LaTeX-mode . LaTeX-math-mode)
+  :hook (;;(laTeX-mode . LaTeX-math-mode)
+	 ;;(LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . prettify-symbols-mode))
   :config
   (setq TeX-view-program-list '(("Google Chrome" "open -a 'Google Chrome' %o" "open")))
@@ -376,12 +378,13 @@
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
+  (setq cdlatex-math-symbol-prefix (kbd ";"))
   (add-hook 'LaTeX-mode-hook
   	(defun preview-larger-previews ()
   	    (setq preview-scale-function
   		(lambda () (* 1.25
-  			(funcall (preview-scale-from-face))))))))
-;;  (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex))
+  			(funcall (preview-scale-from-face)))))))
+  (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex))
 
 
 (use-package xenops
