@@ -309,7 +309,7 @@
 				      :unnarrowed t)
 				     ("m" "math notes" plain "%?" 
 				      :target (file+head "${slug}.org"
-							 "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/Documents/latex-template/header.tex}\n#+options: toc:nil"
+							 "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/Documents/latex-templates/headers.tex}\n#+options: toc:nil"
 							 )
 				      :unnarrowed t)))
   
@@ -368,7 +368,13 @@
   :after evil
   :ensure auctex 
   :hook ((laTeX-mode . LaTeX-math-mode)
-	 (LaTeX-mode . LaTeX-math-mode)))
+	 (LaTeX-mode . LaTeX-math-mode))
+  :config
+  (setq TeX-view-program-list '(("Google Chrome" "open -a 'Google Chrome' %o" "open")))
+  (setq TeX-view-program-selection '((output-pdf "Google Chrome")))
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil))
 
 
 (use-package xenops

@@ -535,10 +535,19 @@ I write julia a lot!
   :after evil
   :ensure auctex 
   :hook ((laTeX-mode . LaTeX-math-mode)
-	 (LaTeX-mode . LaTeX-math-mode))
+	 (LaTeX-mode . LaTeX-math-mode)
+         (LaTeX-mode . prettify-symbols-mode))
   :config
   (setq TeX-view-program-list '(("Google Chrome" "open -a 'Google Chrome' %o" "open")))
-  (setq TeX-view-program-selection '((output-pdf "Google Chrome"))))
+  (setq TeX-view-program-selection '((output-pdf "Google Chrome")))
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil)
+  (add-hook 'LaTeX-mode-hook
+  	(defun preview-larger-previews ()
+  	    (setq preview-scale-function
+  		(lambda () (* 1.25
+  			(funcall (preview-scale-from-face))))))))
 
 
 (use-package xenops
