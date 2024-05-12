@@ -526,6 +526,13 @@ I write julia a lot!
   (require 'org-ref))
 #+end_src
 
+* CDLaTeX
+#+begin_src emacs-lisp
+(use-package cdlatex)
+#+end_src
+
+#+RESULTS:
+
 * Auctex/Latex
 
 #+begin_src emacs-lisp
@@ -547,7 +554,8 @@ I write julia a lot!
   	(defun preview-larger-previews ()
   	    (setq preview-scale-function
   		(lambda () (* 1.25
-  			(funcall (preview-scale-from-face))))))))
+  			(funcall (preview-scale-from-face)))))))
+  (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)))
 
 
 (use-package xenops
@@ -571,7 +579,7 @@ I write julia a lot!
 #+end_src
 
 #+RESULTS:
-: 600
+| yas-minor-mode | turn-on-reftex | prettify-symbols-mode | LaTeX-math-mode |
 
 * Yasnippet
 #+begin_src emacs-lisp
