@@ -384,7 +384,9 @@
   	    (setq preview-scale-function
   		(lambda () (* 1.25
   			(funcall (preview-scale-from-face)))))))
-  (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex))
+  (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
+  (setq cdlatex-math-modify-alist
+    '((?b "\\mathbb" "\\textbf" t nil nil))))
 
 
 (use-package xenops
