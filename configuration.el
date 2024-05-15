@@ -386,7 +386,10 @@
   			(funcall (preview-scale-from-face)))))))
   (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
   (setq cdlatex-math-modify-alist
-    '((?b "\\mathbb" "\\textbf" t nil nil))))
+    '((?b "\\mathbb" "\\textbf" t nil nil)))
+  (setq cdlatex-command-alist
+    '(("ge" "Insert \\geq" "\\geq" nil nil nil t)
+      ("le" "Insert \\leq" "\\leq" nil nil nil t))))
 
 
 (use-package xenops
