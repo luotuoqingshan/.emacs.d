@@ -386,10 +386,12 @@
   			(funcall (preview-scale-from-face)))))))
   (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
   (setq cdlatex-math-modify-alist
-    '((?b "\\mathbb" "\\textbf" t nil nil)))
+    '((?b "\\mathbb" "\\textbf" t nil nil)
+      (?s nil "\\textsc" t nil nil)))
   (setq cdlatex-command-alist
     '(("ge" "Insert \\geq" "\\geq" nil nil nil t)
       ("le" "Insert \\leq" "\\leq" nil nil nil t))))
+
 
 
 (use-package xenops
@@ -423,8 +425,11 @@
   (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
   )
 
-(use-package yasnippet-snippets
-  :demand t)
+;;(use-package yasnippet-snippets
+;;  :demand t
+;;  :init
+;;  (yas--remove-template-by-uuid (yas--table-get-create 'latex-mode) "frame"))
+;;(yas--remove-template-by-uuid (yas--table-get-create 'latex-mode) "frame")
 ;; add # condition: 'auto for auto expand
 (defun my-yas-try-expanding-auto-snippets ()
   (when yas-minor-mode

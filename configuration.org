@@ -603,8 +603,11 @@ I write julia a lot!
   (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
   )
 
-(use-package yasnippet-snippets
-  :demand t)
+;;(use-package yasnippet-snippets
+;;  :demand t
+;;  :init
+;;  (yas--remove-template-by-uuid (yas--table-get-create 'latex-mode) "frame"))
+;;(yas--remove-template-by-uuid (yas--table-get-create 'latex-mode) "frame")
 ;; add # condition: 'auto for auto expand
 (defun my-yas-try-expanding-auto-snippets ()
   (when yas-minor-mode
@@ -612,6 +615,9 @@ I write julia a lot!
       (yas-expand))))
 (add-hook 'post-command-hook #'my-yas-try-expanding-auto-snippets)
 #+end_src
+
+#+RESULTS:
+| global-font-lock-mode-check-buffers | global-eldoc-mode-check-buffers | evil-mode-check-buffers | global-evil-collection-unimpaired-mode-check-buffers | global-display-line-numbers-mode-check-buffers | global-company-mode-check-buffers | magit-auto-revert-mode-check-buffers | global-jinx-mode-check-buffers | my-yas-try-expanding-auto-snippets | evil-repeat-post-hook | gcmh-register-idle-gc |
 
 
 * Magit
