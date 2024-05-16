@@ -562,7 +562,9 @@ I write julia a lot!
       (?s nil "\\textsc" t nil nil)))
   (setq cdlatex-command-alist
     '(("ge" "Insert \\geq" "\\geq" nil nil nil t)
-      ("le" "Insert \\leq" "\\leq" nil nil nil t))))
+      ("le" "Insert \\leq" "\\leq" nil nil nil t)
+      ("mi" "Insert \\min" "\\min" nil nil nil t)
+      ("ma" "Insert \\max" "\\max" nil nil nil t))))
 
 
 
