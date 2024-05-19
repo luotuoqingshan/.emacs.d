@@ -379,6 +379,7 @@
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
   (setq cdlatex-math-symbol-prefix (kbd ";"))
+  ;;(setq prettify-symbols-unprettify-at-point nil)
   (add-hook 'LaTeX-mode-hook
   	(defun preview-larger-previews ()
   	    (setq preview-scale-function
@@ -389,8 +390,14 @@
     '((?b "\\mathbb" "\\textbf" t nil nil)
       (?s nil "\\textsc" t nil nil)))
   (setq cdlatex-command-alist
-    '(("ge" "Insert \\geq" "\\geq" nil nil nil t)
-      ("le" "Insert \\leq" "\\leq" nil nil nil t))))
+    '(("ge"  "Insert \\geq" "\\geq" nil nil nil t)
+      ("le"  "Insert \\leq" "\\leq" nil nil nil t)
+      ("mi"  "Insert \\min" "\\min" nil nil nil t)
+      ("ma"  "Insert \\max" "\\max" nil nil nil t)
+      ("psd" "Insert \\succeq" "\\succeq" nil nil nil t)
+      ("pd"  "Insert \\succ" "\\succ" nil nil nil t)
+      ("nsd" "Insert \\precceq" "\\precceq" nil nil nil t)
+      ("nd"  "Insert \\precc" "\\precc" nil nil nil t))))
 
 
 
