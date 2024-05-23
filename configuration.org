@@ -558,6 +558,10 @@ I write julia a lot!
   		(lambda () (* 1.25
   			(funcall (preview-scale-from-face)))))))
   (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
+  (setq cdlatex-math-symbol-alist
+    '((?e ("\\varepsilon" "\\epsilon" "\\exp"))
+      (?[ ("\\subseteq"))
+      (?] ("\\supseteq"))))
   (setq cdlatex-math-modify-alist
     '((?b "\\mathbb" "\\textbf" t nil nil)
       (?s nil "\\textsc" t nil nil)))

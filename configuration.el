@@ -386,6 +386,10 @@
   		(lambda () (* 1.25
   			(funcall (preview-scale-from-face)))))))
   (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
+  (setq cdlatex-math-symbol-alist
+    '((?e ("\\varepsilon" "\\epsilon" "\\exp"))
+      (?[ ("\\subseteq"))
+      (?] ("\\supseteq"))))
   (setq cdlatex-math-modify-alist
     '((?b "\\mathbb" "\\textbf" t nil nil)
       (?s nil "\\textsc" t nil nil)))
@@ -397,7 +401,8 @@
       ("psd" "Insert \\succeq" "\\succeq" nil nil nil t)
       ("pd"  "Insert \\succ" "\\succ" nil nil nil t)
       ("nsd" "Insert \\precceq" "\\precceq" nil nil nil t)
-      ("nd"  "Insert \\precc" "\\precc" nil nil nil t))))
+      ("nd"  "Insert \\precc" "\\precc" nil nil nil t)
+      ("norm" "Insert \\| \\|" "\\|?\\|" cdlatex-position-cursor nil nil t))))
 
 
 
