@@ -177,7 +177,6 @@ Configuration of my theme and faces. See
 [[https://emacs.stackexchange.com/questions/52565/org-mode-results-verbatim-not-working-for-scheme-code][Manual of modus-themes]] for more details.
 #+begin_src emacs-lisp 
 (use-package modus-themes
-  :ensure t
   :demand t
   :config
   ;; Add all your customizations prior to loading the themes
@@ -528,36 +527,15 @@ I write julia a lot!
 
 * CDLaTeX
 #+begin_src emacs-lisp
-(use-package cdlatex)
-#+end_src
+(use-package cdlatex
 
-#+RESULTS:
+  ;; cdlatex is similar to LaTeX-math-mode but I feel it is more
+  ;; powerful, take a look at the github repo for more info
+  ;; https://github.com/cdominik/cdlatex
 
-* Auctex/Latex
-
-#+begin_src emacs-lisp
-(use-package latex
-  ;; https://ftp.gnu.org/pub/gnu/auctex/11.88-extra/tex-ref.pdf
-  ;; a reference card for auctex  
-  :after evil
-  :ensure auctex 
-  :hook (;;(laTeX-mode . LaTeX-math-mode)
-	 ;;(LaTeX-mode . LaTeX-math-mode)
-         (LaTeX-mode . prettify-symbols-mode))
   :config
-  (setq TeX-view-program-list '(("Google Chrome" "open -a 'Google Chrome' %o" "open")))
-  (setq TeX-view-program-selection '((output-pdf "Google Chrome")))
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  (setq-default TeX-master nil)
-  (setq cdlatex-math-symbol-prefix (kbd ";"))
-  ;;(setq prettify-symbols-unprettify-at-point nil)
-  (add-hook 'LaTeX-mode-hook
-  	(defun preview-larger-previews ()
-  	    (setq preview-scale-function
-  		(lambda () (* 1.25
-  			(funcall (preview-scale-from-face)))))))
   (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
+  (setq cdlatex-math-symbol-prefix (kbd ";"))
   (setq cdlatex-math-symbol-alist
     '((?e ("\\varepsilon" "\\epsilon" "\\exp"))
       (?[ ("\\subseteq"))
@@ -575,8 +553,35 @@ I write julia a lot!
       ("nsd" "Insert \\precceq" "\\precceq" nil nil nil t)
       ("nd"  "Insert \\precc" "\\precc" nil nil nil t)
       ("norm" "Insert \\| \\|" "\\|?\\|" cdlatex-position-cursor nil nil t))))
+#+end_src
 
+#+RESULTS:
 
+* Auctex/Latex
+
+#+begin_src emacs-lisp
+(use-package latex
+
+  ;; https://ftp.gnu.org/pub/gnu/auctex/11.88-extra/tex-ref.pdf
+  ;; a reference card for auctex  
+
+  :after evil
+  :ensure auctex 
+  :hook (;;(laTeX-mode . LaTeX-math-mode)
+	 ;;(LaTeX-mode . LaTeX-math-mode)
+         (LaTeX-mode . prettify-symbols-mode))
+  :config
+  (setq TeX-view-program-list '(("Google Chrome" "open -a 'Google Chrome' %o" "open")))
+  (setq TeX-view-program-selection '((output-pdf "Google Chrome")))
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil)
+  ;;(setq prettify-symbols-unprettify-at-point nil)
+  (add-hook 'LaTeX-mode-hook
+  	(defun preview-larger-previews ()
+  	    (setq preview-scale-function
+  		(lambda () (* 1.25
+  			(funcall (preview-scale-from-face))))))))
 
 ;;  
 ;; (global-set-key (kbd "<f7>") 'LaTeX-math-mode)

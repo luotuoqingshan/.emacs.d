@@ -362,30 +362,15 @@
   :config
   (require 'org-ref))
 
-(use-package cdlatex)
+(use-package cdlatex
 
-;;(use-package auctex 
-;;   :ensure t)
-(use-package latex
-  :after evil
-  :ensure auctex 
-  :hook (;;(laTeX-mode . LaTeX-math-mode)
-	 ;;(LaTeX-mode . LaTeX-math-mode)
-         (LaTeX-mode . prettify-symbols-mode))
+  ;; cdlatex is similar to LaTeX-math-mode but I feel it is more
+  ;; powerful, take a look at the github repo for more info
+  ;; https://github.com/cdominik/cdlatex
+
   :config
-  (setq TeX-view-program-list '(("Google Chrome" "open -a 'Google Chrome' %o" "open")))
-  (setq TeX-view-program-selection '((output-pdf "Google Chrome")))
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  (setq-default TeX-master nil)
-  (setq cdlatex-math-symbol-prefix (kbd ";"))
-  ;;(setq prettify-symbols-unprettify-at-point nil)
-  (add-hook 'LaTeX-mode-hook
-  	(defun preview-larger-previews ()
-  	    (setq preview-scale-function
-  		(lambda () (* 1.25
-  			(funcall (preview-scale-from-face)))))))
   (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
+  (setq cdlatex-math-symbol-prefix (kbd ";"))
   (setq cdlatex-math-symbol-alist
     '((?e ("\\varepsilon" "\\epsilon" "\\exp"))
       (?[ ("\\subseteq"))
@@ -404,15 +389,30 @@
       ("nd"  "Insert \\precc" "\\precc" nil nil nil t)
       ("norm" "Insert \\| \\|" "\\|?\\|" cdlatex-position-cursor nil nil t))))
 
+(use-package latex
 
+  ;; https://ftp.gnu.org/pub/gnu/auctex/11.88-extra/tex-ref.pdf
+  ;; a reference card for auctex  
 
-;; (use-package xenops
-;;   :disabled
-;;   :config
-;;   (setq xenops-math-image-scale-factor 2.0))
-;; 					;(add-hook 'latex-mode-hook #'xenops-mode)
-;; 					;(add-hook 'LaTeX-mode-hook #'xenops-mode)  
-;; 
+  :after evil
+  :ensure auctex 
+  :hook (;;(laTeX-mode . LaTeX-math-mode)
+	 ;;(LaTeX-mode . LaTeX-math-mode)
+         (LaTeX-mode . prettify-symbols-mode))
+  :config
+  (setq TeX-view-program-list '(("Google Chrome" "open -a 'Google Chrome' %o" "open")))
+  (setq TeX-view-program-selection '((output-pdf "Google Chrome")))
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil)
+  ;;(setq prettify-symbols-unprettify-at-point nil)
+  (add-hook 'LaTeX-mode-hook
+  	(defun preview-larger-previews ()
+  	    (setq preview-scale-function
+  		(lambda () (* 1.25
+  			(funcall (preview-scale-from-face))))))))
+
+;;  
 ;; (global-set-key (kbd "<f7>") 'LaTeX-math-mode)
 ;;(setq LaTeX-math-abbrev-prefix (kbd ";"))
 ;;(setq LaTeX-math-list '((?^ "widehat" "Construct" 770)
