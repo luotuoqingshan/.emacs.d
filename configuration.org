@@ -540,6 +540,9 @@ I write julia a lot!
   (setq cdlatex-math-symbol-prefix (kbd ";"))
 
   :config
+  ;; I don't want _ and ^ expanded to sub and super scripts
+  ;; automatically outside math mode
+  (setq cdlatex-sub-super-scripts-outside-math-mode nil)
   (setq cdlatex-math-symbol-alist
     '((?e ("\\varepsilon" "\\epsilon" "\\exp"))
       (?[ ("\\subseteq"))
@@ -560,6 +563,7 @@ I write julia a lot!
 #+end_src
 
 #+RESULTS:
+: t
 
 * Auctex/Latex
 
@@ -571,6 +575,13 @@ I write julia a lot!
 
   :after evil
   :ensure auctex 
+
+  :init 
+  (add-hook 'LaTeX-mode-hook
+    (defun preview-larger-previews ()
+      (setq preview-scale-function
+        (lambda () (* 1.25
+  	  (funcall (preview-scale-from-face)))))))
   :hook (;;(laTeX-mode . LaTeX-math-mode)
 	 ;;(LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . prettify-symbols-mode))
@@ -581,11 +592,7 @@ I write julia a lot!
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
   ;;(setq prettify-symbols-unprettify-at-point nil)
-  (add-hook 'LaTeX-mode-hook
-  	(defun preview-larger-previews ()
-  	    (setq preview-scale-function
-  		(lambda () (* 1.25
-  			(funcall (preview-scale-from-face))))))))
+  )
 
 ;;  
 ;; (global-set-key (kbd "<f7>") 'LaTeX-math-mode)

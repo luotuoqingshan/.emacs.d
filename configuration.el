@@ -399,6 +399,13 @@
 
   :after evil
   :ensure auctex 
+
+  :init 
+  (add-hook 'LaTeX-mode-hook
+    (defun preview-larger-previews ()
+      (setq preview-scale-function
+        (lambda () (* 1.25
+  	  (funcall (preview-scale-from-face)))))))
   :hook (;;(laTeX-mode . LaTeX-math-mode)
 	 ;;(LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . prettify-symbols-mode))
@@ -409,11 +416,7 @@
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
   ;;(setq prettify-symbols-unprettify-at-point nil)
-  (add-hook 'LaTeX-mode-hook
-  	(defun preview-larger-previews ()
-  	    (setq preview-scale-function
-  		(lambda () (* 1.25
-  			(funcall (preview-scale-from-face))))))))
+  )
 
 ;;  
 ;; (global-set-key (kbd "<f7>") 'LaTeX-math-mode)
