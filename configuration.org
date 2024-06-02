@@ -536,9 +536,9 @@ I write julia a lot!
 * Auctex/Latex
 
 #+begin_src emacs-lisp
-;;(use-package auctex 
-;;   :ensure t)
 (use-package latex
+  ;; https://ftp.gnu.org/pub/gnu/auctex/11.88-extra/tex-ref.pdf
+  ;; a reference card for auctex  
   :after evil
   :ensure auctex 
   :hook (;;(laTeX-mode . LaTeX-math-mode)
@@ -578,7 +578,7 @@ I write julia a lot!
 
 
 
-;; 
+;;  
 ;; (global-set-key (kbd "<f7>") 'LaTeX-math-mode)
 ;;(setq LaTeX-math-abbrev-prefix (kbd ";"))
 ;;(setq LaTeX-math-list '((?^ "widehat" "Construct" 770)
