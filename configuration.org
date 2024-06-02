@@ -371,7 +371,7 @@ I write julia a lot!
 	 )
   :config
   ;; turn on LaTeX-math-mode in org by default
-  (setq LaTeX-math-mode t)
+  ;; (setq LaTeX-math-mode t)
   ;; use Chrome to view pdfs, which enables vim key bindings via extension Vimium C
   ;; (add-to-list 'org-file-apps-macos '("\\.pdf\\", "open -a 'Google Chrome' %s"))
   :custom
@@ -578,20 +578,14 @@ I write julia a lot!
 
 
 
-(use-package xenops
-  :disabled
-  :config
-  (setq xenops-math-image-scale-factor 2.0))
-					;(add-hook 'latex-mode-hook #'xenops-mode)
-					;(add-hook 'LaTeX-mode-hook #'xenops-mode)  
-
-(global-set-key (kbd "<f7>") 'LaTeX-math-mode)
-(setq LaTeX-math-abbrev-prefix (kbd ";"))
-(setq LaTeX-math-list '((?^ "widehat" "Construct" 770)
-			("v l" "vlambda" "Greek Bold" nil)))
+;; 
+;; (global-set-key (kbd "<f7>") 'LaTeX-math-mode)
+;;(setq LaTeX-math-abbrev-prefix (kbd ";"))
+;;(setq LaTeX-math-list '((?^ "widehat" "Construct" 770)
+;;			("v l" "vlambda" "Greek Bold" nil)))
 
 (use-package reftex)
-(add-hook 'latex-mode-hook 'turn-on-reftex)
+;;(add-hook 'latex-mode-hook 'turn-on-reftex)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)  
 
 (setq reftex-label-alist '(AMSTeX))
