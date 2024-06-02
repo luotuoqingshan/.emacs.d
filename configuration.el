@@ -371,9 +371,12 @@
   (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
   ;; it's important to set this prefix before loading otherwise it
   ;; won't take effect
-  (setq cdlatex-math-symbol-prefix (kbd ";"))
+  (setq cdlatex-math-symbol-prefix ?\;)
 
   :config
+  ;; I don't want _ and ^ expanded to sub and super scripts
+  ;; automatically outside math mode
+  (setq cdlatex-sub-super-scripts-outside-math-mode nil)
   (setq cdlatex-math-symbol-alist
     '((?e ("\\varepsilon" "\\epsilon" "\\exp"))
       (?[ ("\\subseteq"))

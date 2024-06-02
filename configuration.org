@@ -537,7 +537,7 @@ I write julia a lot!
   (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
   ;; it's important to set this prefix before loading otherwise it
   ;; won't take effect
-  (setq cdlatex-math-symbol-prefix (kbd ";"))
+  (setq cdlatex-math-symbol-prefix ?\;)
 
   :config
   ;; I don't want _ and ^ expanded to sub and super scripts
