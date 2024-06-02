@@ -92,7 +92,6 @@
 ;;   (global-undo-tree-mode t))
 
 (use-package modus-themes
-  :ensure t
   :demand t
   :config
   ;; Add all your customizations prior to loading the themes
@@ -368,9 +367,13 @@
   ;; powerful, take a look at the github repo for more info
   ;; https://github.com/cdominik/cdlatex
 
-  :config
+  :init
   (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
+  ;; it's important to set this prefix before loading otherwise it
+  ;; won't take effect
   (setq cdlatex-math-symbol-prefix (kbd ";"))
+
+  :config
   (setq cdlatex-math-symbol-alist
     '((?e ("\\varepsilon" "\\epsilon" "\\exp"))
       (?[ ("\\subseteq"))
