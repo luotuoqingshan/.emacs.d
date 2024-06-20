@@ -394,7 +394,28 @@
       ("pd"  "Insert \\succ" "\\succ" nil nil nil t)
       ("nsd" "Insert \\precceq" "\\precceq" nil nil nil t)
       ("nd"  "Insert \\precc" "\\precc" nil nil nil t)
-      ("norm" "Insert \\| \\|" "\\|?\\|" cdlatex-position-cursor nil nil t))))
+      ("norm" "Insert \\| \\|" "\\|?\\|" cdlatex-position-cursor nil nil t)
+      ("article" "Insert an article template"
+       "\\documentclass[11pt]{article}
+
+\\usepackage[letterpaper, margin=1in]{geometry}
+\\usepackage[utf8]{inputenc} % allow utf-8 input
+\\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\\usepackage[colorlinks,linkcolor=black,citecolor=black]{hyperref}       % hyperlinks
+\\usepackage{url}            % simple URL typesetting
+\\usepackage{booktabs}       % professional-quality tables
+\\usepackage{amsfonts}       % blackboard math symbols
+\\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\\usepackage{microtype}      % microtypography
+\\usepackage{xcolor}
+
+\\title{?}
+\\author{Yufan Huang}
+\\date{}
+\\begin{document}
+\\maketitle
+
+\\end{document}" cdlatex-position-cursor nil t nil))))
 
 (use-package latex
 
