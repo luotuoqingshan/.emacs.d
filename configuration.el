@@ -30,59 +30,59 @@
 (use-package lispy
   :bind ("<f6>" . lispy-mode))
 
-(use-package evil
-  :demand t
+;; (use-package evil
+;;   :demand t
+;; 
+;;   :init
+;;   (setq evil-want-abbrev-expand-on-insert-exit nil
+;; 	evil-want-keybinding nil)
+;; 
+;;   :config
+;;   (evil-mode 1)
+;;   ;; (evil-set-undo-system 'undo-tree)
+;; 
+;;   (evil-define-key '(normal) 'global (kbd "C-p") 'project-find-file)
+;; 
+;;   (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
+;;   (evil-define-key 'insert org-mode-map (kbd "S-<right>") 'org-shiftright)
+;;   (evil-define-key 'insert org-mode-map (kbd "S-<left>") 'org-shiftleft)
+;; 
+;;   (fset 'evil-visual-update-x-selection 'ignore))
 
-  :init
-  (setq evil-want-abbrev-expand-on-insert-exit nil
-	evil-want-keybinding nil)
+;; (use-package evil-collection
+;;   :after evil
+;;   :demand t
+;;   :config
+;;   (setq evil-collection-mode-list
+;; 	'(deadgrep
+;; 	  dired
+;; 	  elfeed
+;; 	  eww
+;; 	  ibuffer
+;; 	  info
+;; 	  magit
+;; 	  mu4e
+;; 	  package-menu
+;; 	  pdf-view
+;; 	  proced
+;; 	  replace
+;; 	  vterm
+;; 	  which-key))
+;; 
+;;   (evil-collection-init))
 
-  :config
-  (evil-mode 1)
-  ;; (evil-set-undo-system 'undo-tree)
+;; (use-package evil-surround
+;;   :after evil
+;;   :config
+;;   (global-evil-surround-mode 1))
 
-  (evil-define-key '(normal) 'global (kbd "C-p") 'project-find-file)
-
-  (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
-  (evil-define-key 'insert org-mode-map (kbd "S-<right>") 'org-shiftright)
-  (evil-define-key 'insert org-mode-map (kbd "S-<left>") 'org-shiftleft)
-
-  (fset 'evil-visual-update-x-selection 'ignore))
-
-(use-package evil-collection
-  :after evil
-  :demand t
-  :config
-  (setq evil-collection-mode-list
-	'(deadgrep
-	  dired
-	  elfeed
-	  eww
-	  ibuffer
-	  info
-	  magit
-	  mu4e
-	  package-menu
-	  pdf-view
-	  proced
-	  replace
-	  vterm
-	  which-key))
-
-  (evil-collection-init))
-
-(use-package evil-surround
-  :after evil
-  :config
-  (global-evil-surround-mode 1))
-
-(use-package evil-org
-  :after (evil org)
-  :demand t
-
-  :config
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
+;; (use-package evil-org
+;;   :after (evil org)
+;;   :demand t
+;; 
+;;   :config
+;;   (require 'evil-org-agenda)
+;;   (evil-org-agenda-set-keys))
 
 ;; (use-package undo-tree
 ;;   :after (evil)
@@ -138,7 +138,7 @@
 ;;(setq-default indent-line-function 'insert-tab)
 
 ;; let wq save and kill the current buffer, instead of quitting emacs
-(evil-ex-define-cmd "wq" 'save-and-kill-this-buffer)
+;; (evil-ex-define-cmd "wq" 'save-and-kill-this-buffer)
 (defun save-and-kill-this-buffer()(interactive)(save-buffer)(kill-current-buffer))
 ;; remove the vertical scroll bars
 (setq default-frame-alist '((vertical-scroll-bars . nil)))
@@ -162,12 +162,13 @@
 (global-set-key (kbd "C-c d s") 'dictionary-search)
 (global-set-key (kbd "C-c d d") 'dictionary-lookup-definition)
 
-(use-package jinx
-  :hook (emacs-startup . global-jinx-mode)
-  :bind (("M-$" . jinx-correct)
-         ("C-M-$" . jinx-languages))
-  :custom
-  (jinx-delay 0.1))
+;; comment out first, have some issue with M3 chip
+;; (use-package jinx
+;;   :hook (emacs-startup . global-jinx-mode)
+;;   :bind (("M-$" . jinx-correct)
+;;          ("C-M-$" . jinx-languages))
+;;   :custom
+;;   (jinx-delay 0.1))
 
 (use-package counsel
   :demand t
@@ -227,7 +228,7 @@
 (setq org-src-preserve-indentation t)
 
 (use-package org
-  :after evil
+  ;;:after evil
   :bind (("C-c a" . org-agenda)
 	 )
   :config
@@ -400,7 +401,7 @@
   ;; https://ftp.gnu.org/pub/gnu/auctex/11.88-extra/tex-ref.pdf
   ;; a reference card for auctex  
 
-  :after evil
+  ;;:after evil
   :ensure auctex 
 
   :init 
@@ -460,3 +461,5 @@
 
 (use-package magit
   :demand t)
+
+
