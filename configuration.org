@@ -548,6 +548,7 @@ I write julia a lot!
       (?f ("\\varphi" "\\phi"))
       (?[ ("\\subseteq"))
       (?] ("\\supseteq"))
+      (?M ("\\max" "\\min"))
       (?> ("\\rightarrow" "\\Rightarrow" "\\max"))
       (?- ("\\cap" "\\leftrightarrow" "\\longleftrightarrow"))
       (?< ("\\leftarrow" "\\Leftarrow" "\\min"))))
