@@ -549,8 +549,8 @@ I write julia a lot!
       (?[ ("\\subseteq"))
       (?] ("\\supseteq"))
       (?> ("\\rightarrow" "\\Rightarrow" "\\max"))
-      (?< ("\\leftarrow" "\\Leftarrow" "\\min"))
-))
+      (?- ("\\cap" "\\leftrightarrow" "\\longleftrightarrow"))
+      (?< ("\\leftarrow" "\\Leftarrow" "\\min"))))
   (setq cdlatex-math-modify-alist
     '((?b "\\mathbb" "\\textbf" t nil nil)
       (?s nil "\\textsc" t nil nil)))
