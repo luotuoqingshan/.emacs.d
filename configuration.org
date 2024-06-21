@@ -545,6 +545,7 @@ I write julia a lot!
   (setq cdlatex-sub-super-scripts-outside-math-mode nil)
   (setq cdlatex-math-symbol-alist
     '((?e ("\\varepsilon" "\\epsilon" "\\exp"))
+      (?f ("\\varphi" "\\phi"))
       (?[ ("\\subseteq"))
       (?] ("\\supseteq"))))
   (setq cdlatex-math-modify-alist
@@ -674,6 +675,12 @@ I write julia a lot!
 : magit
 
 
-* nov
+* avy
 #+begin_src emacs-lisp
+(use-package avy
+  :demand t
+  :config
+  (global-set-key (kbd "M-g w") 'avy-goto-word-1)
+  (global-set-key (kbd "M-g l") 'avy-goto-line)
+  (global-set-key (kbd "M-g c") 'avy-goto-char-timer))
 #+end_src

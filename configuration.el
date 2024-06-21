@@ -380,6 +380,7 @@
   (setq cdlatex-sub-super-scripts-outside-math-mode nil)
   (setq cdlatex-math-symbol-alist
     '((?e ("\\varepsilon" "\\epsilon" "\\exp"))
+      (?f ("\\varphi" "\\phi"))
       (?[ ("\\subseteq"))
       (?] ("\\supseteq"))))
   (setq cdlatex-math-modify-alist
@@ -408,10 +409,11 @@
 \\usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \\usepackage{microtype}      % microtypography
 \\usepackage{xcolor}
+\\input{/Users/yufanhuang/.emacs.d/preamble}
 
 \\title{?}
 \\author{Yufan Huang}
-\\date{}
+\\date{\today}
 \\begin{document}
 \\maketitle
 
