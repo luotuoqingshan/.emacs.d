@@ -547,7 +547,10 @@ I write julia a lot!
     '((?e ("\\varepsilon" "\\epsilon" "\\exp"))
       (?f ("\\varphi" "\\phi"))
       (?[ ("\\subseteq"))
-      (?] ("\\supseteq"))))
+      (?] ("\\supseteq"))
+      (?> ("\\rightarrow" "\\Rightarrow" "\\max"))
+      (?< ("\\leftarrow" "\\Leftarrow" "\\min"))
+))
   (setq cdlatex-math-modify-alist
     '((?b "\\mathbb" "\\textbf" t nil nil)
       (?s nil "\\textsc" t nil nil)))
