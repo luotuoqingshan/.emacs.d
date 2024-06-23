@@ -488,6 +488,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ 
+ ;; use pandoc to view markdown
+ '(markdown-command "/Users/yufanhuang/anaconda3/bin/pandoc")
+ '(custom-safe-themes
+   '("78e6be576f4a526d212d5f9a8798e5706990216e9be10174e3f3b015b8662e27" default))
  '(display-line-numbers 'relative)
  '(display-line-numbers-type 'relative)
  '(evil-want-C-u-scroll t)
