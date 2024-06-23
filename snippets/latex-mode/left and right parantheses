@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: left and right parantheses 
-# key: LR
-# --
-\\{$1\\}$0

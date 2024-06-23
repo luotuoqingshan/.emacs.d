@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: proposition 
-# key: pro
-# --
-\begin{proposition}
-  $1
-\end{proposition}
-$0

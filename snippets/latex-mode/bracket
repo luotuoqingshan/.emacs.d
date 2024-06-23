@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: bracket 
-# key:(
-# --
-($1)$0

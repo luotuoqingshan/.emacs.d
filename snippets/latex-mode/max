@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: max
-# key: MM
-# --
-\max_{$1}^{$2} $0

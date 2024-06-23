@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: argmin 
-# key:argm 
-# --
-\argmin_{$1}^{$2} $0

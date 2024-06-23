@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name:bibliography 
-# key:bib 
-# --
-bibliographystyle:$1
-bibliography:~/Dropbox/bibs/yufan.bib
-$0
