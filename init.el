@@ -121,8 +121,7 @@
 (global-display-line-numbers-mode)
 (setq display-line-numbers 'relative)
 
-(use-package vterm
-  :ensure t)
+(use-package vterm)
 
 ;; use moody to prettify mode line
 (use-package moody
@@ -132,6 +131,25 @@
   (moody-replace-mode-line-buffer-identification)
   (moody-replace-vc-mode)
   (moody-replace-eldoc-minibuffer-message-function))
+
+
+;; pixel-scroll for smoother scrolling
+;; see discussion at https://www.reddit.com/r/emacs/comments/wx7ytn/emacs_29_native_smooth_scrolling/
+;; and config at https://github.com/VictorYYW/.emacs.d/blob/main/init.el#L135
+(require 'pixel-scroll)
+(defun pixel-scroll-half-page-down ()
+  "Smoothly scroll down half the current window height."
+  (interactive)
+  (pixel-scroll-precision-interpolate (- (/ (window-text-height nil t) 2))
+                                      nil 1))
+(defun pixel-scroll-half-page-up ()
+  "Smoothly scroll down half the current window height."
+  (interactive)
+  (pixel-scroll-precision-interpolate (/ (window-text-height nil t) 2)
+                                        nil 1))
+
+(define-key pixel-scroll-precision-mode-map (kbd "M-p") #'pixel-scroll-half-page-up)
+(define-key pixel-scroll-precision-mode-map (kbd "M-n") #'pixel-scroll-half-page-down)
 
 ;; Dictionary
 ;; I want to use builtin dictionary to search some unknown words.
@@ -490,11 +508,9 @@
 
 ;; Julia
 (use-package julia-mode
-  :ensure t
   :mode "\\.jl\\'")
 
 (use-package julia-snail
-  :ensure t
   :hook (julia-mode . julia-snail-mode)
   :config
   (setq julia-snail-repl-display-eval-results t)
