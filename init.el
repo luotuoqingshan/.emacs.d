@@ -121,6 +121,9 @@
 (global-display-line-numbers-mode)
 (setq display-line-numbers 'relative)
 
+(use-package vterm
+  :ensure t)
+
 ;; use moody to prettify mode line
 (use-package moody
   :demand t
