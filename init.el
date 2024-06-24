@@ -485,6 +485,20 @@
 ;; lisp
 (use-package lispy
   :bind ("<f6>" . lispy-mode))
+;; use 2 spaces indentation
+(setq lisp-indent-offset 2)
+
+;; Julia
+(use-package julia-mode
+  :ensure t
+  :mode "\\.jl\\'")
+
+(use-package julia-snail
+  :ensure t
+  :hook (julia-mode . julia-snail-mode)
+  :config
+  (setq julia-snail-repl-display-eval-results t)
+  )
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
