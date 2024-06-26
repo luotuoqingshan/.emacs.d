@@ -151,6 +151,18 @@
 (define-key pixel-scroll-precision-mode-map (kbd "M-p") #'pixel-scroll-half-page-up)
 (define-key pixel-scroll-precision-mode-map (kbd "M-n") #'pixel-scroll-half-page-down)
 
+
+;; isearch
+;; use C-Return to let cursor stay at the front of the match
+(define-key isearch-mode-map [(control return)]
+  #'isearch-exit-other-end)
+(defun isearch-exit-other-end ()
+  "Exit isearch, at the opposite end of the string."
+  (interactive)
+  (isearch-exit)
+  (goto-char isearch-other-end))
+
+
 ;; Dictionary
 ;; I want to use builtin dictionary to search some unknown words.
 ;; set up builtin dictionary
