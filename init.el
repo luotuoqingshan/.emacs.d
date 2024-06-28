@@ -414,6 +414,8 @@
       ("nsd" "Insert \\precceq" "\\precceq" nil nil nil t)
       ("nd"  "Insert \\precc" "\\precc" nil nil nil t)
       ("norm" "Insert \\| \\|" "\\|?\\|" cdlatex-position-cursor nil nil t)
+      ("floor" "Insert \\lfloor \\rfloor" "\\lfloor ? \\rfloor" cdlatex-position-cursor nil nil t)
+      ("ceil" "Insert \\lceil \\rceil" "\\lceil ? \\rceil" cdlatex-position-cursor nil nil t) 
       ("article" "Insert an article template"
        "\\documentclass[11pt]{article}
 
