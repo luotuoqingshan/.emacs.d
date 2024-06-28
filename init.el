@@ -398,7 +398,7 @@
       (?\] ("\\supseteq"))
       (?M ("\\max" "\\min"))
       (?> ("\\rightarrow" "\\Rightarrow" "\\max"))
-      (?: ("\coloneqq"))
+      (?: ("\\coloneqq"))
       (?- ("\\cap" "\\leftrightarrow" "\\longleftrightarrow"))
       (?< ("\\leftarrow" "\\Leftarrow" "\\min"))))
   (setq cdlatex-math-modify-alist
