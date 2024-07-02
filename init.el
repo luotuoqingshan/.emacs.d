@@ -455,7 +455,9 @@
     (defun preview-larger-previews ()
       (setq preview-scale-function
         (lambda () (* 1.25
-  	  (funcall (preview-scale-from-face)))))))
+  		     (funcall (preview-scale-from-face)))))))
+  (add-hook 'LaTeX-mode-hook
+    (lambda () (setq reftex-ref-style-default-list '("Default" "Cleveref"))))
   :hook (;;(laTeX-mode . LaTeX-math-mode)
 	 ;;(LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . prettify-symbols-mode))
