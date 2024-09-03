@@ -400,6 +400,7 @@
       (?> ("\\rightarrow" "\\Rightarrow" "\\max"))
       (?: ("\\coloneqq"))
       (?- ("\\cap" "\\leftrightarrow" "\\longleftrightarrow"))
+      (?. ("\\cdot" "\\ldots")) 
       (?< ("\\leftarrow" "\\Leftarrow" "\\min"))))
   (setq cdlatex-math-modify-alist
     '((?b "\\mathbb" "\\textbf" t nil nil)
