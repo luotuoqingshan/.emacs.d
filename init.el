@@ -399,7 +399,7 @@
       (?M ("\\max" "\\min"))
       (?> ("\\rightarrow" "\\Rightarrow" "\\max"))
       (?: ("\\coloneqq"))
-      (?- ("\\cap" "\\leftrightarrow" "\\longleftrightarrow"))
+      (?- ("\\cap" "\\leftrightarrow" "\\longleftrightarrow")) 
       (?. ("\\cdot" "\\ldots")) 
       (?< ("\\leftarrow" "\\Leftarrow" "\\min"))))
   (setq cdlatex-math-modify-alist
@@ -407,6 +407,7 @@
       (?s nil "\\textsc" t nil nil)))
   (setq cdlatex-command-alist
     '(("ge"  "Insert \\geq" "\\geq" nil nil nil t)
+      ("lr||" "Insert \\left\\| \\right\\|" "\\left\\| \\right\\|" nil nil nil t)
       ("le"  "Insert \\leq" "\\leq" nil nil nil t)
       ("ne"  "Insert \\neq" "\\neq" nil nil nil t)
       ("mi"  "Insert \\min" "\\min" nil nil nil t)
