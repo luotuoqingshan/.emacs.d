@@ -416,6 +416,7 @@
       ("pd"  "Insert \\succ" "\\succ" nil nil nil t)
       ("nsd" "Insert \\precceq" "\\precceq" nil nil nil t)
       ("nd"  "Insert \\precc" "\\precc" nil nil nil t)
+      ("sum" "Insert \\sum_{}^{}" "\\sum_{?}^{}" cdlatex-position-cursor nil nil t) 
       ("norm" "Insert \\| \\|" "\\|?\\|" cdlatex-position-cursor nil nil t)
       ("floor" "Insert \\lfloor \\rfloor" "\\lfloor ? \\rfloor" cdlatex-position-cursor nil nil t)
       ("ceil" "Insert \\lceil \\rceil" "\\lceil ? \\rceil" cdlatex-position-cursor nil nil t) 
