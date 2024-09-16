@@ -39,7 +39,13 @@
   :demand t
   :config (auto-compile-on-load-mode))
 
+
+
 (setq load-prefer-newer t)
+
+;; add PATHs from shell
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
 
 ;; Disable deprecation warnings about =cl=. The =cl= library has been deprecated, but
 ;; lots of packages still use it.
@@ -656,6 +662,8 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
 	 ;;(LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . prettify-symbols-mode))
   :config
+  ;; use pdflatex
+  (setq latex-run-command "pdflatex")
   (setq TeX-view-program-list '(("Google Chrome" "open -a 'Google Chrome' %o" "open")))
   (setq TeX-view-program-selection '((output-pdf "Google Chrome")))
   (setq TeX-auto-save t)
