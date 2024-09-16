@@ -125,6 +125,7 @@
 
 ;; always show line numbers and set the display style to relative 
 (global-display-line-numbers-mode)
+(global-visual-line-mode 1)
 (setq display-line-numbers 'relative)
 
 
@@ -428,7 +429,9 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
 
 (use-package org
   :bind (("C-c a" . org-agenda)
-	 )
+	  )
+  :hook
+  ((org-mode . org-indent-mode))
   :config
   ;; turn on LaTeX-math-mode in org by default
   ;; (setq LaTeX-math-mode t)
