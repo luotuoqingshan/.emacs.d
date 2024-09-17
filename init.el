@@ -504,7 +504,7 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
   (require 'org-roam-dailies)
   (setq org-roam-capture-templates '(
 				     ("d" "default" plain "%?"
-				      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+				      :target (file+head "${slug}.org"
 							 "#+title: ${title}\n#+options: toc:nil\n")
 				      :unnarrowed t)
 				     ("r" "bibliography reference" plain "%?"
