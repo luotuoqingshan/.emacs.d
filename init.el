@@ -453,7 +453,7 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
        ("WAIT" :foreground "blue" :weight bold)
        ("DONE" :foreground "forest green" :weight bold)))
   (org-agenda-prefix-format
-    '((agenda . " %i %-12:c%?-12t% s")
+    '((agenda . " %i %?-12t% s")
       (todo . "  ")
       (tags . " %i %-12:c")
       (search . " %i %-12:c"))
