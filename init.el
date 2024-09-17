@@ -446,13 +446,18 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
   (org-agenda-files (directory-files-recursively "~/Dropbox/orgroam" "\\.org$"))
   (org-use-fast-todo-selection 'expert)
   (org-todo-keywords
-   '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+    '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)")))
   (org-todo-keyword-faces
-   '(("TODO" :foreground "orange" :weight bold) 
-     ("NEXT" :foreground "red" :weight bold)
-     ("WAITING" :foreground "blue" :weight bold)
-     ("DONE" :foreground "forest green" :weight bold)
-     ("CANCELLED" :foreground "cyan" :weight bold)))
+    '(("TODO" :foreground "orange" :weight bold) 
+       ("NEXT" :foreground "red" :weight bold)
+       ("WAIT" :foreground "blue" :weight bold)
+       ("DONE" :foreground "forest green" :weight bold)))
+  (org-agenda-prefix-format
+    '((agenda . " %i %-12:c%?-12t% s")
+      (todo . "  ")
+      (tags . " %i %-12:c")
+      (search . " %i %-12:c"))
+  )
   ;; Set org-latex-pdf-process to process the bibliography 
   (org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
   (org-latex-create-formula-image-program 'dvisvgm))
