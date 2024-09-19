@@ -418,9 +418,9 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
 
 
 ;; Org-mode
-;; use org-bullets to replace stars before headings
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+;; use org-superstar to replace stars before headings
+(require 'org-superstar)
+(add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
 
 ;; set initial scratch buffer to be in Org
 (setq initial-major-mode 'org-mode)
