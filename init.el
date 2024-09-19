@@ -438,12 +438,12 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
   ;; use Chrome to view pdfs, which enables vim key bindings via extension Vimium C
   ;; (add-to-list 'org-file-apps-macos '("\\.pdf\\", "open -a 'Google Chrome' %s"))
   :custom
-  (org-directory "~/Dropbox/orgs/")
+  (org-directory "~/Dropbox/orgroam/")
   (org-default-notes-file "~/Dropbox/orgs/inbox.org")
   (org-archive-location (concat "~/Dropbox/orgarchive/Archive-"
 				(format-time-string "%Y%m" (current-time))
 				".org_archive::"))
-  (org-agenda-files (directory-files-recursively "~/Dropbox/orgroam" "\\.org$"))
+  (org-agenda-files (list "inbox.org" "agenda.org"))
   (org-use-fast-todo-selection 'expert)
   (org-todo-keywords
     '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)")))
@@ -460,6 +460,9 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
   )
   ;; Set org-latex-pdf-process to process the bibliography 
   (org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+  ;; add the following line to enable diary
+  ;; e.g. adding anniversaries 
+  (org-agenda-include-diary t)
   (org-latex-create-formula-image-program 'dvisvgm))
 
 
@@ -485,6 +488,11 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
 
 ;; Org-Roam
 
+(defun org-roam-capture-inbox ()
+     (interactive)
+     (call-interactively 'org-store-link)
+     (org-roam-capture nil "i"))
+
 (use-package org-roam
   :after org
   ;;:demand t
@@ -493,12 +501,14 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
   (org-roam-directory "~/Dropbox/orgroam/")
   (org-roam-dailies-capture-templates
    '(("d" "default" entry "* %<%I:%M %p>: %?"
-      :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
+       :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
+  (org-agenda-hide-tags-regexp ".")
   :bind (("C-c r c" . org-roam-capture)
          ("C-c r i" . org-roam-node-insert)
          ("C-c r f" . org-roam-node-find)
          ("C-c r b" . org-roam-buffer-toggle)
          ("C-c l"   . org-latex-preview)
+	 ("C-c i"   . org-roam-capture-inbox) 
          :map org-roam-dailies-map
 	 ("Y" . org-roam-dailies-capture-yesterday)
          ("T" . org-roam-dailies-capture-tomorrow)
@@ -507,20 +517,25 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
   ("C-c r d" . org-roam-dailies-map)
   :config
   (require 'org-roam-dailies)
-  (setq org-roam-capture-templates '(
-				     ("d" "default" plain "%?"
-				      :target (file+head "${slug}.org"
-							 "#+title: ${title}\n#+options: toc:nil\n")
-				      :unnarrowed t)
-				     ("r" "bibliography reference" plain "%?"
-				      :target (file+head "references/${citekey}.org"
-							 "#+title: ${title}\n")
-				      :unnarrowed t)
-				     ("m" "math notes" plain "%?" 
-				      :target (file+head "${slug}.org"
-							 "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/Documents/latex-templates/headers.tex}\n#+options: toc:nil"
-							 )
-				      :unnarrowed t)))
+  (setq org-roam-capture-templates
+    '(
+       ("d" "default" plain "%?"
+	 :target (file+head "${slug}.org"
+		   "#+title: ${title}\n#+options: toc:nil\n")
+	 :unnarrowed t)
+       ("i" "inbox" entry "* TODO %?\n/Entered on/ %U"
+	 :target (file+head "inbox.org"
+		   ("Inbox items"))
+	 :unnarrowed t)
+       ("r" "bibliography reference" plain "%?"
+	 :target (file+head "references/${citekey}.org"
+		   "#+title: ${title}\n")
+	 :unnarrowed t)
+       ("m" "math notes" plain "%?" 
+	 :target (file+head "${slug}.org"
+		   "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/Documents/latex-templates/headers.tex}\n#+options: toc:nil"
+		   )
+	 :unnarrowed t)))
   
   (org-roam-db-autosync-mode t))
 
@@ -542,7 +557,7 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
 ;; https://emacs.stackexchange.com/questions/12517/how-do-i-make-the-timespan-shown-by-org-agenda-start-yesterday
 ;; let agenda start from yesterday
 (setq org-agenda-start-day "-1d")
-(setq org-agenda-span 8)
+(setq org-agenda-span 10)
 (setq org-agenda-start-on-weekday nil)
 
 ;; Org-ref
@@ -755,8 +770,6 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
  '(evil-want-C-u-scroll t)
  '(global-display-line-numbers-mode t)
  '(markdown-command "/Users/yufanhuang/anaconda3/bin/pandoc")
- '(org-agenda-files
-    '("/Users/yufanhuang/Dropbox/orgroam/20230321122105-daily.org" "/Users/yufanhuang/Dropbox/orgroam/20230312181955-climbing.org" "/Users/yufanhuang/Dropbox/orgroam/20230313164752-org_links.org" "/Users/yufanhuang/Dropbox/orgroam/20230313165639-tex_links.org" "/Users/yufanhuang/Dropbox/orgroam/20230322121329-emacs_links.org" "/Users/yufanhuang/Dropbox/orgroam/20230322221643-scholars_follow.org" "/Users/yufanhuang/Dropbox/orgroam/20230326190738-literature_review_about_burer_monterio_method.org" "/Users/yufanhuang/Dropbox/orgroam/20230327160208-tutorials.org" "/Users/yufanhuang/Dropbox/orgroam/20230329160644-meeting_notes.org" "/Users/yufanhuang/Dropbox/orgroam/20230330113219-shoplist.org" "/Users/yufanhuang/Dropbox/orgroam/20230331110702-julia.org" "/Users/yufanhuang/Dropbox/orgroam/20230406110622-robots_that_learn_and_adapt.org" "/Users/yufanhuang/Dropbox/orgroam/20230412173647-manifold_optimization.org" "/Users/yufanhuang/Dropbox/orgroam/20230423160313-julia_notes.org" "/Users/yufanhuang/Dropbox/orgroam/20230501180303-computational_topology_for_data_analysis_final_topics.org" "/Users/yufanhuang/Dropbox/orgroam/20230503150501-meeting_notes.org" "/Users/yufanhuang/Dropbox/orgroam/20230516093823-mmls2023.org" "/Users/yufanhuang/Dropbox/orgroam/20230525141608-nonlinear_perron_frobenius_theorems_for_nonnegative_tensors.org" "/Users/yufanhuang/Dropbox/orgroam/20230527084407-talks.org" "/Users/yufanhuang/Dropbox/orgroam/20230527214415-notes_on_sdplr_1_03_beta.org" "/Users/yufanhuang/Dropbox/orgroam/20230607102452-influence_maximization_notes.org" "/Users/yufanhuang/Dropbox/orgroam/20230808144914-git.org" "/Users/yufanhuang/Dropbox/orgroam/20230810085218-use_package.org" "/Users/yufanhuang/Dropbox/orgroam/20231017110940-feedback_on_logpagerank_embedding_video.org" "/Users/yufanhuang/Dropbox/orgroam/20231208193449-leetcode.org" "/Users/yufanhuang/Dropbox/orgroam/20231209113631-research.org" "/Users/yufanhuang/Dropbox/orgroam/20231209113702-interview.org" "/Users/yufanhuang/Dropbox/orgroam/20231209115756-org_clock.org" "/Users/yufanhuang/Dropbox/orgroam/20231210104845-trip.org" "/Users/yufanhuang/Dropbox/orgroam/20231210123911-minimal_example_for_org_roam_bibtex.org" "/Users/yufanhuang/Dropbox/orgroam/20231210212834-yasnippt.org" "/Users/yufanhuang/Dropbox/orgroam/20231211141121-group_meeting.org" "/Users/yufanhuang/Dropbox/orgroam/20231211183712-markdown.org" "/Users/yufanhuang/Dropbox/orgroam/20231212160448-regex.org" "/Users/yufanhuang/Dropbox/orgroam/20231212222234-practical_common_lisp.org" "/Users/yufanhuang/Dropbox/orgroam/20231219115929-vim_movement.org" "/Users/yufanhuang/Dropbox/orgroam/20231226113921-documentation.org" "/Users/yufanhuang/Dropbox/orgroam/20231228164052-github_token.org" "/Users/yufanhuang/Dropbox/orgroam/20231229110928-vpn.org" "/Users/yufanhuang/Dropbox/orgroam/20231230124944-jupyter_notebook_to_pdf.org" "/Users/yufanhuang/Dropbox/orgroam/20240102151529-an_introduction_to_programming_in_emacs_lisp.org" "/Users/yufanhuang/Dropbox/orgroam/20240105173612-algorithmic_spectral_graph_theory_boot_camp.org" "/Users/yufanhuang/Dropbox/orgroam/20240106135803-parallel_computing.org" "/Users/yufanhuang/Dropbox/orgroam/20240109145507-car.org" "/Users/yufanhuang/Dropbox/orgroam/20240115164132-lispy.org" "/Users/yufanhuang/Dropbox/orgroam/20240219120737-a_phd_is_not_enough.org" "/Users/yufanhuang/Dropbox/orgroam/20240424223003-tmux.org" "/Users/yufanhuang/Dropbox/orgroam/20240426211934-purdue.org" "/Users/yufanhuang/Dropbox/orgroam/20240430143944-server.org" "/Users/yufanhuang/Dropbox/orgroam/20240510160240-auctex_notes.org" "/Users/yufanhuang/Dropbox/orgroam/20240522162410-funding_number.org" "/Users/yufanhuang/Dropbox/orgroam/20240523101025-wifi.org" "/Users/yufanhuang/Dropbox/orgroam/20240527130601-makefile.org" "/Users/yufanhuang/Dropbox/orgroam/BMNonlinear2003.org" "/Users/yufanhuang/Dropbox/orgroam/ZZG+Social2019.org" "/Users/yufanhuang/Dropbox/orgroam/a_fast_iterative_shrinkage_thresholding_algorithm_for_linear_inverse_problems.org" "/Users/yufanhuang/Dropbox/orgroam/a_low_rank_augmented_lagrangian_method_for_large_scale_semidefinite_programming_based_on_a_hybrid_convex_nonconvex_approach.org" "/Users/yufanhuang/Dropbox/orgroam/a_mathematical_analysis_of_the_dct_coefficient_distributions_for_images.org" "/Users/yufanhuang/Dropbox/orgroam/a_scalable_frank_wolfe_based_algorithm_for_the_max_cut_sdp.org" "/Users/yufanhuang/Dropbox/orgroam/a_survey_of_numerical_methods_for_nonlinear_semidefinite_programming.org" "/Users/yufanhuang/Dropbox/orgroam/a_survey_of_recent_scalability_improvements_for_semidefinite_programming_with_applications_in_machine_learning_control_and_robotics.org" "/Users/yufanhuang/Dropbox/orgroam/ai_and_computing_convergence_to_translation.org" "/Users/yufanhuang/Dropbox/orgroam/algorithmic_spin_glass_theory.org" "/Users/yufanhuang/Dropbox/orgroam/approximation_with_kronecker_products.org" "/Users/yufanhuang/Dropbox/orgroam/augmented_lagrangian.org" "/Users/yufanhuang/Dropbox/orgroam/barvinok_pataki.org" "/Users/yufanhuang/Dropbox/orgroam/book.org" "/Users/yufanhuang/Dropbox/orgroam/bregman_divergence.org" "/Users/yufanhuang/Dropbox/orgroam/combinatorial_optimization.org" "/Users/yufanhuang/Dropbox/orgroam/conferences.org" "/Users/yufanhuang/Dropbox/orgroam/constrained_optimization.org" "/Users/yufanhuang/Dropbox/orgroam/convex_optimization.org" "/Users/yufanhuang/Dropbox/orgroam/correlation_clustering.org" "/Users/yufanhuang/Dropbox/orgroam/curvature_constant.org" "/Users/yufanhuang/Dropbox/orgroam/densest_subgraph_supermodularity_iterative_peeling_and_flow.org" "/Users/yufanhuang/Dropbox/orgroam/densest_subhypergraph_negative_supermodular_functions_and_strongly_localized_methods.org" "/Users/yufanhuang/Dropbox/orgroam/densest_subhypergraph_talk_script.org" "/Users/yufanhuang/Dropbox/orgroam/design_and_performance_of_parallel_and_distributed_approximation_algorithms_for_maxcut.org" "/Users/yufanhuang/Dropbox/orgroam/determinant.org" "/Users/yufanhuang/Dropbox/orgroam/diameter.org" "/Users/yufanhuang/Dropbox/orgroam/differentiable.org" "/Users/yufanhuang/Dropbox/orgroam/dimacs10.org" "/Users/yufanhuang/Dropbox/orgroam/discrete_cosine_transform.org" "/Users/yufanhuang/Dropbox/orgroam/eigenvalue_decomposition.org" "/Users/yufanhuang/Dropbox/orgroam/estimating_the_largest_eigenvalue_by_the_power_and_lanczos_algorithms_with_a_random_start.org" "/Users/yufanhuang/Dropbox/orgroam/euler_s_formula.org" "/Users/yufanhuang/Dropbox/orgroam/exploiting_symmetries_for_learning_in_weight_spaces.org" "/Users/yufanhuang/Dropbox/orgroam/four_cheeger_type_inequalities_for_graph_partitioning_algorithms.org" "/Users/yufanhuang/Dropbox/orgroam/frank_wolfe_conditional_gradient_method.org" "/Users/yufanhuang/Dropbox/orgroam/gershgorin_circle_theorem.org" "/Users/yufanhuang/Dropbox/orgroam/gnns_for_the_science_from_theorey_to_practice.org" "/Users/yufanhuang/Dropbox/orgroam/gradient_descent.org" "/Users/yufanhuang/Dropbox/orgroam/gset.org" "/Users/yufanhuang/Dropbox/orgroam/hermitian.org" "/Users/yufanhuang/Dropbox/orgroam/integer_program.org" "/Users/yufanhuang/Dropbox/orgroam/johnson_s_algorithm.org" "/Users/yufanhuang/Dropbox/orgroam/kopa_automated_kronecker_product_approximation.org" "/Users/yufanhuang/Dropbox/orgroam/kronecker_product.org" "/Users/yufanhuang/Dropbox/orgroam/lagrangian_dual.org" "/Users/yufanhuang/Dropbox/orgroam/laplacian_distribution.org" "/Users/yufanhuang/Dropbox/orgroam/las_vegas_algorithm.org" "/Users/yufanhuang/Dropbox/orgroam/learning_to_group_auxiliary_datasets_for_molecule.org" "/Users/yufanhuang/Dropbox/orgroam/linear_sieve.org" "/Users/yufanhuang/Dropbox/orgroam/linux.org" "/Users/yufanhuang/Dropbox/orgroam/lipschitz.org" "/Users/yufanhuang/Dropbox/orgroam/lovasz_extension.org" "/Users/yufanhuang/Dropbox/orgroam/lovasz_theta_sdp.org" "/Users/yufanhuang/Dropbox/orgroam/lower_upper_semicontinous.org" "/Users/yufanhuang/Dropbox/orgroam/markov_chain.org" "/Users/yufanhuang/Dropbox/orgroam/math_notes.org" "/Users/yufanhuang/Dropbox/orgroam/matlab.org" "/Users/yufanhuang/Dropbox/orgroam/matrix_concentration_inequalities.org" "/Users/yufanhuang/Dropbox/orgroam/max_clique.org" "/Users/yufanhuang/Dropbox/orgroam/max_cut.org" "/Users/yufanhuang/Dropbox/orgroam/max_k_cut.org" "/Users/yufanhuang/Dropbox/orgroam/memory_efficient_approximation_algorithms_for_max_k_cut_and_correlation_clustering.org" "/Users/yufanhuang/Dropbox/orgroam/memory_efficient_structured_convex_optimization_via_extreme_point_sampling.org" "/Users/yufanhuang/Dropbox/orgroam/minimax.org" "/Users/yufanhuang/Dropbox/orgroam/mmm.org" "/Users/yufanhuang/Dropbox/orgroam/monte_carlo_algorithm.org" "/Users/yufanhuang/Dropbox/orgroam/mwu.org" "/Users/yufanhuang/Dropbox/orgroam/network_flow_cp3.org" "/Users/yufanhuang/Dropbox/orgroam/norm.org" "/Users/yufanhuang/Dropbox/orgroam/nystrom_sketch.org" "/Users/yufanhuang/Dropbox/orgroam/on_nonlinear_fractional_programming.org" "/Users/yufanhuang/Dropbox/orgroam/optimality_conditions_for_general_constrained_optimization.org" "/Users/yufanhuang/Dropbox/orgroam/optimization.org" "/Users/yufanhuang/Dropbox/orgroam/permutation_matrix.org" "/Users/yufanhuang/Dropbox/orgroam/phase_retrieval.org" "/Users/yufanhuang/Dropbox/orgroam/project_euler.org" "/Users/yufanhuang/Dropbox/orgroam/projector.org" "/Users/yufanhuang/Dropbox/orgroam/pseudo_inverse.org" "/Users/yufanhuang/Dropbox/orgroam/pseudoforest.org" "/Users/yufanhuang/Dropbox/orgroam/quadratic_assignment_problem_qap.org" "/Users/yufanhuang/Dropbox/orgroam/random_walk.org" "/Users/yufanhuang/Dropbox/orgroam/randomized_algorithms.org" "/Users/yufanhuang/Dropbox/orgroam/reducibility_and_statistical_computational_gaps_from_secret_leakage.org" "/Users/yufanhuang/Dropbox/orgroam/replicability_in_learning.org" "/Users/yufanhuang/Dropbox/orgroam/revisiting_frank_wolfe_projection_free_sparse_convex_optimization.org" "/Users/yufanhuang/Dropbox/orgroam/riemannian_optimization.org" "/Users/yufanhuang/Dropbox/orgroam/schatten_p_norms.org" "/Users/yufanhuang/Dropbox/orgroam/sdplr_log.org" "/Users/yufanhuang/Dropbox/orgroam/semidefinite_program.org" "/Users/yufanhuang/Dropbox/orgroam/semidefinite_programming_hierarchies.org" "/Users/yufanhuang/Dropbox/orgroam/siam_dm.org" "/Users/yufanhuang/Dropbox/orgroam/simple_algorithms_for_optimization_on_riemannian_manifolds_with_constraints.org" "/Users/yufanhuang/Dropbox/orgroam/single_source_shortest_paths_with_negative_real_weights_in_textbackslashtilde_vphantom_o_vphantom_mn_textasciicircum_8_9_time.org" "/Users/yufanhuang/Dropbox/orgroam/sion_s_minimax_theorem.org" "/Users/yufanhuang/Dropbox/orgroam/sketching.org" "/Users/yufanhuang/Dropbox/orgroam/slater_s_condition.org" "/Users/yufanhuang/Dropbox/orgroam/sparse_approximate_solutions_to_semidefinite_programs.org" "/Users/yufanhuang/Dropbox/orgroam/spectral_algorithms_for_community_detection_on_random_graphs.org" "/Users/yufanhuang/Dropbox/orgroam/stirling_formula.org" "/Users/yufanhuang/Dropbox/orgroam/taylor_expansion.org" "/Users/yufanhuang/Dropbox/orgroam/techniques_in_optimizations_and_sampling.org" "/Users/yufanhuang/Dropbox/orgroam/tensor_svd_statistical_and_computational_limits.org" "/Users/yufanhuang/Dropbox/orgroam/test1.org" "/Users/yufanhuang/Dropbox/orgroam/the_discrete_cosine_transform.org" "/Users/yufanhuang/Dropbox/orgroam/topological_structure_of_complex_predictions.org" "/Users/yufanhuang/Dropbox/orgroam/traveling_salesman.org" "/Users/yufanhuang/Dropbox/orgroam/understanding_regularized_spectral_clustering_via_graph_conductance.org" "/Users/yufanhuang/Dropbox/orgroam/yao_s_lemma.org") nil nil "Customized with use-package org")
  '(org-file-apps
     '((auto-mode . emacs)
        (directory . emacs)
