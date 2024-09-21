@@ -443,7 +443,7 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
   (org-archive-location (concat "~/Dropbox/orgarchive/Archive-"
 				(format-time-string "%Y%m" (current-time))
 				".org_archive::"))
-  (org-agenda-files (list "inbox.org" "agenda.org"))
+  (org-agenda-files (list "inbox.org" "agenda.org" "projects.org"))
   (org-use-fast-todo-selection 'expert)
   (org-todo-keywords
     '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)")))
@@ -527,17 +527,21 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
 	 :target (file+head "inbox.org"
 		   ("Inbox items"))
 	 :unnarrowed t)
+       ("m" "meeting" plain "* %?"
+	 :target (file+olp "agenda.org"
+		   "Future"))
        ("r" "bibliography reference" plain "%?"
 	 :target (file+head "references/${citekey}.org"
 		   "#+title: ${title}\n")
 	 :unnarrowed t)
-       ("m" "math notes" plain "%?" 
+       ("l" "math notes" plain "%?" 
 	 :target (file+head "${slug}.org"
 		   "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/Documents/latex-templates/headers.tex}\n#+options: toc:nil"
 		   )
 	 :unnarrowed t)))
   
-  (org-roam-db-autosync-mode t))
+  (org-roam-db-autosync-mode t)
+  )
 
 ;; I encountered the following message when attempting
 ;; to export data:
@@ -576,6 +580,33 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
                    (format "open -a 'Google Chrome' %s"
                            (shell-quote-argument fpath))))))
 (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link-hydra/body)
+
+;; https://www.labri.fr/perso/nrougier/GTD/index.html
+(setq org-agenda-custom-commands
+      '(("g" "Get Things Done (GTD)"
+         ((agenda ""
+                  ((org-agenda-skip-function
+                    '(org-agenda-skip-entry-if 'deadline))
+                   (org-deadline-warning-days 0)))
+          (todo "NEXT"
+                ((org-agenda-skip-function
+                  '(org-agenda-skip-entry-if 'deadline))
+                 (org-agenda-prefix-format "  %i %-12:c [%e] ")
+                 (org-agenda-overriding-header "\nTasks\n")))
+          (agenda nil
+                  ((org-agenda-entry-types '(:deadlinne))
+                   (org-agenda-format-date "")
+                   (org-deadline-warning-days 7)
+                   (org-agenda-skip-function
+                    '(org-agenda-skip-entry-if 'notregexp "\\* NEXT"))
+                   (org-agenda-overriding-header "\nDeadlines")))
+          (tags-todo "inbox"
+                     ((org-agenda-prefix-format "  %?-12t% s")
+                      (org-agenda-overriding-header "\nInbox\n")))
+          (tags "CLOSED>=\"<today>\""
+            ((org-agenda-overriding-header "\nCompleted today\n")))))))
+
+(setq org-log-done 'time)
 
 
 ;; Org-Roam-Bibtex 
