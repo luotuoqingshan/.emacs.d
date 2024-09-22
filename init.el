@@ -348,6 +348,9 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
 (define-key pixel-scroll-precision-mode-map (kbd "M-p") #'pixel-scroll-half-page-up)
 (define-key pixel-scroll-precision-mode-map (kbd "M-n") #'pixel-scroll-half-page-down)
 
+;; turn on pixel-scroll-precision-mode by default
+(pixel-scroll-precision-mode 1)
+
 
 ;; isearch
 ;; use C-Return to let cursor stay at the front of the match
