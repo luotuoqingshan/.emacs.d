@@ -652,6 +652,7 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
       (?M ("\\max" "\\min"))
       (?> ("\\rightarrow" "\\Rightarrow" "\\max"))
       (?: ("\\coloneqq"))
+      (?* ("\\times" "\\otimes"))
       (?- ("\\cap" "\\leftrightarrow" "\\longleftrightarrow")) 
       (?. ("\\cdot" "\\ldots")) 
       (?< ("\\leftarrow" "\\Leftarrow" "\\min"))))
