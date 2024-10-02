@@ -653,6 +653,7 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
       (?> ("\\rightarrow" "\\Rightarrow" "\\max"))
       (?: ("\\coloneqq"))
       (?* ("\\times" "\\otimes"))
+      (?+ ("\\cup" "\\oplus"))
       (?- ("\\cap" "\\leftrightarrow" "\\longleftrightarrow")) 
       (?. ("\\cdot" "\\ldots")) 
       (?< ("\\leftarrow" "\\Leftarrow" "\\min"))))
@@ -671,7 +672,9 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
       ("nsd" "Insert \\preceq" "\\preceq" nil nil nil t)
       ("nd"  "Insert \\prec" "\\prec" nil nil nil t)
       ("nn"  "Insert \\nonumber" "\\nonumber" nil nil nil t)
-      ("sum" "Insert \\sum_{}^{}" "\\sum_{?}^{}" cdlatex-position-cursor nil nil t) 
+      ("sum" "Insert \\sum_{}^{}" "\\sum_{?}^{}" cdlatex-position-cursor nil nil t)
+      ("prod" "Insert \\prod_{}^{}" "\\prod_{?}^{}" cdlatex-position-cursor nil nil t)
+      ("prodl" "Insert \\prod\\limits_{}^{}" "\\prod\\limits_{?}^{}" cdlatex-position-cursor nil nil t)
       ("norm" "Insert \\| \\|" "\\|?\\|" cdlatex-position-cursor nil nil t)
       ("floor" "Insert \\lfloor \\rfloor" "\\lfloor ? \\rfloor" cdlatex-position-cursor nil nil t)
       ("ceil" "Insert \\lceil \\rceil" "\\lceil ? \\rceil" cdlatex-position-cursor nil nil t) 
@@ -729,6 +732,8 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
   (setq-default TeX-master nil)
   ;;(setq prettify-symbols-unprettify-at-point nil)
   )
+;; (add-to-list 'post-command-hook #'TeX-view)
+
 
 (use-package reftex)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)  
