@@ -123,6 +123,13 @@
 ;; remove the vertical scroll bars
 (setq default-frame-alist '((vertical-scroll-bars . nil)))
 
+;; do not display menu bar
+(menu-bar-mode -1)
+
+;; disalbe mode-line
+;; (setq-default header-line-format mode-line-format)
+(setq-default mode-line-format nil)
+
 ;; always show line numbers and set the display style to relative 
 (global-display-line-numbers-mode)
 (global-visual-line-mode 1)
