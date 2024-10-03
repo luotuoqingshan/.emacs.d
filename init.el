@@ -96,7 +96,7 @@
 	modus-themes-preset-overrides-faint)
 
   ;; Load the theme of your choice.
-  (load-theme 'modus-operandi-tinted :no-confirm)
+  (load-theme 'modus-operandi-deuteranopia :no-confirm)
 
   ;; use F5 to toggle modus-themes between dark and light
   (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
