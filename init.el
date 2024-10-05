@@ -872,3 +872,6 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(load-file "/Users/yufanhuang/.emacs.d/security.el")
+
