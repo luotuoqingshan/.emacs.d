@@ -50,29 +50,8 @@
       ("prodl" "Insert \\prod\\limits_{}^{}" "\\prod\\limits_{?}^{}" cdlatex-position-cursor nil nil t)
       ("norm" "Insert \\| \\|" "\\|?\\|" cdlatex-position-cursor nil nil t)
       ("floor" "Insert \\lfloor \\rfloor" "\\lfloor ? \\rfloor" cdlatex-position-cursor nil nil t)
-      ("ceil" "Insert \\lceil \\rceil" "\\lceil ? \\rceil" cdlatex-position-cursor nil nil t) 
-      ("article" "Insert an article template"
-       "\\documentclass[11pt]{article}
-
-\\usepackage[letterpaper, margin=1in]{geometry}
-\\usepackage[utf8]{inputenc} % allow utf-8 input
-\\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
-\\usepackage[colorlinks,linkcolor=black,citecolor=black]{hyperref}       % hyperlinks
-\\usepackage{url}            % simple URL typesetting
-\\usepackage{booktabs}       % professional-quality tables
-\\usepackage{amsfonts}       % blackboard math symbols
-\\usepackage{nicefrac}       % compact symbols for 1/2, etc.
-\\usepackage{microtype}      % microtypography
-\\usepackage{xcolor}
-\\input{/Users/yufanhuang/.emacs.d/preamble}
-
-\\title{?}
-\\author{Yufan Huang}
-\\date{\today}
-\\begin{document}
-\\maketitle
-
-\\end{document}" cdlatex-position-cursor nil t nil))))
+      ("ceil" "Insert \\lceil \\rceil" "\\lceil ? \\rceil" cdlatex-position-cursor nil nil t)
+       )))
 
 
 ;; Auctex/Latex

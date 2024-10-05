@@ -674,6 +674,11 @@
   (require 'org-ref))
 
 
+;; latex settings
+(load-file "/Users/yufanhuang/.emacs.d/yh-tex.el")
+
+;; encryption and password storage stuff
+(load-file "/Users/yufanhuang/.emacs.d/yh-security.el")
 
 ;;Yasnippet
 ;;#+begin_src emacs-lisp
@@ -760,9 +765,5 @@
  ;; If there is more than one, they won't work right.
   )
 
-;; latex settings
-(load-file "/Users/yufanhuang/.emacs.d/tex.el")
 
-;; encryption and password storage stuff
-(load-file "/Users/yufanhuang/.emacs.d/security.el")
 
