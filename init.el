@@ -40,7 +40,6 @@
   :config (auto-compile-on-load-mode))
 
 
-
 (setq load-prefer-newer t)
 
 ;; add PATHs from shell
@@ -128,7 +127,7 @@
 
 ;; disalbe mode-line
 ;; (setq-default header-line-format mode-line-format)
-(setq-default mode-line-format nil)
+;; (setq-default mode-line-format nil)
 
 ;; always show line numbers and set the display style to relative 
 (global-display-line-numbers-mode)
@@ -136,193 +135,193 @@
 (setq display-line-numbers 'relative)
 
 
-;; for user-friendly selection
-;; copied from xah lee's website
-;; see http://xahlee.info/emacs/emacs/xah_emacs_commands_index.html
-
-(defun xah-select-line ()
-  "Select current line. If region is active, extend selection downward by line.
-If `visual-line-mode' is on, consider line as visual line.
-
-URL `http://xahlee.info/emacs/emacs/emacs_select_line.html'
-Version: 2017-11-01 2023-07-16 2023-11-14"
-  (interactive)
-  (if (region-active-p)
-      (if visual-line-mode
-          (let ((xp1 (point)))
-            (end-of-visual-line 1)
-            (when (eq xp1 (point))
-              (end-of-visual-line 2)))
-        (progn
-          (forward-line 1)
-          (end-of-line)))
-    (if visual-line-mode
-        (progn (beginning-of-visual-line)
-               (push-mark (point) t t)
-               (end-of-visual-line))
-      (progn
-        (push-mark (line-beginning-position) t t)
-        (end-of-line)))))
-
-(defvar xah-brackets '("“”" "()" "[]" "{}" "<>" "＜＞" "（）" "［］" "｛｝" "⦅⦆" "〚〛" "⦃⦄" "‹›" "«»" "「」" "〈〉" "《》" "【】" "〔〕" "⦗⦘" "『』" "〖〗" "〘〙" "｢｣" "⟦⟧" "⟨⟩" "⟪⟫" "⟮⟯" "⟬⟭" "⌈⌉" "⌊⌋" "⦇⦈" "⦉⦊" "❛❜" "❝❞" "❨❩" "❪❫" "❴❵" "❬❭" "❮❯" "❰❱" "❲❳" "〈〉" "⦑⦒" "⧼⧽" "﹙﹚" "﹛﹜" "﹝﹞" "⁽⁾" "₍₎" "⦋⦌" "⦍⦎" "⦏⦐" "⁅⁆" "⸢⸣" "⸤⸥" "⟅⟆" "⦓⦔" "⦕⦖" "⸦⸧" "⸨⸩" "｟｠")
- "A list of strings, each element is a string of 2 chars, the left bracket and a matching right bracket.
-Used by `xah-select-text-in-quote' and others.
-Version 2023-07-31")
-
-(defconst xah-left-brackets
-  (mapcar (lambda (x) (substring x 0 1)) xah-brackets)
-  "List of left bracket chars. Each element is a string.")
-
-(defconst xah-right-brackets
-  (mapcar (lambda (x) (substring x 1 2)) xah-brackets)
-  "List of right bracket chars. Each element is a string.")
-
-(defun xah-select-text-in-quote ()
-  "Select text between the nearest left and right delimiters.
-Delimiters here includes QUOTATION MARK, GRAVE ACCENT, and anything in `xah-brackets'.
-This command ignores nesting. For example, if text is
-「(a(b)c▮)」
-the selected char is 「c」, not 「a(b)c」.
-
-URL `http://xahlee.info/emacs/emacs/emacs_select_quote_text.html'
-Version: 2020-11-24 2023-07-23 2023-11-14"
-  (interactive)
-  (let ((xskipChars (concat "^\"`" (mapconcat #'identity xah-brackets ""))))
-    (skip-chars-backward xskipChars)
-    (push-mark (point) t t)
-    (skip-chars-forward xskipChars)))
-
-(defun xah-select-block ()
-  "Select the current/next block plus 1 blankline.
-If region is active, extend selection downward by block.
-
-URL `http://xahlee.info/emacs/emacs/emacs_select_text_block.html'
-Version: 2019-12-26 2021-08-13 2023-11-14"
-  (interactive)
-  (if (region-active-p)
-      (re-search-forward "\n[ \t]*\n[ \t]*\n*" nil :move)
-    (progn
-      (skip-chars-forward " \n\t")
-      (when (re-search-backward "\n[ \t]*\n" nil :move)
-        (goto-char (match-end 0)))
-      (push-mark (point) t t)
-      (re-search-forward "\n[ \t]*\n" nil :move))))
-
-
-(defun xah-extend-selection ()
-  "Select the current word, bracket/quote expression, or expand selection.
-Subsequent calls expands the selection.
-
-when there is no selection,
-• If cursor is on any type of bracket (including parenthesis, quotation mark), select whole bracketed thing including bracket
-• else, select current word.
-
-when there is a selection, the selection extension behavior is still experimental. But when cursor is on a any type of bracket (parenthesis, quote), it extends selection to outer bracket.
-
-URL `http://xahlee.info/emacs/emacs/emacs_extend_selection.html'
-Version: 2020-02-04 2023-08-24 2023-11-14"
-  (interactive)
-
-  (cond
-   ((region-active-p)
-    (let ((xp1 (region-beginning)) (xp2 (region-end)))
-      (goto-char xp1)
-      (cond
-       ((looking-at "\\s(")
-        (if (eq (nth 0 (syntax-ppss)) 0)
-            (progn
-              ;; (message "debug: left bracket, depth 0.")
-              (end-of-line) ; select current line
-              (push-mark (line-beginning-position) t t))
-          (progn
-            ;; (message "debug: left bracket, depth not 0")
-            (up-list -1 t t)
-            (mark-sexp))))
-       ((eq xp1 (line-beginning-position))
-        (progn
-          (goto-char xp1)
-          (let ((xfirstLineEndPos (line-end-position)))
-            (cond
-             ((eq xp2 xfirstLineEndPos)
-              (progn
-                ;; (message "debug: exactly 1 line. extend to next whole line." )
-                (forward-line 1)
-                (end-of-line)))
-             ((< xp2 xfirstLineEndPos)
-              (progn
-                ;; (message "debug: less than 1 line. complete the line." )
-                (end-of-line)))
-             ((> xp2 xfirstLineEndPos)
-              (progn
-                ;; (message "debug: beginning of line, but end is greater than 1st end of line" )
-                (goto-char xp2)
-                (if (eq (point) (line-end-position))
-                    (progn
-                      ;; (message "debug: exactly multiple lines" )
-                      (forward-line 1)
-                      (end-of-line))
-                  (progn
-                    ;; (message "debug: multiple lines but end is not eol. make it so" )
-                    (goto-char xp2)
-                    (end-of-line)))))
-             (t (error "%s: logic error 42946" real-this-command))))))
-       ((and (> (point) (line-beginning-position)) (<= (point) (line-end-position)))
-        (progn
-          ;; (message "debug: less than 1 line" )
-          (end-of-line) ; select current line
-          (push-mark (line-beginning-position) t t)))
-       (t
-        ;; (message "debug: last resort" )
-        nil))))
-
-   ((looking-at "\\s(")
-    ;; (message "debug: left bracket")
-    (mark-sexp))
-
-   ((looking-at "\\s)")
-    ;; (message "debug: right bracket")
-    (backward-up-list) (mark-sexp))
-
-   ((looking-at "\\s\"")
-    ;; (message "debug: string quote")
-    (mark-sexp))
-
-   ((looking-at "[ \t\n]")
-    ;; (message "debug: is white space")
-    (skip-chars-backward " \t\n")
-    (push-mark)
-    (skip-chars-forward " \t\n")
-    (setq mark-active t))
-
-   ((looking-at "[-_a-zA-Z0-9]")
-    ;; (message "debug: left is word or symbol")
-    (skip-chars-backward "-_a-zA-Z0-9")
-    (push-mark)
-    (skip-chars-forward "-_a-zA-Z0-9")
-    (setq mark-active t))
-
-   ((and (looking-at "[:blank:]")
-         (prog2 (backward-char) (looking-at "[:blank:]") (forward-char)))
-    ;; (message "debug: left and right both space" )
-    (skip-chars-backward "[:blank:]") (push-mark (point) t t)
-    (skip-chars-forward "[:blank:]"))
-
-   ((and (looking-at "\n")
-         (eq (char-before) 10))
-    ;; (message "debug: left and right both newline")
-    (skip-chars-forward "\n")
-    (push-mark (point)  t t)
-    (re-search-forward "\n[ \t]*\n"))
-
-   (t
-    ;; (message "debug: just mark sexp" )
-    (mark-sexp)
-     (exchange-point-and-mark))))
-
-(global-set-key (kbd "C-c C-l") 'xah-select-line)
-(global-set-key (kbd "C-c C-p") 'xah-select-block)
-(global-set-key (kbd "C-c C-q") 'xah-select-text-in-quote)
-(global-set-key (kbd "C-c C-s") 'xah-extend-selection)
+;;;; for user-friendly selection
+;;;; copied from xah lee's website
+;;;; see http://xahlee.info/emacs/emacs/xah_emacs_commands_index.html
+;;
+;;(defun xah-select-line ()
+;;  "Select current line. If region is active, extend selection downward by line.
+;;If `visual-line-mode' is on, consider line as visual line.
+;;
+;;URL `http://xahlee.info/emacs/emacs/emacs_select_line.html'
+;;Version: 2017-11-01 2023-07-16 2023-11-14"
+;;  (interactive)
+;;  (if (region-active-p)
+;;      (if visual-line-mode
+;;          (let ((xp1 (point)))
+;;            (end-of-visual-line 1)
+;;            (when (eq xp1 (point))
+;;              (end-of-visual-line 2)))
+;;        (progn
+;;          (forward-line 1)
+;;          (end-of-line)))
+;;    (if visual-line-mode
+;;        (progn (beginning-of-visual-line)
+;;               (push-mark (point) t t)
+;;               (end-of-visual-line))
+;;      (progn
+;;        (push-mark (line-beginning-position) t t)
+;;        (end-of-line)))))
+;;
+;;(defvar xah-brackets '("“”" "()" "[]" "{}" "<>" "＜＞" "（）" "［］" "｛｝" "⦅⦆" "〚〛" "⦃⦄" "‹›" "«»" "「」" "〈〉" "《》" "【】" "〔〕" "⦗⦘" "『』" "〖〗" "〘〙" "｢｣" "⟦⟧" "⟨⟩" "⟪⟫" "⟮⟯" "⟬⟭" "⌈⌉" "⌊⌋" "⦇⦈" "⦉⦊" "❛❜" "❝❞" "❨❩" "❪❫" "❴❵" "❬❭" "❮❯" "❰❱" "❲❳" "〈〉" "⦑⦒" "⧼⧽" "﹙﹚" "﹛﹜" "﹝﹞" "⁽⁾" "₍₎" "⦋⦌" "⦍⦎" "⦏⦐" "⁅⁆" "⸢⸣" "⸤⸥" "⟅⟆" "⦓⦔" "⦕⦖" "⸦⸧" "⸨⸩" "｟｠")
+;; "A list of strings, each element is a string of 2 chars, the left bracket and a matching right bracket.
+;;Used by `xah-select-text-in-quote' and others.
+;;Version 2023-07-31")
+;;
+;;(defconst xah-left-brackets
+;;  (mapcar (lambda (x) (substring x 0 1)) xah-brackets)
+;;  "List of left bracket chars. Each element is a string.")
+;;
+;;(defconst xah-right-brackets
+;;  (mapcar (lambda (x) (substring x 1 2)) xah-brackets)
+;;  "List of right bracket chars. Each element is a string.")
+;;
+;;(defun xah-select-text-in-quote ()
+;;  "Select text between the nearest left and right delimiters.
+;;Delimiters here includes QUOTATION MARK, GRAVE ACCENT, and anything in `xah-brackets'.
+;;This command ignores nesting. For example, if text is
+;;「(a(b)c▮)」
+;;the selected char is 「c」, not 「a(b)c」.
+;;
+;;URL `http://xahlee.info/emacs/emacs/emacs_select_quote_text.html'
+;;Version: 2020-11-24 2023-07-23 2023-11-14"
+;;  (interactive)
+;;  (let ((xskipChars (concat "^\"`" (mapconcat #'identity xah-brackets ""))))
+;;    (skip-chars-backward xskipChars)
+;;    (push-mark (point) t t)
+;;    (skip-chars-forward xskipChars)))
+;;
+;;(defun xah-select-block ()
+;;  "Select the current/next block plus 1 blankline.
+;;If region is active, extend selection downward by block.
+;;
+;;URL `http://xahlee.info/emacs/emacs/emacs_select_text_block.html'
+;;Version: 2019-12-26 2021-08-13 2023-11-14"
+;;  (interactive)
+;;  (if (region-active-p)
+;;      (re-search-forward "\n[ \t]*\n[ \t]*\n*" nil :move)
+;;    (progn
+;;      (skip-chars-forward " \n\t")
+;;      (when (re-search-backward "\n[ \t]*\n" nil :move)
+;;        (goto-char (match-end 0)))
+;;      (push-mark (point) t t)
+;;      (re-search-forward "\n[ \t]*\n" nil :move))))
+;;
+;;
+;;(defun xah-extend-selection ()
+;;  "Select the current word, bracket/quote expression, or expand selection.
+;;Subsequent calls expands the selection.
+;;
+;;when there is no selection,
+;;• If cursor is on any type of bracket (including parenthesis, quotation mark), select whole bracketed thing including bracket
+;;• else, select current word.
+;;
+;;when there is a selection, the selection extension behavior is still experimental. But when cursor is on a any type of bracket (parenthesis, quote), it extends selection to outer bracket.
+;;
+;;URL `http://xahlee.info/emacs/emacs/emacs_extend_selection.html'
+;;Version: 2020-02-04 2023-08-24 2023-11-14"
+;;  (interactive)
+;;
+;;  (cond
+;;   ((region-active-p)
+;;    (let ((xp1 (region-beginning)) (xp2 (region-end)))
+;;      (goto-char xp1)
+;;      (cond
+;;       ((looking-at "\\s(")
+;;        (if (eq (nth 0 (syntax-ppss)) 0)
+;;            (progn
+;;              ;; (message "debug: left bracket, depth 0.")
+;;              (end-of-line) ; select current line
+;;              (push-mark (line-beginning-position) t t))
+;;          (progn
+;;            ;; (message "debug: left bracket, depth not 0")
+;;            (up-list -1 t t)
+;;            (mark-sexp))))
+;;       ((eq xp1 (line-beginning-position))
+;;        (progn
+;;          (goto-char xp1)
+;;          (let ((xfirstLineEndPos (line-end-position)))
+;;            (cond
+;;             ((eq xp2 xfirstLineEndPos)
+;;              (progn
+;;                ;; (message "debug: exactly 1 line. extend to next whole line." )
+;;                (forward-line 1)
+;;                (end-of-line)))
+;;             ((< xp2 xfirstLineEndPos)
+;;              (progn
+;;                ;; (message "debug: less than 1 line. complete the line." )
+;;                (end-of-line)))
+;;             ((> xp2 xfirstLineEndPos)
+;;              (progn
+;;                ;; (message "debug: beginning of line, but end is greater than 1st end of line" )
+;;                (goto-char xp2)
+;;                (if (eq (point) (line-end-position))
+;;                    (progn
+;;                      ;; (message "debug: exactly multiple lines" )
+;;                      (forward-line 1)
+;;                      (end-of-line))
+;;                  (progn
+;;                    ;; (message "debug: multiple lines but end is not eol. make it so" )
+;;                    (goto-char xp2)
+;;                    (end-of-line)))))
+;;             (t (error "%s: logic error 42946" real-this-command))))))
+;;       ((and (> (point) (line-beginning-position)) (<= (point) (line-end-position)))
+;;        (progn
+;;          ;; (message "debug: less than 1 line" )
+;;          (end-of-line) ; select current line
+;;          (push-mark (line-beginning-position) t t)))
+;;       (t
+;;        ;; (message "debug: last resort" )
+;;        nil))))
+;;
+;;   ((looking-at "\\s(")
+;;    ;; (message "debug: left bracket")
+;;    (mark-sexp))
+;;
+;;   ((looking-at "\\s)")
+;;    ;; (message "debug: right bracket")
+;;    (backward-up-list) (mark-sexp))
+;;
+;;   ((looking-at "\\s\"")
+;;    ;; (message "debug: string quote")
+;;    (mark-sexp))
+;;
+;;   ((looking-at "[ \t\n]")
+;;    ;; (message "debug: is white space")
+;;    (skip-chars-backward " \t\n")
+;;    (push-mark)
+;;    (skip-chars-forward " \t\n")
+;;    (setq mark-active t))
+;;
+;;   ((looking-at "[-_a-zA-Z0-9]")
+;;    ;; (message "debug: left is word or symbol")
+;;    (skip-chars-backward "-_a-zA-Z0-9")
+;;    (push-mark)
+;;    (skip-chars-forward "-_a-zA-Z0-9")
+;;    (setq mark-active t))
+;;
+;;   ((and (looking-at "[:blank:]")
+;;         (prog2 (backward-char) (looking-at "[:blank:]") (forward-char)))
+;;    ;; (message "debug: left and right both space" )
+;;    (skip-chars-backward "[:blank:]") (push-mark (point) t t)
+;;    (skip-chars-forward "[:blank:]"))
+;;
+;;   ((and (looking-at "\n")
+;;         (eq (char-before) 10))
+;;    ;; (message "debug: left and right both newline")
+;;    (skip-chars-forward "\n")
+;;    (push-mark (point)  t t)
+;;    (re-search-forward "\n[ \t]*\n"))
+;;
+;;   (t
+;;    ;; (message "debug: just mark sexp" )
+;;    (mark-sexp)
+;;     (exchange-point-and-mark))))
+;;
+;;(global-set-key (kbd "C-c C-l") 'xah-select-line)
+;;(global-set-key (kbd "C-c C-p") 'xah-select-block)
+;;(global-set-key (kbd "C-c C-q") 'xah-select-text-in-quote)
+;;(global-set-key (kbd "C-c C-s") 'xah-extend-selection)
 
 
 (use-package vterm)
@@ -674,119 +673,7 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
   :config
   (require 'org-ref))
 
-;; CDLaTeX
-(use-package cdlatex
 
-  ;; cdlatex is similar to LaTeX-math-mode but I feel it is more
-  ;; powerful, take a look at the github repo for more info
-  ;; https://github.com/cdominik/cdlatex
-
-  :init
-  (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
-  ;; it's important to set this prefix before loading otherwise it
-  ;; won't take effect
-  (setq cdlatex-math-symbol-prefix ?\;)
-
-  :config
-  ;; I don't want _ and ^ expanded to sub and super scripts
-  ;; automatically outside math mode
-  (setq cdlatex-sub-super-scripts-outside-math-mode nil)
-  (setq cdlatex-math-symbol-alist
-    '((?e ("\\varepsilon" "\\epsilon" "\\exp"))
-      (?f ("\\varphi" "\\phi"))
-      (?\[ ("\\subseteq"))
-      (?\] ("\\supseteq"))
-      (?M ("\\max" "\\min"))
-      (?> ("\\rightarrow" "\\Rightarrow" "\\max"))
-      (?: ("\\coloneqq"))
-      (?* ("\\times" "\\otimes"))
-      (?+ ("\\cup" "\\oplus"))
-      (?- ("\\cap" "\\leftrightarrow" "\\longleftrightarrow")) 
-      (?. ("\\cdot" "\\ldots")) 
-      (?< ("\\leftarrow" "\\Leftarrow" "\\min"))))
-  (setq cdlatex-math-modify-alist
-    '((?b "\\mathbb" "\\textbf" t nil nil)
-      (?s nil "\\textsc" t nil nil)))
-  (setq cdlatex-command-alist
-    '(("ge"  "Insert \\geq" "\\geq" nil nil nil t)
-      ("lr||" "Insert \\left\\| \\right\\|" "\\left\\| ? \\right\\|" cdlatex-position-cursor nil nil t)
-      ("le"  "Insert \\leq" "\\leq" nil nil nil t)
-      ("ne"  "Insert \\neq" "\\neq" nil nil nil t)
-      ("mi"  "Insert \\min" "\\min" nil nil nil t)
-      ("ma"  "Insert \\max" "\\max" nil nil nil t)
-      ("psd" "Insert \\succeq" "\\succeq" nil nil nil t)
-      ("pd"  "Insert \\succ" "\\succ" nil nil nil t)
-      ("nsd" "Insert \\preceq" "\\preceq" nil nil nil t)
-      ("nd"  "Insert \\prec" "\\prec" nil nil nil t)
-      ("nn"  "Insert \\nonumber" "\\nonumber" nil nil nil t)
-      ("sum" "Insert \\sum_{}^{}" "\\sum_{?}^{}" cdlatex-position-cursor nil nil t)
-      ("prod" "Insert \\prod_{}^{}" "\\prod_{?}^{}" cdlatex-position-cursor nil nil t)
-      ("prodl" "Insert \\prod\\limits_{}^{}" "\\prod\\limits_{?}^{}" cdlatex-position-cursor nil nil t)
-      ("norm" "Insert \\| \\|" "\\|?\\|" cdlatex-position-cursor nil nil t)
-      ("floor" "Insert \\lfloor \\rfloor" "\\lfloor ? \\rfloor" cdlatex-position-cursor nil nil t)
-      ("ceil" "Insert \\lceil \\rceil" "\\lceil ? \\rceil" cdlatex-position-cursor nil nil t) 
-      ("article" "Insert an article template"
-       "\\documentclass[11pt]{article}
-
-\\usepackage[letterpaper, margin=1in]{geometry}
-\\usepackage[utf8]{inputenc} % allow utf-8 input
-\\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
-\\usepackage[colorlinks,linkcolor=black,citecolor=black]{hyperref}       % hyperlinks
-\\usepackage{url}            % simple URL typesetting
-\\usepackage{booktabs}       % professional-quality tables
-\\usepackage{amsfonts}       % blackboard math symbols
-\\usepackage{nicefrac}       % compact symbols for 1/2, etc.
-\\usepackage{microtype}      % microtypography
-\\usepackage{xcolor}
-\\input{/Users/yufanhuang/.emacs.d/preamble}
-
-\\title{?}
-\\author{Yufan Huang}
-\\date{\today}
-\\begin{document}
-\\maketitle
-
-\\end{document}" cdlatex-position-cursor nil t nil))))
-
-
-;; Auctex/Latex
-
-(use-package latex
-
-  ;; https://ftp.gnu.org/pub/gnu/auctex/11.88-extra/tex-ref.pdf
-  ;; a reference card for auctex  
-
-  :ensure auctex 
-
-  :init 
-  (add-hook 'LaTeX-mode-hook
-    (defun preview-larger-previews ()
-      (setq preview-scale-function
-        (lambda () (* 1.25
-  		     (funcall (preview-scale-from-face)))))))
-  (add-hook 'LaTeX-mode-hook
-    (lambda () (setq reftex-ref-style-default-list '("Default" "Cleveref"))))
-  :hook (;;(laTeX-mode . LaTeX-math-mode)
-	 ;;(LaTeX-mode . LaTeX-math-mode)
-         (LaTeX-mode . prettify-symbols-mode))
-  :config
-  ;; use pdflatex
-  (setq latex-run-command "pdflatex")
-  (setq TeX-view-program-list '(("Google Chrome" "open -a 'Google Chrome' %o" "open")))
-  (setq TeX-view-program-selection '((output-pdf "Google Chrome")))
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  (setq-default TeX-master nil)
-  ;;(setq prettify-symbols-unprettify-at-point nil)
-  )
-;; (add-to-list 'post-command-hook #'TeX-view)
-
-
-(use-package reftex)
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)  
-
-(setq reftex-label-alist '(AMSTeX))
-(setq doc-view-resolution 600)
 
 ;;Yasnippet
 ;;#+begin_src emacs-lisp
@@ -854,7 +741,7 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
     '("78e6be576f4a526d212d5f9a8798e5706990216e9be10174e3f3b015b8662e27" default))
  '(display-line-numbers 'relative)
  '(display-line-numbers-type 'relative)
- '(evil-want-C-u-scroll t)
+ ;;'(evil-want-C-u-scroll t)
  '(global-display-line-numbers-mode t)
  '(markdown-command "/Users/yufanhuang/anaconda3/bin/pandoc")
  '(org-file-apps
@@ -871,7 +758,11 @@ Version: 2020-02-04 2023-08-24 2023-11-14"
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+  )
 
+;; latex settings
+(load-file "/Users/yufanhuang/.emacs.d/tex.el")
+
+;; encryption and password storage stuff
 (load-file "/Users/yufanhuang/.emacs.d/security.el")
 
