@@ -680,6 +680,9 @@
 ;; encryption and password storage stuff
 (load-file "/Users/yufanhuang/.emacs.d/yh-security.el")
 
+;; julia
+(load-file "/Users/yufanhuang/.emacs.d/yh-julia.el")
+
 ;;Yasnippet
 ;;#+begin_src emacs-lisp
 ;;(use-package yasnippet
@@ -727,15 +730,7 @@
 ;; use 2 spaces indentation
 (setq lisp-indent-offset 2)
 
-;; Julia
-(use-package julia-mode
-  :mode "\\.jl\\'")
 
-(use-package julia-snail
-  :hook (julia-mode . julia-snail-mode)
-  :config
-  (setq julia-snail-repl-display-eval-results t)
-  )
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
