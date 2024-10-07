@@ -73,8 +73,7 @@
   ;; add Cleveref style into reftex 
   (add-hook 'LaTeX-mode-hook
     (lambda () (setq reftex-ref-style-default-list '("Default" "Cleveref"))))
-  :hook (;;(laTeX-mode . LaTeX-math-mode)
-	 ;;(LaTeX-mode . LaTeX-math-mode)
+  :hook (;;(LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . prettify-symbols-mode))
   :config
   ;; use pdflatex
@@ -94,3 +93,17 @@
 
 (setq reftex-label-alist '(AMSTeX))
 (setq doc-view-resolution 600)
+
+(add-to-list 'load-path "/Users/yufanhuang/.emacs.d/elpa/lsp-latex-20240803.1436/")
+(require 'lsp-latex)
+;; "texlab" executable must be located at a directory contained in `exec-path'.
+;; If you want to put "texlab" somewhere else,
+;; you can specify the path to "texlab" as follows:
+;; (setq lsp-latex-texlab-executable "/path/to/texlab")
+
+(with-eval-after-load "tex-mode"
+ (add-hook 'LaTeX-mode-hook 'lsp))
+
+;; For bibtex
+(with-eval-after-load "bibtex"
+ (add-hook 'bibtex-mode-hook 'lsp))
