@@ -6,10 +6,12 @@
   ;; https://github.com/cdominik/cdlatex
 
   :init
-  (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
+  ;; (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
   ;; it's important to set this prefix before loading otherwise it
   ;; won't take effect
   (setq cdlatex-math-symbol-prefix ?\;)
+
+  :hook ((LaTeX-mode . turn-on-cdlatex))
 
   :config
   ;; I don't want _ and ^ expanded to sub and super scripts
@@ -73,8 +75,13 @@
   ;; add Cleveref style into reftex 
   (add-hook 'LaTeX-mode-hook
     (lambda () (setq reftex-ref-style-default-list '("Default" "Cleveref"))))
+  (add-hook 'latex-mode-hook (lambda () (company-mode nil)))
   :hook (;;(LaTeX-mode . LaTeX-math-mode)
-         (LaTeX-mode . prettify-symbols-mode))
+          (LaTeX-mode . prettify-symbols-mode))
+	  ;; turn off company-mode manually, use corfu instead
+	  ;; I don't understand why company-mode is on by default 
+
+  
   :config
   ;; use pdflatex
   (setq latex-run-command "pdflatex")
@@ -88,11 +95,15 @@
 ;; (add-to-list 'post-command-hook #'TeX-view)
 
 
-(use-package reftex)
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)  
+(use-package reftex
+  :hook (LaTeX-mode . turn-on-reftex)
+  :custom
+  (reftex-label-alist '(AMSTeX))
+  (doc-view-resolution 600))
+;;(add-hook 'LaTeX-mode-hook 'turn-on-reftex)  
 
-(setq reftex-label-alist '(AMSTeX))
-(setq doc-view-resolution 600)
+;;(setq reftex-label-alist '(AMSTeX))
+;;(setq doc-view-resolution 600)
 
 (add-to-list 'load-path "/Users/yufanhuang/.emacs.d/elpa/lsp-latex-20240803.1436/")
 (require 'lsp-latex)

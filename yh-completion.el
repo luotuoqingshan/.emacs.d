@@ -55,19 +55,34 @@
 ;; Company-mode
 ;; I use company-mode for completion.
 
-(defun mars/company-backend-with-yas (backends)
-  "Add :with company-yasnippet to company BACKENDS.
-    Taken from https://github.com/syl20bnr/spacemacs/pull/179."
-  (if (and (listp backends) (memq 'company-yasnippet backends))
-      backends
-    (append (if (consp backends)
-		backends
-	      (list backends))
-	    '(:with company-yasnippet))))
-(use-package company
-  :hook
-  (after-init . global-company-mode)
-  ;; add yasnippet to all backends
-  :config
-  (setq company-backends
-	(mapcar #'mars/company-backend-with-yas company-backends)))
+;;(defun mars/company-backend-with-yas (backends)
+;;  "Add :with company-yasnippet to company BACKENDS.
+;;    Taken from https://github.com/syl20bnr/spacemacs/pull/179."
+;;  (if (and (listp backends) (memq 'company-yasnippet backends))
+;;      backends
+;;    (append (if (consp backends)
+;;		backends
+;;	      (list backends))
+;;	    '(:with company-yasnippet))))
+;;(use-package company
+;;  :hook
+;;  (after-init . global-company-mode)
+;;  ;; add yasnippet to all backends
+;;  :config
+;;  (setq company-backends
+;;	(mapcar #'mars/company-backend-with-yas company-backends)))
+
+
+;; corfu
+(use-package corfu
+  :init
+  (global-corfu-mode 1)
+  :custom
+  (corfu-auto t)
+  ;;(corfu-auto-delay 0.75)
+  (corfu-quit-no-match nil) ; quit when the popup appears and I type anything else
+  ;; Might want to customize corfu-sort-function
+  :bind
+  (("M-RET" . completion-at-point)
+   )
+  )
