@@ -5,7 +5,9 @@
 (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
 (package-initialize)
 
-(defun package--save-selected-packages (&rest opt) nil)
+(straight-use-package 'use-package)
+
+ (defun package--save-selected-packages (&rest opt) nil)
 
 ;; Ensure that use-package is installed.
 ;; See doc of use-package at https://github.com/jwiegley/use-package
@@ -25,15 +27,18 @@
     (setq use-package-verbose nil
           use-package-expand-minimally t))
 
-;; always :ensure t
-(require 'use-package-ensure)
-(setq use-package-always-ensure t)
+;;  always :ensure t
+ (require 'use-package-ensure)
+ (setq use-package-always-ensure t)
+
+;; (setq straight-use-package-by-default t)
 
 ;; always defer loading packages unless :demand t
 (setq use-package-always-defer t)
 
 ;; Always compile packages, and use the newest version available.
 (use-package auto-compile
+  :straight nil
   :demand t
   :config (auto-compile-on-load-mode))
 
@@ -41,6 +46,7 @@
 (setq load-prefer-newer t)
 
 ;; add PATHs from shell
+;; (use-package exec-path-from-shell)
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
 

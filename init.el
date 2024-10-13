@@ -1,3 +1,7 @@
+;; init straight 
+;; (load-file "/Users/yufanhuang/.emacs.d/early-init.el")
+(setq debug-on-error t)
+
 ;; basics
 (load-file "/Users/yufanhuang/.emacs.d/yh-basics.el")
 
@@ -38,3 +42,10 @@
 ;; custom
 (load-file "/Users/yufanhuang/.emacs.d/custom.el")
 
+
+;;; copilot
+(add-to-list 'load-path "/Users/yufanhuang/.emacs.d/elpa/copilot.el")
+(require 'editorconfig)
+(require 'copilot)
+
+(define-key copilot-completion-map (kbd "<backtab>") 'copilot-accept-completion)
