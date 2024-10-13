@@ -1,51 +1,59 @@
 ;; init straight 
-;; (load-file "/Users/yufanhuang/.emacs.d/early-init.el")
+;; (load-file "~/.emacs.d/early-init.el")
 (setq debug-on-error t)
 
 ;; basics
-(load-file "/Users/yufanhuang/.emacs.d/yh-basics.el")
+(load-file "~/.emacs.d/yh-basics.el")
 
 ;; movement
-(load-file "/Users/yufanhuang/.emacs.d/yh-movement.el")
+(load-file "~/.emacs.d/yh-movement.el")
 
 ;; completion, including minibuffer and in-buffer
-(load-file "/Users/yufanhuang/.emacs.d/yh-completion.el")
+(load-file "~/.emacs.d/yh-completion.el")
 
 ;; dictionary
-(load-file "/Users/yufanhuang/.emacs.d/yh-dictionary.el")
+(load-file "~/.emacs.d/yh-dictionary.el")
 
 ;; Org-mode
-(load-file "/Users/yufanhuang/.emacs.d/yh-org.el")
+(load-file "~/.emacs.d/yh-org.el")
 
 
 ;; latex settings
-(load-file "/Users/yufanhuang/.emacs.d/yh-tex.el")
+(load-file "~/.emacs.d/yh-tex.el")
 
 ;; encryption and password storage stuff
-(load-file "/Users/yufanhuang/.emacs.d/yh-security.el")
+(load-file "~/.emacs.d/yh-security.el")
 
 ;; git
-(load-file "/Users/yufanhuang/.emacs.d/yh-git.el")
+(load-file "~/.emacs.d/yh-git.el")
 
 ;; yasnippet
-(load-file "/Users/yufanhuang/.emacs.d/yh-yasnippet.el")
+(load-file "~/.emacs.d/yh-yasnippet.el")
 
 ;; lisp
-(load-file "/Users/yufanhuang/.emacs.d/yh-lisp.el")
+(load-file "~/.emacs.d/yh-lisp.el")
 
 ;; julia
-(load-file "/Users/yufanhuang/.emacs.d/yh-julia.el")
+(load-file "~/.emacs.d/yh-julia.el")
 
 ;; markdown
-(load-file "/Users/yufanhuang/.emacs.d/yh-markdown.el")
+(load-file "~/.emacs.d/yh-markdown.el")
 
 ;; custom
-(load-file "/Users/yufanhuang/.emacs.d/custom.el")
+(load-file "~/.emacs.d/custom.el")
 
 
 ;;; copilot
-(add-to-list 'load-path "/Users/yufanhuang/.emacs.d/elpa/copilot.el")
+(add-to-list 'load-path "~/.emacs.d/elpa/copilot.el")
 (require 'editorconfig)
 (require 'copilot)
 
 (define-key copilot-completion-map (kbd "<backtab>") 'copilot-accept-completion)
+
+;;; python
+
+(use-package python
+  :hook ((python-ts-mode . eglot-ensure))
+  :mode (("\\.py\\'" . python-ts-mode))
+  )
+	 

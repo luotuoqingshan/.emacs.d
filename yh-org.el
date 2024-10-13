@@ -127,7 +127,7 @@
 	 :unnarrowed t)
        ("l" "math notes" plain "%?" 
 	 :target (file+head "${slug}.org"
-		   "#+title: ${title}\n#+Latex_HEADER:\\input{/Users/yufanhuang/Documents/latex-templates/headers.tex}\n#+options: toc:nil"
+		   "#+title: ${title}\n#+Latex_HEADER:\\input{~/Documents/latex-templates/headers.tex}\n#+options: toc:nil"
 		   )
 	 :unnarrowed t)))
   

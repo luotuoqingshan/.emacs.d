@@ -105,7 +105,7 @@
 ;;(setq reftex-label-alist '(AMSTeX))
 ;;(setq doc-view-resolution 600)
 
-(add-to-list 'load-path "/Users/yufanhuang/.emacs.d/elpa/lsp-latex-20240803.1436/")
+(add-to-list 'load-path "~/.emacs.d/elpa/lsp-latex-20240803.1436/")
 (require 'lsp-latex)
 ;; "texlab" executable must be located at a directory contained in `exec-path'.
 ;; If you want to put "texlab" somewhere else,

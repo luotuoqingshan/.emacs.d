@@ -1,1 +1,1 @@
-(setq markdown-command "/Users/yufanhuang/anaconda3/bin/pandoc")
+(setq markdown-command "~/anaconda3/bin/pandoc")
