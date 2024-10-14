@@ -2,6 +2,29 @@
 ;; (load-file "~/.emacs.d/early-init.el")
 (setq debug-on-error t)
 
+(if (display-graphic-p)
+  ;; init only for gui
+  (progn
+    ;; markdown
+    (load-file "~/.emacs.d/yh-markdown.el")
+      
+    ;; dictionary
+    (load-file "~/.emacs.d/yh-dictionary.el")
+
+    ;; Org-mode
+    (load-file "~/.emacs.d/yh-org.el")
+
+
+    ;; latex settings
+    (load-file "~/.emacs.d/yh-tex.el")
+
+    ;; encryption and password storage stuff
+    (load-file "~/.emacs.d/yh-security.el")
+    )
+  ;; init only for terminal
+  ()
+  )
+
 ;; basics
 (load-file "~/.emacs.d/yh-basics.el")
 
@@ -11,18 +34,7 @@
 ;; completion, including minibuffer and in-buffer
 (load-file "~/.emacs.d/yh-completion.el")
 
-;; dictionary
-(load-file "~/.emacs.d/yh-dictionary.el")
 
-;; Org-mode
-(load-file "~/.emacs.d/yh-org.el")
-
-
-;; latex settings
-(load-file "~/.emacs.d/yh-tex.el")
-
-;; encryption and password storage stuff
-(load-file "~/.emacs.d/yh-security.el")
 
 ;; git
 (load-file "~/.emacs.d/yh-git.el")
@@ -36,8 +48,7 @@
 ;; julia
 (load-file "~/.emacs.d/yh-julia.el")
 
-;; markdown
-(load-file "~/.emacs.d/yh-markdown.el")
+
 
 ;; custom
 (load-file "~/.emacs.d/custom.el")
