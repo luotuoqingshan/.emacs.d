@@ -75,7 +75,7 @@
   ;; add Cleveref style into reftex 
   (add-hook 'LaTeX-mode-hook
     (lambda () (setq reftex-ref-style-default-list '("Default" "Cleveref"))))
-  (add-hook 'latex-mode-hook (lambda () (company-mode nil)))
+  (add-hook 'LaTeX-mode-hook (lambda () (company-mode nil)))
   :hook (;;(LaTeX-mode . LaTeX-math-mode)
           (LaTeX-mode . prettify-symbols-mode))
 	  ;; turn off company-mode manually, use corfu instead
@@ -116,5 +116,19 @@
  (add-hook 'LaTeX-mode-hook 'lsp))
 
 ;; For bibtex
-(with-eval-after-load "bibtex"
- (add-hook 'bibtex-mode-hook 'lsp))
+;; (with-eval-after-load "bibtex"
+;;  (add-hook 'bibtex-mode-hook 'lsp))
+
+;; ebib is a bib management tool 
+(use-package ebib
+  :after biblio
+  :bind (:map ebib-index-mode-map
+              ("B" . ebib-biblio-import-doi)
+              :map biblio-selection-mode-map
+              ("e" . ebib-biblio-selection-import)))
+
+;; biblio is a tool for fetching bib files from online sources 
+(use-package biblio)
+
+
+  
