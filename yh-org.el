@@ -161,7 +161,7 @@
   :demand t
   :config
   (setq
-   bibtex-completion-bibliography '("~/Dropbox/bibs/yufan.bib")
+   bibtex-completion-bibliography '("~/Dropbox/bibs/yufan_ebib.bib" "~/Dropbox/bibs/yufan.bib")
    bibtex-completion-notes-path "~/Dropbox/orgroam/"
    bibtex-completion-pdf-field "file"
    bibtex-completion-pdf-open-function
@@ -193,7 +193,11 @@
                    (org-agenda-overriding-header "\nDeadlines")))
           (tags-todo "inbox"
                      ((org-agenda-prefix-format "  %?-12t% s")
-                      (org-agenda-overriding-header "\nInbox\n")))
+                       (org-agenda-overriding-header "\nInbox\n")))
+	   (tags-todo "paper"
+	     ((org-agenda-prefix-format "  %?-12t% s")
+               (org-agenda-overriding-header "\nPaper List\n")))
+	     
           (tags "CLOSED>=\"<today>\""
             ((org-agenda-overriding-header "\nCompleted today\n")))))))
 
