@@ -72,25 +72,25 @@
         (lambda () (* 1.25
   		     (funcall (preview-scale-from-face)))))))
   
-  ;; add Cleveref style into reftex 
+;; add Cleveref style into reftex 
   (add-hook 'LaTeX-mode-hook
     (lambda () (setq reftex-ref-style-default-list '("Default" "Cleveref"))))
-  (add-hook 'LaTeX-mode-hook (lambda () (company-mode nil)))
-  :hook (;;(LaTeX-mode . LaTeX-math-mode)
-          (LaTeX-mode . prettify-symbols-mode))
+  ;;(add-hook 'LaTeX-mode-hook (lambda () (company-mode nil)))
+   :hook (;;(LaTeX-mode . LaTeX-math-mode)
+        (LaTeX-mode . prettify-symbols-mode))
 	  ;; turn off company-mode manually, use corfu instead
 	  ;; I don't understand why company-mode is on by default 
 
-  
-  :config
-  ;; use pdflatex
-  (setq latex-run-command "pdflatex")
-  (setq TeX-view-program-list '(("Google Chrome" "open -a 'Google Chrome' %o" "open")))
-  (setq TeX-view-program-selection '((output-pdf "Google Chrome")))
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  (setq-default TeX-master nil)
-  ;;(setq prettify-symbols-unprettify-at-point nil)
+
+   :config
+   ;; use pdflatex
+   ;; (setq latex-run-command "pdflatex")
+   (setq TeX-view-program-list '(("Google Chrome" "open -a 'Google Chrome' %o" "open")))
+   (setq TeX-view-program-selection '((output-pdf "Google Chrome")))
+   (setq TeX-auto-save t)
+   (setq TeX-parse-self t)
+   (setq-default TeX-master nil)
+   ;;(setq prettify-symbols-unprettify-at-point nil)
   )
 ;; (add-to-list 'post-command-hook #'TeX-view)
 
@@ -113,11 +113,11 @@
 ;; (setq lsp-latex-texlab-executable "/path/to/texlab")
 
 (with-eval-after-load "tex-mode"
- (add-hook 'LaTeX-mode-hook 'lsp))
+  (add-hook 'LaTeX-mode-hook 'lsp))
 
-;; For bibtex
-;; (with-eval-after-load "bibtex"
-;;  (add-hook 'bibtex-mode-hook 'lsp))
+;;  For bibtex
+(with-eval-after-load "bibtex"
+  (add-hook 'bibtex-mode-hook 'lsp))
 
 ;; ebib is a bib management tool 
 (use-package ebib

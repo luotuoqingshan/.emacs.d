@@ -24,7 +24,7 @@
   (org-archive-location (concat "~/Dropbox/orgarchive/Archive-"
 				(format-time-string "%Y%m" (current-time))
 				".org_archive::"))
-  (org-agenda-files (list "inbox.org" "agenda.org" "projects.org"))
+  (org-agenda-files (list "inbox.org" "agenda.org" "projects.org" "paper.org"))
   (org-use-fast-todo-selection 'expert)
   (org-todo-keywords
     '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)")))
